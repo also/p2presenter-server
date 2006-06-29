@@ -1,18 +1,18 @@
 package edu.uoregon.cs.p2presenter.client;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
+
+import edu.uoregon.cs.p2presenter.MessageSender;
+import edu.uoregon.cs.p2presenter.OutgoingMessageStream;
 
 public class Client implements Runnable {
 	private BufferedReader sysIn;
-	private PrintWriter outWriter;
-	private OutputStream out;
+
+	private OutgoingMessageStream out;
+	private MessageSender sender;
 	
 	private Socket socket;
 	
@@ -21,8 +21,9 @@ public class Client implements Runnable {
 		socket = new Socket(host, port);
 
 		sysIn = new BufferedReader(new InputStreamReader(System.in));
-		out = socket.getOutputStream();
-		outWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out)));
+		
+		out = new OutgoingMessageStream(socket.getOutputStream());
+		sender = new MessageSender(out);
 	}
 	/**
 	 * @param args
@@ -56,15 +57,7 @@ public class Client implements Runnable {
 	}
 	
 	private void sendCommand(String command) throws IOException {
-		sendBytes(command.getBytes("UTF-8"));
-	}
-	
-	private void sendBytes(byte[] bytes) throws IOException {
-		outWriter.println("Content-Length: " + bytes.length);
-		outWriter.println();
-		outWriter.flush();
-		out.write(bytes);
-		outWriter.println();
-		outWriter.flush();
+		sender.setContent(command);
+		sender.send();
 	}
 }

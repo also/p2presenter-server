@@ -5,10 +5,10 @@ import java.net.Socket;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class P2PresenterServer {
+public class ConnectionManager {
 	private Collection<ClientConnection> clientConnections = new LinkedList<ClientConnection>();
 	
-	public P2PresenterServer() {
+	public ConnectionManager() {
 		
 	}
 	
