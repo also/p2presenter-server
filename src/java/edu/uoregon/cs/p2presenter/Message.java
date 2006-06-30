@@ -49,8 +49,11 @@ public class Message {
 	
 	public static Message read(PushbackInputStream in) throws IOException {
 		Message result = new Message();
-		String line;
-		while(!"".equals(line = readLine(in))) {
+		String line = readLine(in);
+		if(line == null) {
+			return null;
+		}
+		do {
 			int colonPosition = line.indexOf(':');
 			
 			// TODO we don't allow empty headers
@@ -59,7 +62,9 @@ public class Message {
 				throw new RuntimeException("Invalid header: " + line);
 			}
 			result.headers.put(line.substring(0, colonPosition), line.substring(colonPosition + 2));
-		}
+			
+			line = readLine(in);
+		} while(!"".equals(line));
 		
 		String contentLengthHeader = result.headers.get("Content-Length");
 		String contentHeader = result.headers.get("Content");

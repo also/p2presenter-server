@@ -43,6 +43,13 @@ public class Connection extends Thread implements Closeable {
 		try {
 			for (;;) {
 				incomingMessage = read();
+				
+				if(incomingMessage == null) {
+					close();
+					// TODO more stuff
+					return;
+				}
+				
 				if(incomingMessage.hasContent()) {
 					status = 200;
 					try {
