@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.ConnectionManager;
 import edu.uoregon.cs.p2presenter.MessageSender;
-import edu.uoregon.cs.p2presenter.OutgoingMessageStream;
 
 public class Client implements Runnable {
-	private BufferedReader sysIn;
-
-	private OutgoingMessageStream out;
-	private MessageSender sender;
+	private Connection connection;
 	
 	private Socket socket;
 	
@@ -20,11 +18,9 @@ public class Client implements Runnable {
 
 		socket = new Socket(host, port);
 
-		sysIn = new BufferedReader(new InputStreamReader(System.in));
-		
-		out = new OutgoingMessageStream(socket.getOutputStream());
-		sender = new MessageSender(out);
+		connection = new ConnectionManager().createConnection(socket);
 	}
+	
 	/**
 	 * @param args
 	 */
@@ -33,13 +29,21 @@ public class Client implements Runnable {
 	}
 	
 	public void run() {
+		connection.start();
+		MessageSender sender = new MessageSender(connection);
+		BufferedReader sysIn = new BufferedReader(new InputStreamReader(System.in));
 		for(;;) {
 			String line;
 			StringBuilder commandBuilder = new StringBuilder();
 			try {
 				while ((line = sysIn.readLine()) != null) {
 					if ("send".equals(line)) {
-						sendCommand(commandBuilder.toString());
+						sender.setContent(commandBuilder.toString());
+						sender.send();
+						try {
+							System.out.println("Status: " + connection.awaitResponse().getHeader("Status"));
+						}
+						catch(InterruptedException ex) {}
 						commandBuilder = new StringBuilder();
 					}
 					else {
@@ -54,10 +58,5 @@ public class Client implements Runnable {
 				
 			}
 		}
-	}
-	
-	private void sendCommand(String command) throws IOException {
-		sender.setContent(command);
-		sender.send();
 	}
 }

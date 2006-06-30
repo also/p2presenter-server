@@ -12,7 +12,7 @@ public class IncomingMessageStream {
 		this.in = new PushbackInputStream(new BufferedInputStream(in));
 	}
 	
-	public Message read() throws IOException {
+	public synchronized Message read() throws IOException {
 		return Message.read(in);
 	}
 }

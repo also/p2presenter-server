@@ -8,9 +8,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class OutgoingMessage extends Message {
-	public OutgoingMessage() {}
+	private String messageId;
+	public OutgoingMessage(String messageId) {
+		this.messageId = messageId;
+	}
 	
-	public OutgoingMessage(CharSequence content) {
+	public OutgoingMessage(String messageId, CharSequence content) {
+		this(messageId);
 		setContent(content);
 	}
 	
@@ -34,6 +38,8 @@ public class OutgoingMessage extends Message {
 	protected void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
 		
+		writer.println("Message-Id: " + messageId);
+		
 		for(Map.Entry<String, String> header : headers.entrySet()) {
 			writer.println(header.getKey() + ": " + header.getValue());
 		}
@@ -43,9 +49,6 @@ public class OutgoingMessage extends Message {
 			writer.println();
 			writer.flush();
 			out.write(content);
-		}
-		else {
-			writer.println();
 		}
 		
 		writer.println();

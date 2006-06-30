@@ -11,7 +11,7 @@ public class OutgoingMessageStream {
 		this.out = new BufferedOutputStream(out);
 	}
 	
-	public void write(OutgoingMessage message) throws IOException {
+	public synchronized void write(OutgoingMessage message) throws IOException {
 		message.write(out);
 	}
 }

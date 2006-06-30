@@ -2,6 +2,8 @@ package edu.uoregon.cs.p2presenter.server;
 
 import java.io.IOException;
 
+import edu.uoregon.cs.p2presenter.ConnectionManager;
+
 public class P2PresenterServerBootstrap {
 
 	/**

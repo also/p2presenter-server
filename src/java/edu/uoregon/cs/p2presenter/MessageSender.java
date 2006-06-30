@@ -3,12 +3,14 @@ package edu.uoregon.cs.p2presenter;
 import java.io.IOException;
 
 public class MessageSender {
+	private Connection connection;
 	private OutgoingMessageStream out;
 	
 	private OutgoingMessage currentMessage;
 	
-	public MessageSender(OutgoingMessageStream out) {
-		this.out = out;
+	public MessageSender(Connection connection) {
+		this.connection = connection;
+		out = connection.getOut();
 		reInit();
 	}
 	
@@ -34,6 +36,6 @@ public class MessageSender {
 	}
 	
 	private void reInit() {
-		currentMessage = new OutgoingMessage();
+		currentMessage = new OutgoingMessage(connection.generateMessageId());
 	}
 }

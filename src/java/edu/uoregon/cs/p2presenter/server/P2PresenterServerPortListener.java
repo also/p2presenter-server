@@ -3,6 +3,8 @@ package edu.uoregon.cs.p2presenter.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import edu.uoregon.cs.p2presenter.ConnectionManager;
+
 public class P2PresenterServerPortListener implements Runnable {
 	private ServerSocket serverSocket;
 	private ConnectionManager server;
@@ -15,8 +17,7 @@ public class P2PresenterServerPortListener implements Runnable {
 	public void run() {
 		while(true) {
 			try {
-				Thread clientConnectionThread = server.createClientConnection(serverSocket.accept());
-				clientConnectionThread.start();
+				server.createConnection(serverSocket.accept()).start();
 			}
 			catch (IOException e) {
 				// FIXME do stuff
