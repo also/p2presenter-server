@@ -1,7 +1,9 @@
 package edu.uoregon.cs.p2presenter;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.util.concurrent.SynchronousQueue;
 
@@ -13,40 +15,38 @@ public class Connection extends Thread implements Closeable {
 	
 	private ConnectionManager manager;
 	
-	private OutgoingMessageStream out;
-	private IncomingMessageStream in;
+	private BufferedOutputStream out;
+	private PushbackInputStream in;
 
 	private Interpreter interpreter = new Interpreter();
 
 	private SynchronousQueue<Message> response = new SynchronousQueue<Message>(true);
 	
-	private int messageId = 1;
+	private Integer messageId = 1;
 	
 	public Connection(Socket socket, ConnectionManager manager) throws IOException {
 		this.socket = socket;
 		
 		this.manager = manager;
 		
-		out = new OutgoingMessageStream(socket.getOutputStream());
-		in = new IncomingMessageStream(socket.getInputStream());
+		out = new BufferedOutputStream(socket.getOutputStream());
+		in = new PushbackInputStream(socket.getInputStream());
 	}
 	
 	@Override
 	public void run() {
 		int status;
 		
-		Message message;
-		
-		MessageSender sender = new MessageSender(this);
+		Message incomingMessage;
+		OutgoingMessage outgoingMessage;
 		
 		try {
 			for (;;) {
-				message = in.read();
-				
-				if(message.hasContent()) {
+				incomingMessage = read();
+				if(incomingMessage.hasContent()) {
 					status = 200;
 					try {
-						interpreter.eval(message.getContentAsString());
+						interpreter.eval(incomingMessage.getContentAsString());
 					}
 					catch (EvalError ex) {
 						// TODO
@@ -54,15 +54,16 @@ public class Connection extends Thread implements Closeable {
 						status = 500;
 					}
 					finally {
-						sender.setHeader("Status", String.valueOf(status));
-						sender.send();
+						outgoingMessage = new OutgoingMessage(incomingMessage);
+						outgoingMessage.setHeader("Status", String.valueOf(status));
+						write(outgoingMessage);
 					}
 				}
 				else {
 					// TODO in the future, messages will be sent asynchronously; not all empty messages will be responses (that's the whole purpose of this thread)
 					for (;;) {
 						try {
-							response.put(message);
+							response.put(incomingMessage);
 							break;
 						}
 						catch (InterruptedException ex) {
@@ -81,21 +82,30 @@ public class Connection extends Thread implements Closeable {
 	public Message awaitResponse() throws InterruptedException {
 		return response.take();
 	}
-
-	public IncomingMessageStream getIn() {
-		return in;
+	
+	public Message read() throws IOException {
+		synchronized (in) {
+			return Message.read(in);
+		}
 	}
-
-	public OutgoingMessageStream getOut() {
-		return out;
+	
+	public void write(OutgoingMessage message) throws IOException {
+		synchronized (out) {
+			message.write(out);
+		}
 	}
 	
 	public Interpreter getInterpreter() {
 		return interpreter;
 	}
 	
+	/** Return a message id for a message.
+	 * The message id is guaranteed to be unique for the duration of the connection.
+	 */
 	public String generateMessageId() {
-		return String.valueOf(messageId++);
+		synchronized (messageId) {
+			return String.valueOf(messageId++);
+		}
 	}
 	
 	public void close() throws IOException {

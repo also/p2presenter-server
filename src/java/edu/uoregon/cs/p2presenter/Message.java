@@ -35,6 +35,14 @@ public class Message {
 		return content.length;
 	}
 	
+	public String getMessageId() {
+		return getHeader("Message-Id");
+	}
+	
+	public String getInResponseTo() {
+		return getHeader("In-Response-To");
+	}
+	
 	public final String getHeader(String name) {
 		return headers.get(name);
 	}

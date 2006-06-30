@@ -9,12 +9,23 @@ import java.util.Map;
 
 public class OutgoingMessage extends Message {
 	private String messageId;
+	private String inResponseTo;
+	
 	public OutgoingMessage(String messageId) {
 		this.messageId = messageId;
 	}
 	
+	public OutgoingMessage(Message inResponseToMessage) {
+		inResponseTo = inResponseToMessage.getInResponseTo();
+	}
+	
 	public OutgoingMessage(String messageId, CharSequence content) {
 		this(messageId);
+		setContent(content);
+	}
+	
+	public OutgoingMessage(Message inResponseToMessage, CharSequence content) {
+		this(inResponseToMessage);
 		setContent(content);
 	}
 	
@@ -35,10 +46,25 @@ public class OutgoingMessage extends Message {
 		this.content = content;
 	}
 	
-	protected void write(OutputStream out) throws IOException {
+	@Override
+	public String getMessageId() {
+		return messageId;
+	}
+	
+	@Override
+	public String getInResponseTo() {
+		return inResponseTo;
+	}
+	
+	void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
 		
-		writer.println("Message-Id: " + messageId);
+		if(messageId != null) {
+			writer.println("Message-Id: " + messageId);
+		}
+		else {
+			writer.println("In-Response-To: " + inResponseTo);
+		}
 		
 		for(Map.Entry<String, String> header : headers.entrySet()) {
 			writer.println(header.getKey() + ": " + header.getValue());
