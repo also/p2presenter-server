@@ -7,29 +7,53 @@ public class MessageSender {
 	
 	private OutgoingMessage currentMessage;
 	
+	private boolean sent = false;
+	
 	public MessageSender(Connection connection) {
 		this.connection = connection;
 		reInit();
 	}
 	
 	public void setHeader(String name, String value) {
+		if(sent) {
+			reInit();
+		}
 		currentMessage.setHeader(name, value);
 	}
 	
 	public void setContent(byte[] content) {
+		if(sent) {
+			reInit();
+		}
 		currentMessage.setContent(content);
 	}
 	
 	public void setContent(CharSequence content) {
+		if(sent) {
+			reInit();
+		}
 		currentMessage.setContent(content);
 	}
 	
 	public OutgoingMessage send() throws IOException {
-		OutgoingMessage result = currentMessage;
+		if(sent) {
+			throw new IllegalStateException("Message already sent");
+		}
 		connection.write(currentMessage);
-		reInit();
-		
-		return result;
+		sent = true;
+		return currentMessage;
+	}
+	
+	public Message awaitResponse() throws InterruptedException {
+		if(!sent) {
+			throw new IllegalStateException("Message not sent");
+		}
+		return connection.awaitResponse(currentMessage);
+	}
+	
+	public Message sendAndAwaitResponse() throws IOException, InterruptedException {
+		send();
+		return awaitResponse();
 	}
 	
 	public void cancel() {
@@ -37,6 +61,7 @@ public class MessageSender {
 	}
 	
 	private void reInit() {
+		sent = false;
 		currentMessage = new OutgoingMessage(connection.generateMessageId());
 	}
 }

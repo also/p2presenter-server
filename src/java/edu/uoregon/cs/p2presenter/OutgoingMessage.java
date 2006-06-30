@@ -8,15 +8,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class OutgoingMessage extends Message {
-	private String messageId;
-	private String inResponseTo;
 	
 	public OutgoingMessage(String messageId) {
-		this.messageId = messageId;
+		setHeader(SpecialHeader.Message_Id, messageId);
 	}
 	
 	public OutgoingMessage(Message inResponseToMessage) {
-		inResponseTo = inResponseToMessage.getInResponseTo();
+		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
 	}
 	
 	public OutgoingMessage(String messageId, CharSequence content) {
@@ -30,7 +28,14 @@ public class OutgoingMessage extends Message {
 	}
 	
 	public void setHeader(String name, String value) {
+		if(SpecialHeader.isSpecialHeader(name)) {
+			throw new IllegalArgumentException(name + " header may not be set manually");
+		}
 		headers.put(name, value);
+	}
+	
+	private void setHeader(SpecialHeader header, String value) {
+		headers.put(header.getName(), value);
 	}
 	
 	public void setContent(CharSequence content) {
@@ -46,24 +51,28 @@ public class OutgoingMessage extends Message {
 		this.content = content;
 	}
 	
+	public void setStatus(int status) {
+		setHeader(SpecialHeader.Status, String.valueOf(status));
+	}
+	
 	@Override
 	public String getMessageId() {
-		return messageId;
+		return getHeader(SpecialHeader.Message_Id);
 	}
 	
 	@Override
 	public String getInResponseTo() {
-		return inResponseTo;
+		return getHeader(SpecialHeader.In_Response_To);
 	}
 	
 	void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
-		
+		String messageId = getHeader(SpecialHeader.Message_Id);
 		if(messageId != null) {
 			writer.println("Message-Id: " + messageId);
 		}
 		else {
-			writer.println("In-Response-To: " + inResponseTo);
+			writer.println("In-Response-To: " + getHeader(SpecialHeader.In_Response_To));
 		}
 		
 		for(Map.Entry<String, String> header : headers.entrySet()) {

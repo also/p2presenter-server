@@ -5,7 +5,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.PushbackInputStream;
 import java.net.Socket;
-import java.util.concurrent.SynchronousQueue;
+import java.util.HashMap;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -19,10 +21,14 @@ public class Connection extends Thread implements Closeable {
 	private PushbackInputStream in;
 
 	private Interpreter interpreter = new Interpreter();
-
-	private SynchronousQueue<Message> response = new SynchronousQueue<Message>(true);
+	
+	private HashMap<String, Message> responses = new HashMap<String, Message>();
+	private ReentrantLock responsesLock = new ReentrantLock(true);
+	private Condition responseReceived = responsesLock.newCondition();
 	
 	private Integer messageId = 1;
+	
+	boolean running = false;
 	
 	public Connection(Socket socket, ConnectionManager manager) throws IOException {
 		this.socket = socket;
@@ -35,6 +41,7 @@ public class Connection extends Thread implements Closeable {
 	
 	@Override
 	public void run() {
+		running = true;
 		int status;
 		
 		Message incomingMessage;
@@ -50,7 +57,14 @@ public class Connection extends Thread implements Closeable {
 					return;
 				}
 				
-				if(incomingMessage.hasContent()) {
+				if(incomingMessage.isResponse()) {
+					responsesLock.lock();
+					responses.put(incomingMessage.getInResponseTo(), incomingMessage);
+					responseReceived.signalAll();
+					responsesLock.unlock();
+					
+				}
+				else {
 					status = 200;
 					try {
 						interpreter.eval(incomingMessage.getContentAsString());
@@ -62,20 +76,8 @@ public class Connection extends Thread implements Closeable {
 					}
 					finally {
 						outgoingMessage = new OutgoingMessage(incomingMessage);
-						outgoingMessage.setHeader("Status", String.valueOf(status));
+						outgoingMessage.setStatus(status);
 						write(outgoingMessage);
-					}
-				}
-				else {
-					// TODO in the future, messages will be sent asynchronously; not all empty messages will be responses (that's the whole purpose of this thread)
-					for (;;) {
-						try {
-							response.put(incomingMessage);
-							break;
-						}
-						catch (InterruptedException ex) {
-							// FIXME
-						}
 					}
 				}
 			}
@@ -84,10 +86,26 @@ public class Connection extends Thread implements Closeable {
 			// FIXME
 			ex.printStackTrace();
 		}
+		finally {
+			running = false;
+		}
 	}
 	
-	public Message awaitResponse() throws InterruptedException {
-		return response.take();
+	public Message awaitResponse(OutgoingMessage message) throws InterruptedException {
+		if(!running) {
+			throw new IllegalStateException("Not running");
+		}
+		
+		Message result;
+		responsesLock.lock();
+		result = responses.remove(message.getMessageId());
+		while (result == null) {
+			responseReceived.await();
+			result = responses.remove(message.getMessageId());
+		}
+		responsesLock.unlock();
+		
+		return result;
 	}
 	
 	public Message read() throws IOException {

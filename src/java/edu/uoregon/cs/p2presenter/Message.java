@@ -12,10 +12,42 @@ public class Message {
 	
 	protected byte[] content;
 	
+	public enum SpecialHeader {
+		Content_Type,
+		Content_Length,
+		Content,
+		Status,
+		Message_Id,
+		In_Response_To;
+		
+		private String name;
+		private SpecialHeader() {
+			this.name = name().replace('_', '-');
+		}
+		
+		public String getName() {
+			return name;
+		}
+
+		public static boolean isSpecialHeader(String name) {
+			try {
+				valueOf(name.replace('-', '_'));
+				return true;
+			}
+			catch (IllegalArgumentException ex) {
+				return false;
+			}
+		}
+	}
+	
 	protected Message() {}
 	
 	public final boolean hasContent() {
 		return content != null;
+	}
+	
+	public boolean isResponse() {
+		return getInResponseTo() != null;
 	}
 	
 	public final byte[] getContent() {
@@ -43,8 +75,16 @@ public class Message {
 		return getHeader("In-Response-To");
 	}
 	
+	public int getStatus() {
+		return Integer.parseInt(getHeader("Status"));
+	}
+	
 	public final String getHeader(String name) {
 		return headers.get(name);
+	}
+	
+	public final String getHeader(SpecialHeader header) {
+		return getHeader(header.getName());
 	}
 	
 	public static Message read(PushbackInputStream in) throws IOException {

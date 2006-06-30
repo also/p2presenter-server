@@ -39,9 +39,9 @@ public class Client implements Runnable {
 				while ((line = sysIn.readLine()) != null) {
 					if ("send".equals(line)) {
 						sender.setContent(commandBuilder.toString());
-						sender.send();
+						
 						try {
-							System.out.println("Status: " + connection.awaitResponse().getHeader("Status"));
+							System.out.println("Status: " + sender.sendAndAwaitResponse().getHeader("Status"));
 						}
 						catch(InterruptedException ex) {}
 						commandBuilder = new StringBuilder();
