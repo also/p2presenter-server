@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public class OutgoingMessage extends Message {
+public class OutgoingMessage extends MessageImpl {
 	
 	public OutgoingMessage(String messageId) {
 		setHeader(SpecialHeader.Message_Id, messageId);
 	}
 	
-	public OutgoingMessage(Message inResponseToMessage) {
+	public OutgoingMessage(MessageImpl inResponseToMessage) {
 		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
 	}
 	
@@ -22,7 +22,7 @@ public class OutgoingMessage extends Message {
 		setContent(content);
 	}
 	
-	public OutgoingMessage(Message inResponseToMessage, CharSequence content) {
+	public OutgoingMessage(MessageImpl inResponseToMessage, CharSequence content) {
 		this(inResponseToMessage);
 		setContent(content);
 	}

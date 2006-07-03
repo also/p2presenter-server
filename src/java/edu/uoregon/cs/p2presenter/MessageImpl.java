@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Message {
+public class MessageImpl {
 	protected final Map<String, String> headers = new HashMap<String, String>();
 	
 	protected byte[] content;
@@ -40,7 +40,7 @@ public class Message {
 		}
 	}
 	
-	protected Message() {}
+	protected MessageImpl() {}
 	
 	public final boolean hasContent() {
 		return content != null;
@@ -87,8 +87,8 @@ public class Message {
 		return getHeader(header.getName());
 	}
 	
-	public static Message read(PushbackInputStream in) throws IOException {
-		Message result = new Message();
+	public static MessageImpl read(PushbackInputStream in) throws IOException {
+		MessageImpl result = new MessageImpl();
 		String line = readLine(in);
 		if(line == null) {
 			return null;
@@ -101,10 +101,20 @@ public class Message {
 				// FIXME
 				throw new RuntimeException("Invalid header: " + line);
 			}
-			result.headers.put(line.substring(0, colonPosition), line.substring(colonPosition + 2));
+			
+			String name = line.substring(0, colonPosition);
+			String value = result.headers.get(name);
+			if (value != null) {
+				value += ',' + line.substring(colonPosition + 2);
+			}
+			else {
+				value = line.substring(colonPosition + 2);
+			}
+			
+			result.headers.put(name, value);
 			
 			line = readLine(in);
-		} while(!"".equals(line));
+		} while (!"".equals(line));
 		
 		String contentLengthHeader = result.headers.get("Content-Length");
 		String contentHeader = result.headers.get("Content");

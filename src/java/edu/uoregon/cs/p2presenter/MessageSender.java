@@ -44,14 +44,14 @@ public class MessageSender {
 		return currentMessage;
 	}
 	
-	public Message awaitResponse() throws InterruptedException {
+	public MessageImpl awaitResponse() throws InterruptedException {
 		if(!sent) {
 			throw new IllegalStateException("Message not sent");
 		}
 		return connection.awaitResponse(currentMessage);
 	}
 	
-	public Message sendAndAwaitResponse() throws IOException, InterruptedException {
+	public MessageImpl sendAndAwaitResponse() throws IOException, InterruptedException {
 		send();
 		return awaitResponse();
 	}

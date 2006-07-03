@@ -22,7 +22,7 @@ public class Connection extends Thread implements Closeable {
 
 	private Interpreter interpreter = new Interpreter();
 	
-	private HashMap<String, Message> responses = new HashMap<String, Message>();
+	private HashMap<String, MessageImpl> responses = new HashMap<String, MessageImpl>();
 	private ReentrantLock responsesLock = new ReentrantLock(true);
 	private Condition responseReceived = responsesLock.newCondition();
 	
@@ -44,7 +44,7 @@ public class Connection extends Thread implements Closeable {
 		running = true;
 		int status;
 		
-		Message incomingMessage;
+		MessageImpl incomingMessage;
 		OutgoingMessage outgoingMessage;
 		
 		try {
@@ -91,12 +91,12 @@ public class Connection extends Thread implements Closeable {
 		}
 	}
 	
-	public Message awaitResponse(OutgoingMessage message) throws InterruptedException {
+	public MessageImpl awaitResponse(OutgoingMessage message) throws InterruptedException {
 		if(!running) {
 			throw new IllegalStateException("Not running");
 		}
 		
-		Message result;
+		MessageImpl result;
 		responsesLock.lock();
 		result = responses.remove(message.getMessageId());
 		while (result == null) {
@@ -108,9 +108,9 @@ public class Connection extends Thread implements Closeable {
 		return result;
 	}
 	
-	public Message read() throws IOException {
+	public MessageImpl read() throws IOException {
 		synchronized (in) {
-			return Message.read(in);
+			return MessageImpl.read(in);
 		}
 	}
 	
