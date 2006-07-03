@@ -47,7 +47,7 @@ public class ConnectionInvocationHandler implements InvocationHandler {
 		
 		methodCall.append(");");
 		
-		OutgoingRequestMessage message = new OutgoingRequestMessage(connection.generateMessageId());
+		OutgoingRequestMessage message = new OutgoingRequestMessage(connection);
 		message.setContent(methodCall.toString());
 		
 		connection.write(message);

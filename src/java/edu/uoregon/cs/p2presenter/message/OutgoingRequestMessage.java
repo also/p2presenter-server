@@ -4,20 +4,17 @@ package edu.uoregon.cs.p2presenter.message;
 
 public class OutgoingRequestMessage extends RequestMessageImpl implements OutgoingMessage {
 
-	public OutgoingRequestMessage(String messageId) {
-		if (containsLineEnd(messageId)) {
-			throw new IllegalArgumentException("End of line in message id");
-		}
-		setHeader(SpecialHeader.Message_Id, messageId);
+	public OutgoingRequestMessage(MessageIdSource messageIdSource) {
+		setHeader(SpecialHeader.Message_Id, messageIdSource.generateMessageId());
 	}
 	
-	public OutgoingRequestMessage(String messageId, byte[] content) {
-		this(messageId);
+	public OutgoingRequestMessage(MessageIdSource messageIdSource, byte[] content) {
+		this(messageIdSource);
 		setContent(content);
 	}
 	
-	public OutgoingRequestMessage(String messageId, CharSequence content) {
-		this(messageId);
+	public OutgoingRequestMessage(MessageIdSource messageIdSource, CharSequence content) {
+		this(messageIdSource);
 		setContent(content);
 	}
 	

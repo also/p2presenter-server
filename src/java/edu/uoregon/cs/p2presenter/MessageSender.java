@@ -67,6 +67,6 @@ public class MessageSender {
 	
 	private void reInit() {
 		sent = false;
-		currentMessage = new OutgoingRequestMessage(connection.generateMessageId());
+		currentMessage = new OutgoingRequestMessage(connection);
 	}
 }

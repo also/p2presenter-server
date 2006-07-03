@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.Message;
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
+import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
@@ -23,7 +25,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.ParseException;
 
-public class Connection extends Thread implements Closeable {
+public class Connection extends Thread implements MessageIdSource, Closeable {
 	public static final String VERSION = "0.1";
 	private Socket socket;
 	
@@ -38,7 +40,7 @@ public class Connection extends Thread implements Closeable {
 	private ReentrantLock responsesLock = new ReentrantLock(true);
 	private Condition responseReceived = responsesLock.newCondition();
 	
-	private Integer messageId = 1;
+	private MessageIdSource messageIdSource = new DefaultMessageIdSource();
 	
 	boolean running = false;
 	
@@ -158,9 +160,7 @@ public class Connection extends Thread implements Closeable {
 	 * The message id is guaranteed to be unique for the duration of the connection.
 	 */
 	public String generateMessageId() {
-		synchronized (messageId) {
-			return String.valueOf(messageId++);
-		}
+		return messageIdSource.generateMessageId();
 	}
 	
 	public void close() throws IOException {

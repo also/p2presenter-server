@@ -5,9 +5,13 @@ import java.net.Socket;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
+import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 
-public class ConnectionManager {
+public class ConnectionManager implements MessageIdSource {
 	private Collection<Connection> connections = new LinkedList<Connection>();
+	
+	private MessageIdSource messageIdSource = DefaultMessageIdSource.newUniqueMessageIdSource("GLOBAL");
 	
 	public ConnectionManager() {
 		
@@ -22,5 +26,9 @@ public class ConnectionManager {
 	
 	public void connectionClosed(Connection connection) {
 		connections.remove(connection);
+	}
+
+	public String generateMessageId() {
+		return messageIdSource.generateMessageId();
 	}
 }
