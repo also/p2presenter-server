@@ -11,11 +11,13 @@ import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public abstract class MessageImpl implements Message {
+public abstract class AbstractMessage implements Message {
 	private final Map<String, String> headers = new HashMap<String, String>();
 	
 	private byte[] content;
+	private static final Pattern LINE_END_PATTERN = Pattern.compile("[\\r\\n]");
 	
 	protected enum SpecialHeader {
 		Content_Type,
@@ -91,6 +93,12 @@ public abstract class MessageImpl implements Message {
 		if(SpecialHeader.isSpecialHeader(name)) {
 			throw new IllegalArgumentException(name + " header may not be set manually");
 		}
+		if(containsLineEnd(name)) {
+			throw new IllegalArgumentException("End of line in header name");
+		}
+		if(containsLineEnd(value)) {
+			throw new IllegalArgumentException("End of line in header value");
+		}
 		setHeaderUnchecked(name, value);
 	}
 	
@@ -111,8 +119,12 @@ public abstract class MessageImpl implements Message {
 		this.content = content;
 	}
 	
+	protected final boolean containsLineEnd(String string) {
+		return LINE_END_PATTERN.matcher(string).matches();
+	}
+	
 	public static final Message read(PushbackInputStream in) throws IOException {
-		MessageImpl result;
+		AbstractMessage result;
 		
 		String line = readLine(in);
 

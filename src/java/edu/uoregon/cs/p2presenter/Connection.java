@@ -6,19 +6,22 @@ import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PushbackInputStream;
+import java.lang.reflect.Proxy;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import edu.uoregon.cs.p2presenter.message.Message;
-import edu.uoregon.cs.p2presenter.message.MessageImpl;
+import edu.uoregon.cs.p2presenter.message.AbstractMessage;
+import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import bsh.ParseException;
 
 public class Connection extends Thread implements Closeable {
 	public static final String VERSION = "0.1";
@@ -65,24 +68,30 @@ public class Connection extends Thread implements Closeable {
 					// TODO more stuff
 					return;
 				}
-
+				String responseContent = null;
 				if (incomingMessage.isRequest()) {
 					status = 200;
 					try {
 						if (incomingMessage.hasContent()) {
-							interpreter.eval(incomingMessage.getContentAsString());
-						}
-						else {
-							System.out.println("Empty request");
+							Object result = interpreter.eval(incomingMessage.getContentAsString());
+							if (result != null) {
+								responseContent = result.toString();
+							}
 						}
 					}
+					catch (ParseException ex) {
+						status = 400;
+						responseContent = ex.getMessage();
+					}
 					catch (EvalError ex) {
-						// TODO
-						ex.printStackTrace();
 						status = 500;
+						responseContent = ex.getMessage();
 					}
 					finally {
 						responseMessage = new OutgoingResponseMessage(status, (RequestMessage) incomingMessage);
+						if (responseContent != null) {
+							responseMessage.setContent(responseContent);
+						}
 						write(responseMessage);
 					}
 				}
@@ -126,14 +135,19 @@ public class Connection extends Thread implements Closeable {
 	
 	public Message read() throws IOException {
 		synchronized (in) {
-			return MessageImpl.read(in);
+			return AbstractMessage.read(in);
 		}
 	}
 	
-	public void write(MessageImpl message) throws IOException {
+	public void write(OutgoingMessage message) throws IOException {
 		synchronized (out) {
 			message.write(out);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T proxy(Class<T> interfaceClass, String variableName) {
+		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new ConnectionInvocationHandler(this, interfaceClass, variableName));
 	}
 	
 	public Interpreter getInterpreter() {

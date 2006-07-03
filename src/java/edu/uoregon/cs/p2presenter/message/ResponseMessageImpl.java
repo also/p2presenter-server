@@ -6,27 +6,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class ResponseMessageImpl extends MessageImpl implements ResponseMessage {
+public class ResponseMessageImpl extends AbstractMessage implements ResponseMessage {
 	private int status;
 	
 	protected ResponseMessageImpl(int status) {
 		this.status = status;
 	}
 	
-	public String getInResponseTo() {
+	public final String getInResponseTo() {
 		return getHeader(SpecialHeader.In_Response_To);
 	}
 	
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	
-	public int getStatus() {
+	public final int getStatus() {
 		return status;
 	}
 
 	@Override
-	protected void writeStartLine(PrintWriter writer) throws IOException {
+	protected final void writeStartLine(PrintWriter writer) throws IOException {
 		writer.println("Status: " + getStatus());
 	}
 }

@@ -5,14 +5,16 @@ package edu.uoregon.cs.p2presenter.message;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class RequestMessageImpl extends MessageImpl implements RequestMessage {
+import edu.uoregon.cs.p2presenter.Connection;
+
+public class RequestMessageImpl extends AbstractMessage implements RequestMessage {
 
 	@Override
-	protected void writeStartLine(PrintWriter writer) throws IOException {
-		writer.println("Method: UNKNOWN");
+	protected final void writeStartLine(PrintWriter writer) throws IOException {
+		writer.println("REQUEST * P2PR/" + Connection.VERSION);
 	}
 	
-	public String getMessageId() {
+	public final String getMessageId() {
 		return getHeader(SpecialHeader.Message_Id);
 	}
 
