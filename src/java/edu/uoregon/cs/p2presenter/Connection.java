@@ -1,3 +1,5 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter;
 
 import java.io.BufferedOutputStream;
@@ -9,10 +11,17 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import edu.uoregon.cs.p2presenter.message.Message;
+import edu.uoregon.cs.p2presenter.message.MessageImpl;
+import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
+import edu.uoregon.cs.p2presenter.message.RequestMessage;
+import edu.uoregon.cs.p2presenter.message.ResponseMessage;
+
 import bsh.EvalError;
 import bsh.Interpreter;
 
 public class Connection extends Thread implements Closeable {
+	public static final String VERSION = "0.1";
 	private Socket socket;
 	
 	private ConnectionManager manager;
@@ -22,7 +31,7 @@ public class Connection extends Thread implements Closeable {
 
 	private Interpreter interpreter = new Interpreter();
 	
-	private HashMap<String, MessageImpl> responses = new HashMap<String, MessageImpl>();
+	private HashMap<String, ResponseMessage> responses = new HashMap<String, ResponseMessage>();
 	private ReentrantLock responsesLock = new ReentrantLock(true);
 	private Condition responseReceived = responsesLock.newCondition();
 	
@@ -44,30 +53,28 @@ public class Connection extends Thread implements Closeable {
 		running = true;
 		int status;
 		
-		MessageImpl incomingMessage;
-		OutgoingMessage outgoingMessage;
+		Message incomingMessage;
+		OutgoingResponseMessage responseMessage;
 		
 		try {
 			for (;;) {
 				incomingMessage = read();
 				
-				if(incomingMessage == null) {
+				if (incomingMessage == null) {
 					close();
 					// TODO more stuff
 					return;
 				}
-				
-				if(incomingMessage.isResponse()) {
-					responsesLock.lock();
-					responses.put(incomingMessage.getInResponseTo(), incomingMessage);
-					responseReceived.signalAll();
-					responsesLock.unlock();
-					
-				}
-				else {
+
+				if (incomingMessage.isRequest()) {
 					status = 200;
 					try {
-						interpreter.eval(incomingMessage.getContentAsString());
+						if (incomingMessage.hasContent()) {
+							interpreter.eval(incomingMessage.getContentAsString());
+						}
+						else {
+							System.out.println("Empty request");
+						}
 					}
 					catch (EvalError ex) {
 						// TODO
@@ -75,10 +82,12 @@ public class Connection extends Thread implements Closeable {
 						status = 500;
 					}
 					finally {
-						outgoingMessage = new OutgoingMessage(incomingMessage);
-						outgoingMessage.setStatus(status);
-						write(outgoingMessage);
+						responseMessage = new OutgoingResponseMessage(status, (RequestMessage) incomingMessage);
+						write(responseMessage);
 					}
+				}
+				else {
+					responseRecieved((ResponseMessage) incomingMessage);
 				}
 			}
 		}
@@ -91,12 +100,19 @@ public class Connection extends Thread implements Closeable {
 		}
 	}
 	
-	public MessageImpl awaitResponse(OutgoingMessage message) throws InterruptedException {
+	private void responseRecieved(ResponseMessage message) {
+		responsesLock.lock();
+		responses.put(message.getInResponseTo(), message);
+		responseReceived.signalAll();
+		responsesLock.unlock();
+	}
+	
+	public ResponseMessage awaitResponse(RequestMessage message) throws InterruptedException {
 		if(!running) {
 			throw new IllegalStateException("Not running");
 		}
 		
-		MessageImpl result;
+		ResponseMessage result;
 		responsesLock.lock();
 		result = responses.remove(message.getMessageId());
 		while (result == null) {
@@ -104,17 +120,17 @@ public class Connection extends Thread implements Closeable {
 			result = responses.remove(message.getMessageId());
 		}
 		responsesLock.unlock();
-		
+
 		return result;
 	}
 	
-	public MessageImpl read() throws IOException {
+	public Message read() throws IOException {
 		synchronized (in) {
 			return MessageImpl.read(in);
 		}
 	}
 	
-	public void write(OutgoingMessage message) throws IOException {
+	public void write(MessageImpl message) throws IOException {
 		synchronized (out) {
 			message.write(out);
 		}

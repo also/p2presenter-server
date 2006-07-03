@@ -1,8 +1,11 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.Socket;
 
 import edu.uoregon.cs.p2presenter.Connection;
@@ -15,7 +18,6 @@ public class Client implements Runnable {
 	private Socket socket;
 	
 	public Client(String host, int port) throws IOException {
-
 		socket = new Socket(host, port);
 
 		connection = new ConnectionManager().createConnection(socket);
@@ -25,7 +27,14 @@ public class Client implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		new Client("localhost", 9000).run();
+		try {
+			Client client = new Client("localhost", 9000);
+			
+			client.run();
+		}
+		catch (ConnectException ex) {
+			System.out.println("Couldn't connect to server");
+		}
 	}
 	
 	public void run() {
@@ -41,7 +50,7 @@ public class Client implements Runnable {
 						sender.setContent(commandBuilder.toString());
 						
 						try {
-							System.out.println("Status: " + sender.sendAndAwaitResponse().getHeader("Status"));
+							System.out.println("Status: " + sender.sendAndAwaitResponse().getStatus());
 						}
 						catch(InterruptedException ex) {}
 						commandBuilder = new StringBuilder();

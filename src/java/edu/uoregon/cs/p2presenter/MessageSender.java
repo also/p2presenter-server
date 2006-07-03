@@ -1,11 +1,16 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter;
 
 import java.io.IOException;
 
+import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
+import edu.uoregon.cs.p2presenter.message.ResponseMessage;
+
 public class MessageSender {
 	private Connection connection;
 	
-	private OutgoingMessage currentMessage;
+	private OutgoingRequestMessage currentMessage;
 	
 	private boolean sent = false;
 	
@@ -35,7 +40,7 @@ public class MessageSender {
 		currentMessage.setContent(content);
 	}
 	
-	public OutgoingMessage send() throws IOException {
+	public OutgoingRequestMessage send() throws IOException {
 		if(sent) {
 			throw new IllegalStateException("Message already sent");
 		}
@@ -44,14 +49,14 @@ public class MessageSender {
 		return currentMessage;
 	}
 	
-	public MessageImpl awaitResponse() throws InterruptedException {
+	public ResponseMessage awaitResponse() throws InterruptedException {
 		if(!sent) {
 			throw new IllegalStateException("Message not sent");
 		}
 		return connection.awaitResponse(currentMessage);
 	}
 	
-	public MessageImpl sendAndAwaitResponse() throws IOException, InterruptedException {
+	public ResponseMessage sendAndAwaitResponse() throws IOException, InterruptedException {
 		send();
 		return awaitResponse();
 	}
@@ -62,6 +67,6 @@ public class MessageSender {
 	
 	private void reInit() {
 		sent = false;
-		currentMessage = new OutgoingMessage(connection.generateMessageId());
+		currentMessage = new OutgoingRequestMessage(connection.generateMessageId());
 	}
 }
