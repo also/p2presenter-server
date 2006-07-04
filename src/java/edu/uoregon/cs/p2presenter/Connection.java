@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import edu.uoregon.cs.p2presenter.jsh.ConnectionInvocationHandler;
 import edu.uoregon.cs.p2presenter.jsh.JshRequestProcessor;
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
@@ -57,7 +58,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		
 		try {
 			for (;;) {
-				incomingMessage = read();
+				incomingMessage = recieve();
 				
 				if (incomingMessage == null) {
 					close();
@@ -66,7 +67,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 
 				if (incomingMessage.isRequest()) {
-					write(jshRequestProcessor.processRequest((RequestMessage) incomingMessage));
+					send(jshRequestProcessor.processRequest((RequestMessage) incomingMessage));
 				}
 				else {
 					responseRecieved((ResponseMessage) incomingMessage);
@@ -106,13 +107,13 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		return result;
 	}
 	
-	public Message read() throws IOException {
+	private Message recieve() throws IOException {
 		synchronized (in) {
 			return AbstractMessage.read(in);
 		}
 	}
 	
-	public void write(OutgoingMessage message) throws IOException {
+	public void send(OutgoingMessage message) throws IOException {
 		synchronized (out) {
 			message.write(out);
 		}
@@ -131,6 +132,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	}
 	
 	public void close() throws IOException {
+		// TODO
 		socket.close();
 		manager.connectionClosed(this);
 	}

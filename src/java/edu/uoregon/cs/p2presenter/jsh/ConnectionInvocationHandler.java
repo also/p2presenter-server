@@ -1,10 +1,11 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter;
+package edu.uoregon.cs.p2presenter.jsh;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
@@ -50,7 +51,7 @@ public class ConnectionInvocationHandler implements InvocationHandler {
 		OutgoingRequestMessage message = new OutgoingRequestMessage(connection);
 		message.setContent(methodCall.toString());
 		
-		connection.write(message);
+		connection.send(message);
 		ResponseMessage response = null;
 		
 		while (response == null) {

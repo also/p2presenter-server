@@ -44,7 +44,7 @@ public class MessageSender {
 		if(sent) {
 			throw new IllegalStateException("Message already sent");
 		}
-		connection.write(currentMessage);
+		connection.send(currentMessage);
 		sent = true;
 		return currentMessage;
 	}
