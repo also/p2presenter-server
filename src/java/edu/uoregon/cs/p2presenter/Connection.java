@@ -12,18 +12,14 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import edu.uoregon.cs.p2presenter.jsh.JshRequestProcessor;
+import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.Message;
-import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
-
-import bsh.EvalError;
-import bsh.Interpreter;
-import bsh.ParseException;
 
 public class Connection extends Thread implements MessageIdSource, Closeable {
 	public static final String VERSION = "0.1";
@@ -34,7 +30,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	private BufferedOutputStream out;
 	private PushbackInputStream in;
 
-	private Interpreter interpreter = new Interpreter();
+	private RequestProcessor jshRequestProcessor = new JshRequestProcessor();
 	
 	private HashMap<String, ResponseMessage> responses = new HashMap<String, ResponseMessage>();
 	private ReentrantLock responsesLock = new ReentrantLock(true);
@@ -56,10 +52,8 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	@Override
 	public void run() {
 		running = true;
-		int status;
 		
 		Message incomingMessage;
-		OutgoingResponseMessage responseMessage;
 		
 		try {
 			for (;;) {
@@ -70,32 +64,9 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 					// TODO more stuff
 					return;
 				}
-				String responseContent = null;
+
 				if (incomingMessage.isRequest()) {
-					status = 200;
-					try {
-						if (incomingMessage.hasContent()) {
-							Object result = interpreter.eval(incomingMessage.getContentAsString());
-							if (result != null) {
-								responseContent = result.toString();
-							}
-						}
-					}
-					catch (ParseException ex) {
-						status = 400;
-						responseContent = ex.getMessage();
-					}
-					catch (EvalError ex) {
-						status = 500;
-						responseContent = ex.getMessage();
-					}
-					finally {
-						responseMessage = new OutgoingResponseMessage(status, (RequestMessage) incomingMessage);
-						if (responseContent != null) {
-							responseMessage.setContent(responseContent);
-						}
-						write(responseMessage);
-					}
+					write(jshRequestProcessor.processRequest((RequestMessage) incomingMessage));
 				}
 				else {
 					responseRecieved((ResponseMessage) incomingMessage);
@@ -150,10 +121,6 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	@SuppressWarnings("unchecked")
 	public <T> T proxy(Class<T> interfaceClass, String variableName) {
 		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new ConnectionInvocationHandler(this, interfaceClass, variableName));
-	}
-	
-	public Interpreter getInterpreter() {
-		return interpreter;
 	}
 	
 	/** Return a message id for a message.

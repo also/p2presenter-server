@@ -9,6 +9,10 @@ import java.io.PrintWriter;
 public class ResponseMessageImpl extends AbstractMessage implements ResponseMessage {
 	private int status;
 	
+	protected ResponseMessageImpl() {
+		status = 200;
+	}
+	
 	protected ResponseMessageImpl(int status) {
 		this.status = status;
 	}
@@ -19,6 +23,10 @@ public class ResponseMessageImpl extends AbstractMessage implements ResponseMess
 	
 	public final int getStatus() {
 		return status;
+	}
+	
+	protected void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override
