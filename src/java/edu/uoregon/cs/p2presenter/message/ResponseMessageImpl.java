@@ -2,9 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import edu.uoregon.cs.p2presenter.Connection;
 
 public class ResponseMessageImpl extends AbstractMessage implements ResponseMessage {
 	private int status;
@@ -15,6 +13,10 @@ public class ResponseMessageImpl extends AbstractMessage implements ResponseMess
 	
 	protected ResponseMessageImpl(int status) {
 		this.status = status;
+	}
+	
+	public final boolean isRequest() {
+		return false;
 	}
 	
 	public final String getInResponseTo() {
@@ -30,7 +32,8 @@ public class ResponseMessageImpl extends AbstractMessage implements ResponseMess
 	}
 
 	@Override
-	protected final void writeStartLine(PrintWriter writer) throws IOException {
-		writer.println("Status: " + getStatus());
+	protected final String getStartLine() {
+		// TODO reason
+		return Connection.PROTOCOL_VERSION + ' ' + getStatus() + " None";
 	}
 }

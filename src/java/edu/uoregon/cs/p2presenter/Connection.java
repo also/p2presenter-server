@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import edu.uoregon.cs.p2presenter.jsh.ConnectionInvocationHandler;
-import edu.uoregon.cs.p2presenter.jsh.JshRequestProcessor;
+import edu.uoregon.cs.p2presenter.jsh.RemoteJshInvocationHandler;
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.Message;
@@ -23,7 +22,9 @@ import edu.uoregon.cs.p2presenter.message.RequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
 public class Connection extends Thread implements MessageIdSource, Closeable {
+	public static final String PROTOCOL = "P2PR";
 	public static final String VERSION = "0.1";
+	public static final String PROTOCOL_VERSION = PROTOCOL + '/' + VERSION;
 	private Socket socket;
 	
 	private ConnectionManager manager;
@@ -31,7 +32,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	private BufferedOutputStream out;
 	private PushbackInputStream in;
 
-	private RequestProcessor jshRequestProcessor = new JshRequestProcessor();
+	private RequestHandlerMapping requestHandlerMapping = new DefaultConnectionRequestHandlerMapping();
 	
 	private HashMap<String, ResponseMessage> responses = new HashMap<String, ResponseMessage>();
 	private ReentrantLock responsesLock = new ReentrantLock(true);
@@ -67,7 +68,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 
 				if (incomingMessage.isRequest()) {
-					send(jshRequestProcessor.processRequest((RequestMessage) incomingMessage));
+					send(requestHandlerMapping.getHandler(incomingMessage).processRequest((RequestMessage) incomingMessage));
 				}
 				else {
 					responseRecieved((ResponseMessage) incomingMessage);
@@ -121,7 +122,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	
 	@SuppressWarnings("unchecked")
 	public <T> T proxy(Class<T> interfaceClass, String variableName) {
-		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new ConnectionInvocationHandler(this, interfaceClass, variableName));
+		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new RemoteJshInvocationHandler(this, interfaceClass, variableName));
 	}
 	
 	/** Return a message id for a message.

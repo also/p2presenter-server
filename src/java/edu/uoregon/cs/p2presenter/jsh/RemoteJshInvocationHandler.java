@@ -11,11 +11,11 @@ import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
 import bsh.Primitive;
 
-public class ConnectionInvocationHandler implements InvocationHandler {
+public class RemoteJshInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
 	private Connection connection;
 	
-	public ConnectionInvocationHandler(Connection connection, Class interfaceClass, String remoteVariableName) {
+	public RemoteJshInvocationHandler(Connection connection, Class interfaceClass, String remoteVariableName) {
 		this.remoteVariableName = remoteVariableName;
 		this.connection = connection;
 		

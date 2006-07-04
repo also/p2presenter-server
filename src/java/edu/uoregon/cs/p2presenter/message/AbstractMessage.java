@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
+
 public abstract class AbstractMessage implements Message {
 	private final Map<String, String> headers = new HashMap<String, String>();
 	
@@ -51,10 +54,6 @@ public abstract class AbstractMessage implements Message {
 		return content != null;
 	}
 	
-	public boolean isRequest() {
-		return this instanceof RequestMessage;
-	}
-	
 	public final byte[] getContent() {
 		return content;
 	}
@@ -85,7 +84,7 @@ public abstract class AbstractMessage implements Message {
 		return getHeader(header.getName());
 	}
 	
-	protected void setHeader(SpecialHeader header, String value) {
+	protected final void setHeader(SpecialHeader header, String value) {
 		headers.put(header.getName(), value);
 	}
 	
@@ -131,11 +130,13 @@ public abstract class AbstractMessage implements Message {
 		if (line == null) {
 			return null;
 		}
-		else if (line.startsWith("Status:")) {
-			result = new ResponseMessageImpl(Integer.parseInt(line.substring(line.charAt(7) == ' ' ? 8 : 7)));
+		else if (line.startsWith(Connection.PROTOCOL)) {
+			int indexOfStatus = line.indexOf(' ', Connection.PROTOCOL.length() + 1) + 1;
+			int indexOfReasonPhrase = line.indexOf(' ', indexOfStatus + 1) + 1;
+			result = new ResponseMessageImpl(Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)));
 		}
 		else {
-			result = new RequestMessageImpl();
+			result = new RequestMessageImpl(RequestType.valueOf(line.substring(0, line.indexOf(' '))));
 		}
 		
 		line = readLine(in);
@@ -224,7 +225,7 @@ public abstract class AbstractMessage implements Message {
 	
 	public final void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
-		writeStartLine(writer);
+		writer.println(getStartLine());
 		
 		for(Map.Entry<String, String> header : headers.entrySet()) {
 			writer.println(header.getKey() + ": " + header.getValue());
@@ -241,5 +242,5 @@ public abstract class AbstractMessage implements Message {
 		writer.flush();
 	}
 	
-	protected abstract void writeStartLine(PrintWriter writer) throws IOException;
+	protected abstract String getStartLine();
 }

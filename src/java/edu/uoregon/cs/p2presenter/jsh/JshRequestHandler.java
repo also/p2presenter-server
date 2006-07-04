@@ -5,11 +5,11 @@ package edu.uoregon.cs.p2presenter.jsh;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.ParseException;
-import edu.uoregon.cs.p2presenter.RequestProcessor;
+import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
 
-public class JshRequestProcessor implements RequestProcessor {
+public class JshRequestHandler implements RequestHandler {
 	
 	private Interpreter interpreter = new Interpreter();
 	
