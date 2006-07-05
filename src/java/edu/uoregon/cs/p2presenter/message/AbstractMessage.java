@@ -3,6 +3,7 @@
 package edu.uoregon.cs.p2presenter.message;
 
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -205,27 +206,25 @@ public abstract class AbstractMessage implements Message {
 		boolean sawCR = false;
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		
-		b = in.read();
-		if(b == -1) {
-			throw new IOException("Connection closed");
-		}
-		do {
-			if(b =='\r') {
-				if(!sawCR) {
-					sawCR = true;
-				}
-				else {
-					in.unread(b);
-					break;
-				}
+		for (;;) {
+			b = in.read();
+			if(b == -1) {
+				throw new EOFException("Expecting message line");
 			}
 			else if(b == '\n') {
 				break;
 			}
+			else if (sawCR) {
+				in.unread(b);
+				break;
+			}
+			else if(b =='\r') {
+				sawCR = true;
+			}
 			else {
 				bytes.write(b);
 			}
-		} while((b = in.read()) != -1);
+		}
 		
 		return bytes.toString("UTF-8");
 	}

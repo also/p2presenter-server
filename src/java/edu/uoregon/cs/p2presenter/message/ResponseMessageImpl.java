@@ -6,21 +6,15 @@ import edu.uoregon.cs.p2presenter.Connection;
 
 public class ResponseMessageImpl extends AbstractMessage implements ResponseMessage {
 	private int status;
-	
-	protected ResponseMessageImpl() {
-		status = 200;
-	}
+	private String reason;
 	
 	protected ResponseMessageImpl(int status) {
 		this.status = status;
 	}
 	
-	public final boolean isRequest() {
-		return false;
-	}
-	
-	public final String getInResponseTo() {
-		return getHeader(SpecialHeader.In_Response_To);
+	protected ResponseMessageImpl(int status, String reason) {
+		this(status);
+		this.reason = reason;
 	}
 	
 	public final int getStatus() {
@@ -29,6 +23,22 @@ public class ResponseMessageImpl extends AbstractMessage implements ResponseMess
 	
 	protected void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public final String getReason() {
+		return reason;
+	}
+	
+	protected void setReason(String reason) {
+		this.reason = reason;
+	}
+	
+	public final boolean isRequest() {
+		return false;
+	}
+	
+	public final String getInResponseTo() {
+		return getHeader(SpecialHeader.In_Response_To);
 	}
 
 	@Override

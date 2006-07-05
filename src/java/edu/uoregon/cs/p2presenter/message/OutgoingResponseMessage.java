@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.message;
 
 public class OutgoingResponseMessage extends ResponseMessageImpl implements OutgoingMessage {
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage) {
-		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
+		this(inResponseToMessage, 200);
 	}
 	
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage, int status) {

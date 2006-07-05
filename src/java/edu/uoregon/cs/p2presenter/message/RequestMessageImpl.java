@@ -10,6 +10,7 @@ public class RequestMessageImpl extends AbstractMessage implements RequestMessag
 	
 	public RequestMessageImpl(RequestType requestType, String url) {
 		this.requestType = requestType;
+		this.url = url;
 	}
 	
 	public final boolean isRequest() {
@@ -24,13 +25,20 @@ public class RequestMessageImpl extends AbstractMessage implements RequestMessag
 		this.requestType = requestType;
 	}
 	
+	public final String getUrl() {
+		return url;
+	}
+	
+	protected void setUrl(String url) {
+		this.url = url;
+	}
+	
 	public final String getMessageId() {
 		return getHeader(SpecialHeader.Message_Id);
 	}
 	
 	@Override
 	protected final String getStartLine() {
-		// TODO url
 		return requestType.name() + ' ' + url + ' ' + Connection.PROTOCOL_VERSION;
 	}
 }

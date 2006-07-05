@@ -12,6 +12,7 @@ import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionManager;
 import edu.uoregon.cs.p2presenter.MessageSender;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
+import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 public class Client implements Runnable {
 	private Connection connection;
@@ -41,38 +42,37 @@ public class Client implements Runnable {
 	public void run() {
 		connection.start();
 		
-		MessageSender sender = new MessageSender(connection);
+		MessageSender sender = new MessageSender(connection, RequestType.EVALUATE, "bsh");
 		BufferedReader sysIn = new BufferedReader(new InputStreamReader(System.in));
 		ResponseMessage response;
-		for(;;) {
-			String line;
-			StringBuilder commandBuilder = new StringBuilder();
-			try {
-				while ((line = sysIn.readLine()) != null) {
-					if ("send".equals(line)) {
-						sender.setContent(commandBuilder);
-						
-						try {
-							response = sender.sendAndAwaitResponse();
-							System.out.println("Status: " + response.getStatus());
-							if (response.hasContent()) {
-								System.out.println(response.getContentAsString());
-							}
+
+		String line;
+		StringBuilder commandBuilder = new StringBuilder();
+		try {
+			while ((line = sysIn.readLine()) != null) {
+				if ("send".equals(line)) {
+					sender.setContent(commandBuilder);
+					
+					try {
+						response = sender.sendAndAwaitResponse();
+						System.out.println("Status: " + response.getStatus());
+						if (response.hasContent()) {
+							System.out.println(response.getContentAsString());
 						}
-						catch(InterruptedException ex) {}
-						commandBuilder = new StringBuilder();
 					}
-					else {
-						if (commandBuilder.length() != 0) {
-							commandBuilder.append('\n');
-						}
-						commandBuilder.append(line);
+					catch(InterruptedException ex) {}
+					commandBuilder = new StringBuilder();
+				}
+				else {
+					if (commandBuilder.length() != 0) {
+						commandBuilder.append('\n');
 					}
+					commandBuilder.append(line);
 				}
 			}
-			catch(IOException ex) {
-				
-			}
+		}
+		catch(IOException ex) {
+			
 		}
 	}
 }

@@ -71,20 +71,19 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 					send(requestHandlerMapping.getHandler(incomingMessage).processRequest((RequestMessage) incomingMessage));
 				}
 				else {
-					responseRecieved((ResponseMessage) incomingMessage);
+					responseReceived((ResponseMessage) incomingMessage);
 				}
 			}
 		}
 		catch (IOException ex) {
-			// FIXME
-			ex.printStackTrace();
+			// exceptions are handled by send and receive
 		}
 		finally {
 			running = false;
 		}
 	}
 	
-	private void responseRecieved(ResponseMessage message) {
+	private void responseReceived(ResponseMessage message) {
 		responsesLock.lock();
 		responses.put(message.getInResponseTo(), message);
 		responseReceived.signalAll();
@@ -110,13 +109,34 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	
 	private Message recieve() throws IOException {
 		synchronized (in) {
-			return AbstractMessage.read(in);
+			try {
+				return AbstractMessage.read(in);
+			}
+			catch (IOException ex) {
+				handleException(ex);
+				throw ex;
+			}
 		}
 	}
 	
 	public void send(OutgoingMessage message) throws IOException {
 		synchronized (out) {
-			message.write(out);
+			try {
+				message.write(out);
+			}
+			catch (IOException ex) {
+				handleException(ex);
+				throw ex;
+			}
+		}
+	}
+	
+	private void handleException(Exception exception) {
+		try {
+			close();
+		}
+		catch (IOException ex) {
+			// TODO log
 		}
 	}
 	
@@ -135,7 +155,11 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	
 	public void close() throws IOException {
 		// TODO
-		socket.close();
-		manager.connectionClosed(this);
+		try {
+			socket.close();
+		}
+		finally {
+			manager.connectionClosed(this);
+		}
 	}
 }

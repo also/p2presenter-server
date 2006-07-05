@@ -14,8 +14,13 @@ public class OutgoingRequestMessage extends RequestMessageImpl implements Outgoi
 	}
 	
 	@Override
-	public void setRequestType(RequestType requestType) {
+	public final void setRequestType(RequestType requestType) {
 		super.setRequestType(requestType);
+	}
+	
+	@Override
+	public final void setUrl(String url) {
+		super.setUrl(url);
 	}
 	
 	@Override

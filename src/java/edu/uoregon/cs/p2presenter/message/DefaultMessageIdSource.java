@@ -2,6 +2,8 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
+import edu.uoregon.cs.p2presenter.Connection;
+
 public class DefaultMessageIdSource implements MessageIdSource {
 	private static int sourceNumber = 1;
 	
@@ -13,13 +15,13 @@ public class DefaultMessageIdSource implements MessageIdSource {
 	
 	public DefaultMessageIdSource(String prefix) {
 		if (prefix != null) {
-			this.prefix = "/" + prefix;
+			this.prefix = prefix + '-';
 		}
 	}
 	
 	public String generateMessageId() {
 		synchronized (messageId) {
-			return "P2PR" + prefix + "/" + messageId++;
+			return Connection.PROTOCOL + prefix + '-' + messageId++;
 		}
 	}
 	
@@ -29,7 +31,7 @@ public class DefaultMessageIdSource implements MessageIdSource {
 	
 	public static synchronized MessageIdSource newUniqueMessageIdSource(String prefix) {
 		DefaultMessageIdSource result = new DefaultMessageIdSource(prefix);
-		result.prefix += "/" + result.hashCode() + "/" + sourceNumber++;
+		result.prefix += '-' + result.hashCode() + '-' + sourceNumber++;
 		return result;
 	}
 }

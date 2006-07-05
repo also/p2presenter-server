@@ -10,5 +10,7 @@ public interface RequestHeaders extends Headers {
 	
 	public RequestType getRequestType();
 	
+	public String getUrl();
+	
 	public String getMessageId();
 }

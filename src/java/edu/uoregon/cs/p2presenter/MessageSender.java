@@ -6,51 +6,64 @@ import java.io.IOException;
 
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
+import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 public class MessageSender {
 	private Connection connection;
 	
+	private RequestType defaultRequestType;
+	private String defaultUrl;
+	
 	private OutgoingRequestMessage currentMessage;
 	
-	private boolean sent = false;
+	private boolean needsReInit = true;
 	
 	public MessageSender(Connection connection) {
 		this.connection = connection;
+	}
+	
+	public MessageSender(Connection connection, RequestType defaultRequestType, String defaultUrl) {
+		this(connection);
+		this.defaultRequestType = defaultRequestType;
+		this.defaultUrl = defaultUrl;
+	}
+	
+	public void setRequestType(RequestType requestType) {
 		reInit();
+		currentMessage.setRequestType(requestType);
+	}
+	
+	public void setUrl(String url) {
+		reInit();
+		currentMessage.setUrl(url);
 	}
 	
 	public void setHeader(String name, String value) {
-		if(sent) {
-			reInit();
-		}
+		reInit();
 		currentMessage.setHeader(name, value);
 	}
 	
 	public void setContent(byte[] content) {
-		if(sent) {
-			reInit();
-		}
+		reInit();
 		currentMessage.setContent(content);
 	}
 	
 	public void setContent(CharSequence content) {
-		if(sent) {
-			reInit();
-		}
+		reInit();
 		currentMessage.setContent(content);
 	}
 	
 	public OutgoingRequestMessage send() throws IOException {
-		if(sent) {
+		if (needsReInit) {
 			throw new IllegalStateException("Message already sent");
 		}
 		connection.send(currentMessage);
-		sent = true;
+		needsReInit = true;
 		return currentMessage;
 	}
 	
 	public ResponseMessage awaitResponse() throws InterruptedException {
-		if(!sent) {
+		if(!needsReInit) {
 			throw new IllegalStateException("Message not sent");
 		}
 		return connection.awaitResponse(currentMessage);
@@ -62,11 +75,19 @@ public class MessageSender {
 	}
 	
 	public void cancel() {
+		needsReInit = true;
 		reInit();
 	}
 	
 	private void reInit() {
-		sent = false;
-		currentMessage = new OutgoingRequestMessage(connection);
+		if (needsReInit) {
+			needsReInit = false;
+			if (defaultUrl != null) {
+				currentMessage = new OutgoingRequestMessage(connection, defaultRequestType, defaultUrl);
+			}
+			else {
+				currentMessage = new OutgoingRequestMessage(connection);
+			}
+		}
 	}
 }
