@@ -20,6 +20,8 @@ public abstract class AbstractMessage implements Message {
 	private final Map<String, String> headers = new HashMap<String, String>();
 	
 	private byte[] content;
+	private CharSequence contentCharSequence;
+	
 	private static final Pattern LINE_END_PATTERN = Pattern.compile("[\\r\\n]");
 	
 	protected enum SpecialHeader {
@@ -51,10 +53,18 @@ public abstract class AbstractMessage implements Message {
 	}
 	
 	public final boolean hasContent() {
-		return content != null;
+		return content != null || contentCharSequence != null;
 	}
 	
 	public final byte[] getContent() {
+		if(contentCharSequence != null) {
+			try {
+				return contentCharSequence.toString().getBytes("UTF-8");
+			}
+			catch (UnsupportedEncodingException ex) {
+				throw new Error(ex);
+			}
+		}
 		return content;
 	}
 	
@@ -66,6 +76,9 @@ public abstract class AbstractMessage implements Message {
 			catch (UnsupportedEncodingException ex) {
 				throw new Error(ex);
 			}
+		}
+		else if (contentCharSequence != null) {
+			return contentCharSequence.toString();
 		}
 		else {
 			return null;
@@ -105,16 +118,13 @@ public abstract class AbstractMessage implements Message {
 		headers.put(name, value);
 	}
 	
-	protected void setContent(CharSequence content) {
-		try {
-			this.content = content.toString().getBytes("UTF-8");
-		}
-		catch (UnsupportedEncodingException ex) {
-			throw new Error(ex);
-		}
+	protected void setContent(CharSequence contentCharSequence) {
+		content = null;
+		this.contentCharSequence = contentCharSequence;
 	}
 	
 	protected void setContent(byte[] content) {
+		contentCharSequence = null;
 		this.content = content;
 	}
 	
@@ -125,25 +135,24 @@ public abstract class AbstractMessage implements Message {
 	public static final Message read(PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		
+		/* read the request or response line */
 		String line = readLine(in);
-
-		if (line == null) {
-			return null;
-		}
-		else if (line.startsWith(Connection.PROTOCOL)) {
+		
+		/* responses start with the protocol string */
+		if (line.startsWith(Connection.PROTOCOL)) {
 			int indexOfStatus = line.indexOf(' ', Connection.PROTOCOL.length() + 1) + 1;
 			int indexOfReasonPhrase = line.indexOf(' ', indexOfStatus + 1) + 1;
 			result = new ResponseMessageImpl(Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)));
 		}
+		/* otherwise the message is a request */
 		else {
-			result = new RequestMessageImpl(RequestType.valueOf(line.substring(0, line.indexOf(' '))));
+			System.out.println("First Line: " + line);
+			int indexOfUrl  = line.indexOf(' ') + 1;
+			result = new RequestMessageImpl(RequestType.valueOf(line.substring(0, indexOfUrl - 1)), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
 		}
 		
-		line = readLine(in);
-		if (line == null) {
-			return null;
-		}
-		do {
+		/* read the headers. the headers are separated from what follows by a blank line */
+		while (!"".equals(line = readLine(in))) {
 			int colonPosition = line.indexOf(':');
 			
 			// TODO we don't allow empty headers
@@ -153,6 +162,8 @@ public abstract class AbstractMessage implements Message {
 			}
 			
 			String name = line.substring(0, colonPosition);
+			
+			/* more than one header of the same name are combined into a comma separated list */
 			String value = result.headers.get(name);
 			if (value != null) {
 				value += ',' + line.substring(colonPosition + 2);
@@ -162,9 +173,7 @@ public abstract class AbstractMessage implements Message {
 			}
 			
 			result.setHeaderUnchecked(name, value);
-			
-			line = readLine(in);
-		} while (!"".equals(line));
+		}
 		
 		String contentLengthHeader = result.getHeader(SpecialHeader.Content_Length);
 		
@@ -173,19 +182,17 @@ public abstract class AbstractMessage implements Message {
 				result.setContent(new byte[Integer.parseInt(contentLengthHeader)]);
 			}
 			catch (Exception ex) {
-				// FIXME
-				throw new RuntimeException("Invalid Content-Length: " + contentLengthHeader);
+				throw new MessageParsingException("Invalid Content-Length: " + contentLengthHeader);
 			}
 			
 			if (in.read(result.content) != result.content.length) {
 				// FIXME pretty sure this is wrong
-				throw new IOException("Input unavailable");
+				throw new MessageParsingException("Content unavailable");
 			}
 			
 			// Content must be followed by a newline
 			if (!"".equals(readLine(in))) {
-				// FIXME
-				throw new RuntimeException("Invalid input");
+				throw new MessageParsingException("Incorrect Content-Length");
 			}
 		}
 		
@@ -200,7 +207,7 @@ public abstract class AbstractMessage implements Message {
 		
 		b = in.read();
 		if(b == -1) {
-			return null;
+			throw new IOException("Connection closed");
 		}
 		do {
 			if(b =='\r') {
@@ -225,12 +232,17 @@ public abstract class AbstractMessage implements Message {
 	
 	public final void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
+		
+		/* send the request or response line */
 		writer.println(getStartLine());
 		
+		/* send the headers */
 		for(Map.Entry<String, String> header : headers.entrySet()) {
 			writer.println(header.getKey() + ": " + header.getValue());
 		}
 		
+		/* send the content, if any */
+		byte[] content = getContent();
 		if(content != null) {
 			writer.println("Content-Length: " + content.length);
 			writer.println();
@@ -238,7 +250,10 @@ public abstract class AbstractMessage implements Message {
 			out.write(content);
 		}
 		
+		/* messages are separated by a blank line */
 		writer.println();
+		
+		/* don't leave anything in the buffer */
 		writer.flush();
 	}
 	

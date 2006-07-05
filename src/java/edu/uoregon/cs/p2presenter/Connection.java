@@ -120,6 +120,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		}
 	}
 	
+	// TODO this doesn't belong here
 	@SuppressWarnings("unchecked")
 	public <T> T proxy(Class<T> interfaceClass, String variableName) {
 		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new RemoteJshInvocationHandler(this, interfaceClass, variableName));

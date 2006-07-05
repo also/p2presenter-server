@@ -6,8 +6,9 @@ import edu.uoregon.cs.p2presenter.Connection;
 
 public class RequestMessageImpl extends AbstractMessage implements RequestMessage {
 	private RequestType requestType;
+	private String url;
 	
-	public RequestMessageImpl(RequestType requestType) {
+	public RequestMessageImpl(RequestType requestType, String url) {
 		this.requestType = requestType;
 	}
 	
@@ -30,6 +31,6 @@ public class RequestMessageImpl extends AbstractMessage implements RequestMessag
 	@Override
 	protected final String getStartLine() {
 		// TODO url
-		return requestType + " * " + Connection.PROTOCOL_VERSION;
+		return requestType.name() + ' ' + url + ' ' + Connection.PROTOCOL_VERSION;
 	}
 }

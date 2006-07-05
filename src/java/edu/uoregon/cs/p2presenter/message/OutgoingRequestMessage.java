@@ -5,7 +5,11 @@ package edu.uoregon.cs.p2presenter.message;
 public class OutgoingRequestMessage extends RequestMessageImpl implements OutgoingMessage {
 
 	public OutgoingRequestMessage(MessageIdSource messageIdSource) {
-		super(RequestType.GET);
+		this(messageIdSource, RequestType.GET, "*");
+	}
+	
+	public OutgoingRequestMessage(MessageIdSource messageIdSource, RequestType requestType, String url) {
+		super(requestType, url);
 		setHeader(SpecialHeader.Message_Id, messageIdSource.generateMessageId());
 	}
 	

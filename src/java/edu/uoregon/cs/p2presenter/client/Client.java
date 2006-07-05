@@ -50,7 +50,7 @@ public class Client implements Runnable {
 			try {
 				while ((line = sysIn.readLine()) != null) {
 					if ("send".equals(line)) {
-						sender.setContent(commandBuilder.toString());
+						sender.setContent(commandBuilder);
 						
 						try {
 							response = sender.sendAndAwaitResponse();
