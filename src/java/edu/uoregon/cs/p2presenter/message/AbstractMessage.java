@@ -133,7 +133,7 @@ public abstract class AbstractMessage implements Message {
 		return LINE_END_PATTERN.matcher(string).matches();
 	}
 	
-	public static final Message read(Connection connection, PushbackInputStream in) throws IOException {
+	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		
 		/* read the request or response line */
@@ -197,7 +197,7 @@ public abstract class AbstractMessage implements Message {
 			}
 		}
 		
-		return result;
+		return (IncomingMessage) result;
 	}
 	
 	// TODO will this work with multi-byte characters?

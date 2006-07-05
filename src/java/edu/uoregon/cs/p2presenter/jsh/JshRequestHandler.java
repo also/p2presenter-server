@@ -6,14 +6,14 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.ParseException;
 import edu.uoregon.cs.p2presenter.RequestHandler;
+import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.RequestMessage;
 
 public class JshRequestHandler implements RequestHandler {
 	
 	private Interpreter interpreter = new Interpreter();
 	
-	public OutgoingResponseMessage processRequest(RequestMessage request) {
+	public OutgoingResponseMessage processRequest(IncomingRequestMessage request) {
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 		try {
 			if (request.hasContent()) {

@@ -15,7 +15,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import edu.uoregon.cs.p2presenter.jsh.RemoteJshInvocationHandler;
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
-import edu.uoregon.cs.p2presenter.message.Message;
+import edu.uoregon.cs.p2presenter.message.IncomingMessage;
+import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
+import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
@@ -34,7 +36,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 
 	private RequestHandlerMapping requestHandlerMapping = new DefaultConnectionRequestHandlerMapping();
 	
-	private HashMap<String, ResponseMessage> responses = new HashMap<String, ResponseMessage>();
+	private HashMap<String, IncomingResponseMessage> responses = new HashMap<String, IncomingResponseMessage>();
 	private ReentrantLock responsesLock = new ReentrantLock(true);
 	private Condition responseReceived = responsesLock.newCondition();
 	
@@ -55,7 +57,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	public void run() {
 		running = true;
 		
-		Message incomingMessage;
+		IncomingMessage incomingMessage;
 		
 		try {
 			for (;;) {
@@ -68,10 +70,10 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 
 				if (incomingMessage.isRequest()) {
-					send(requestHandlerMapping.getHandler(incomingMessage).processRequest((RequestMessage) incomingMessage));
+					send(requestHandlerMapping.getHandler(incomingMessage).processRequest((IncomingRequestMessage) incomingMessage));
 				}
 				else {
-					responseReceived((ResponseMessage) incomingMessage);
+					responseReceived((IncomingResponseMessage) incomingMessage);
 				}
 			}
 		}
@@ -83,7 +85,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		}
 	}
 	
-	private void responseReceived(ResponseMessage message) {
+	private void responseReceived(IncomingResponseMessage message) {
 		responsesLock.lock();
 		responses.put(message.getInResponseTo(), message);
 		responseReceived.signalAll();
@@ -107,7 +109,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		return result;
 	}
 	
-	private Message recieve() throws IOException {
+	private IncomingMessage recieve() throws IOException {
 		synchronized (in) {
 			try {
 				return AbstractMessage.read(this, in);
