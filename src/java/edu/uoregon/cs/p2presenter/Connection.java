@@ -110,7 +110,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	private Message recieve() throws IOException {
 		synchronized (in) {
 			try {
-				return AbstractMessage.read(in);
+				return AbstractMessage.read(this, in);
 			}
 			catch (IOException ex) {
 				handleException(ex);

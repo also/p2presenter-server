@@ -4,15 +4,15 @@ package edu.uoregon.cs.p2presenter.message;
 
 import edu.uoregon.cs.p2presenter.Connection;
 
-public class ResponseMessageImpl extends AbstractMessage implements ResponseMessage {
+public abstract class AbstractResponseMessage extends AbstractMessage implements ResponseMessage {
 	private int status;
 	private String reason;
 	
-	protected ResponseMessageImpl(int status) {
+	protected AbstractResponseMessage(int status) {
 		this.status = status;
 	}
 	
-	protected ResponseMessageImpl(int status, String reason) {
+	protected AbstractResponseMessage(int status, String reason) {
 		this(status);
 		this.reason = reason;
 	}

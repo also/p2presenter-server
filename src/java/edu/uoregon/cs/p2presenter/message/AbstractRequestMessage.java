@@ -4,11 +4,11 @@ package edu.uoregon.cs.p2presenter.message;
 
 import edu.uoregon.cs.p2presenter.Connection;
 
-public class RequestMessageImpl extends AbstractMessage implements RequestMessage {
+public abstract class AbstractRequestMessage extends AbstractMessage implements RequestMessage {
 	private RequestType requestType;
 	private String url;
 	
-	public RequestMessageImpl(RequestType requestType, String url) {
+	public AbstractRequestMessage(RequestType requestType, String url) {
 		this.requestType = requestType;
 		this.url = url;
 	}

@@ -133,7 +133,7 @@ public abstract class AbstractMessage implements Message {
 		return LINE_END_PATTERN.matcher(string).matches();
 	}
 	
-	public static final Message read(PushbackInputStream in) throws IOException {
+	public static final Message read(Connection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		
 		/* read the request or response line */
@@ -143,13 +143,13 @@ public abstract class AbstractMessage implements Message {
 		if (line.startsWith(Connection.PROTOCOL)) {
 			int indexOfStatus = line.indexOf(' ', Connection.PROTOCOL.length() + 1) + 1;
 			int indexOfReasonPhrase = line.indexOf(' ', indexOfStatus + 1) + 1;
-			result = new ResponseMessageImpl(Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)));
+			result = new IncomingResponseMessage(connection, Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)));
 		}
 		/* otherwise the message is a request */
 		else {
 			System.out.println("First Line: " + line);
 			int indexOfUrl  = line.indexOf(' ') + 1;
-			result = new RequestMessageImpl(RequestType.valueOf(line.substring(0, indexOfUrl - 1)), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
+			result = new IncomingRequestMessage(connection, RequestType.valueOf(line.substring(0, indexOfUrl - 1)), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
 		}
 		
 		/* read the headers. the headers are separated from what follows by a blank line */

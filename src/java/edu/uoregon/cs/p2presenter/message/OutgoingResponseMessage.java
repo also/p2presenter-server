@@ -2,7 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
-public class OutgoingResponseMessage extends ResponseMessageImpl implements OutgoingMessage {
+public class OutgoingResponseMessage extends AbstractResponseMessage implements OutgoingMessage {
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage) {
 		this(inResponseToMessage, 200);
 	}
