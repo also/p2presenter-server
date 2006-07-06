@@ -4,6 +4,10 @@ package edu.uoregon.cs.p2presenter.message;
 
 import edu.uoregon.cs.p2presenter.Connection;
 
+/** Superclass for request messages.
+ * @author rberdeen
+ *
+ */
 public abstract class AbstractRequestMessage extends AbstractMessage implements RequestMessage {
 	private RequestType requestType;
 	private String url;

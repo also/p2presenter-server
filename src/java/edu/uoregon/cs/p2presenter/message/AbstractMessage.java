@@ -12,18 +12,22 @@ import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
+/** Superclass for message classes.
+ * @author rberdeen
+ *
+ */
 public abstract class AbstractMessage implements Message {
 	private final Map<String, String> headers = new HashMap<String, String>();
 	
+	public static final byte[] EMPTY_CONTENT = new byte[0];
+	public static final CharSequence EMPTY_CHAR_SEQUENCE_CONTENT = "";
+	
 	private byte[] content;
 	private CharSequence contentCharSequence;
-	
-	private static final Pattern LINE_END_PATTERN = Pattern.compile("[\\r\\n]");
 	
 	protected enum SpecialHeader {
 		Content_Type,
@@ -58,7 +62,10 @@ public abstract class AbstractMessage implements Message {
 	}
 	
 	public final byte[] getContent() {
-		if(contentCharSequence != null) {
+		if (content != null) {
+			return content;
+		}
+		else if (contentCharSequence != null) {
 			try {
 				return contentCharSequence.toString().getBytes("UTF-8");
 			}
@@ -66,11 +73,16 @@ public abstract class AbstractMessage implements Message {
 				throw new Error(ex);
 			}
 		}
-		return content;
+		else {
+			return EMPTY_CONTENT;
+		}
 	}
 	
 	public final String getContentAsString() {
-		if (content != null) {
+		if (contentCharSequence != null) {
+			return contentCharSequence.toString();
+		}
+		else if (content != null) {
 			try {
 				return new String(content, "UTF-8");
 			}
@@ -78,16 +90,13 @@ public abstract class AbstractMessage implements Message {
 				throw new Error(ex);
 			}
 		}
-		else if (contentCharSequence != null) {
-			return contentCharSequence.toString();
-		}
 		else {
-			return null;
+			return (String) EMPTY_CHAR_SEQUENCE_CONTENT;
 		}
 	}
 	
 	public final int getContentLength() {
-		return content.length;
+		return getContent().length;
 	}
 	
 	public final String getHeader(String name) {
@@ -115,22 +124,47 @@ public abstract class AbstractMessage implements Message {
 		setHeaderUnchecked(name, value);
 	}
 	
+	/** Set a header without checking for line breaks or special headers.
+	 */
 	private void setHeaderUnchecked(String name, String value) {
 		headers.put(name, value);
 	}
 	
+	/** Set the content as a CharSequence.
+	 * If the <code>Content-Type</code> has not been set, it is set to <code>text/plain</code>.
+	 */
 	protected void setContent(CharSequence contentCharSequence) {
 		content = null;
-		this.contentCharSequence = contentCharSequence;
+		if (contentCharSequence == null || contentCharSequence.length() == 0) {
+			this.contentCharSequence = null;
+		}
+		else {
+			this.contentCharSequence = contentCharSequence;
+		}
+		if(getHeader(SpecialHeader.Content_Type) == null) {
+			setHeader(SpecialHeader.Content_Type, "text/plain");
+		}
 	}
 	
+	/** Set the content as a byte array.
+	 */
 	protected void setContent(byte[] content) {
 		contentCharSequence = null;
-		this.content = content;
+		if (content == null || content.length == 0) {
+			this.content = null;
+		}
+		else {
+			this.content = content;
+		}
 	}
 	
 	protected final boolean containsLineEnd(String string) {
-		return LINE_END_PATTERN.matcher(string).matches();
+		for(char character : string.toCharArray()) {
+			if (character == '\r' || character == '\n') {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {
@@ -143,11 +177,10 @@ public abstract class AbstractMessage implements Message {
 		if (line.startsWith(Connection.PROTOCOL)) {
 			int indexOfStatus = line.indexOf(' ', Connection.PROTOCOL.length() + 1) + 1;
 			int indexOfReasonPhrase = line.indexOf(' ', indexOfStatus + 1) + 1;
-			result = new IncomingResponseMessage(connection, Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)));
+			result = new IncomingResponseMessage(connection, Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)), line.substring(indexOfReasonPhrase));
 		}
 		/* otherwise the message is a request */
 		else {
-			System.out.println("First Line: " + line);
 			int indexOfUrl  = line.indexOf(' ') + 1;
 			result = new IncomingRequestMessage(connection, RequestType.valueOf(line.substring(0, indexOfUrl - 1)), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
 		}
@@ -158,8 +191,7 @@ public abstract class AbstractMessage implements Message {
 			
 			// TODO we don't allow empty headers
 			if (colonPosition + 3 > line.length() || line.charAt(colonPosition + 1) != ' ') {
-				// FIXME
-				throw new RuntimeException("Invalid header: " + line);
+				throw new MessageParsingException("Invalid header: " + line);
 			}
 			
 			String name = line.substring(0, colonPosition);
@@ -242,7 +274,7 @@ public abstract class AbstractMessage implements Message {
 		
 		/* send the content, if any */
 		byte[] content = getContent();
-		if(content != null) {
+		if(content != EMPTY_CONTENT) {
 			writer.println("Content-Length: " + content.length);
 			writer.println();
 			writer.flush();
