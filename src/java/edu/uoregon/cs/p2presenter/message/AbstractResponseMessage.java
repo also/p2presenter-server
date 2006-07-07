@@ -4,6 +4,10 @@ package edu.uoregon.cs.p2presenter.message;
 
 import edu.uoregon.cs.p2presenter.Connection;
 
+/** Superclass for response messages.
+ * @author rberdeen
+ *
+ */
 public abstract class AbstractResponseMessage extends AbstractMessage implements ResponseMessage {
 	private int status;
 	private String reason;

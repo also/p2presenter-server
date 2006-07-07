@@ -72,7 +72,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 
 				if (incomingMessage.isRequest()) {
-					send(requestHandlerMapping.getHandler(incomingMessage).processRequest((IncomingRequestMessage) incomingMessage));
+					send(requestHandlerMapping.getHandler(incomingMessage).handleRequest((IncomingRequestMessage) incomingMessage));
 				}
 				else {
 					responseReceived((IncomingResponseMessage) incomingMessage);
