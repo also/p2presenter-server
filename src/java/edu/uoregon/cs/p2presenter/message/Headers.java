@@ -24,4 +24,6 @@ public interface Headers {
 	/** Return true if the message is a request.
 	 */
 	public boolean isRequest();
+	
+	
 }

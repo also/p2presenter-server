@@ -158,6 +158,8 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
+	/** Return true if the String contains \r or \n.
+	 */
 	protected final boolean containsLineEnd(String string) {
 		for(char character : string.toCharArray()) {
 			if (character == '\r' || character == '\n') {
@@ -222,11 +224,11 @@ public abstract class AbstractMessage implements Message {
 				// FIXME pretty sure this is wrong
 				throw new MessageParsingException("Content unavailable");
 			}
-			
-			// Content must be followed by a newline
-			if (!"".equals(readLine(in))) {
-				throw new MessageParsingException("Incorrect Content-Length");
-			}
+		}
+		
+		// Message must be followed by a newline
+		if (!"".equals(readLine(in))) {
+			throw new MessageParsingException("Incorrect Content-Length");
 		}
 		
 		return (IncomingMessage) result;
@@ -261,8 +263,11 @@ public abstract class AbstractMessage implements Message {
 		return bytes.toString("UTF-8");
 	}
 	
-	public final void write(OutputStream out) throws IOException {
-		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
+	public final void writeHeaders(OutputStream out) throws IOException {
+		writeHeaders(new PrintWriter(new OutputStreamWriter(out)), true);
+	}
+	
+	private void writeHeaders(PrintWriter writer, boolean flushHeaders) {
 		
 		/* send the request or response line */
 		writer.println(getStartLine());
@@ -272,6 +277,17 @@ public abstract class AbstractMessage implements Message {
 			writer.println(header.getKey() + ": " + header.getValue());
 		}
 		
+		if (flushHeaders) {
+			writer.println();
+			writer.flush();
+		}
+	}
+	
+	public final void write(OutputStream out) throws IOException {
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
+		
+		writeHeaders(writer, false);
+		
 		/* send the content, if any */
 		byte[] content = getContent();
 		if(content != EMPTY_CONTENT) {
@@ -279,6 +295,9 @@ public abstract class AbstractMessage implements Message {
 			writer.println();
 			writer.flush();
 			out.write(content);
+		}
+		else {
+			writer.println();
 		}
 		
 		/* messages are separated by a blank line */
