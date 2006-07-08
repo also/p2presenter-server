@@ -18,27 +18,27 @@ public class OutgoingResponseMessage extends AbstractResponseMessage implements 
 	}
 	
 	@Override
-	public void setStatus(int status) {
+	public final void setStatus(int status) {
 		super.setStatus(status);
 	}
 
 	@Override
-	public void setContent(byte[] content) {
+	public  void setContent(byte[] content) {
 		super.setContent(content);
 	}
 
 	@Override
-	public void setContent(CharSequence content) {
+	public final void setContent(CharSequence content) {
 		super.setContent(content);
 	}
 
 	@Override
-	public void setHeader(String name, String value) {
+	public final void setHeader(String name, String value) {
 		super.setHeader(name, value);
 	}
 	
 	@Override
-	public void setContentType(String contentType) {
+	public final void setContentType(String contentType) {
 		super.setContentType(contentType);
 	}
 }

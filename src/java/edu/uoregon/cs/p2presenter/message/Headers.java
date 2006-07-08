@@ -15,6 +15,7 @@ public interface Headers {
 	
 	/** Return true if the message has content.
 	 * A message has content if and only if the Content-Length header is set.
+	 * Equivalent fo getContentType() != -1.
 	 */
 	public boolean hasContent();
 	

@@ -151,6 +151,11 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
+	protected void setContent(CharSequence content, String contentType) {
+		setContent(content);
+		setContentType(contentType);
+	}
+	
 	protected void setContent(byte[] content) {
 		contentCharSequence = null;
 		if (content == null || content.length == 0) {
@@ -159,6 +164,11 @@ public abstract class AbstractMessage implements Message {
 		else {
 			this.content = content;
 		}
+	}
+	
+	protected void setContent(byte[] content, String contentType) {
+		setContent(content);
+		setContentType(contentType);
 	}
 	
 	/** Return true if the String contains \r or \n.
