@@ -6,7 +6,7 @@ package edu.uoregon.cs.p2presenter.message;
  * @author rberdeen
  *
  */
-public interface ResponseHeaders {
+public interface ResponseHeaders extends Headers{
 	
 	/** Return the status code.
 	 */

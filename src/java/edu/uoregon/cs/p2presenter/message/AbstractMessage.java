@@ -99,6 +99,14 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
+	public final String getContentType() {
+		return getHeader(SpecialHeader.Content_Type);
+	}
+	
+	protected void setContentType(String contentType) {
+		setHeader(SpecialHeader.Content_Type, contentType);
+	}
+	
 	public final String getHeader(String name) {
 		return headers.get(name);
 	}
@@ -130,9 +138,6 @@ public abstract class AbstractMessage implements Message {
 		headers.put(name, value);
 	}
 	
-	/** Set the content as a CharSequence.
-	 * If the <code>Content-Type</code> has not been set, it is set to <code>text/plain</code>.
-	 */
 	protected void setContent(CharSequence contentCharSequence) {
 		content = null;
 		if (contentCharSequence == null || contentCharSequence.length() == 0) {
@@ -146,8 +151,6 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
-	/** Set the content as a byte array.
-	 */
 	protected void setContent(byte[] content) {
 		contentCharSequence = null;
 		if (content == null || content.length == 0) {
@@ -169,7 +172,7 @@ public abstract class AbstractMessage implements Message {
 		return true;
 	}
 	
-	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {
+	public static final IncomingHeaders read(Connection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		
 		/* read the request or response line */
@@ -234,7 +237,7 @@ public abstract class AbstractMessage implements Message {
 			throw new MessageParsingException("Incorrect Content-Length");
 		}
 		
-		return (IncomingMessage) result;
+		return (IncomingHeaders) result;
 	}
 	
 	// TODO will this work with multi-byte characters?

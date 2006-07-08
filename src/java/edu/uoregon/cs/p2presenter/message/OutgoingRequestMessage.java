@@ -27,6 +27,11 @@ public class OutgoingRequestMessage extends AbstractRequestMessage implements Ou
 	public final void setHeader(String name, String value) {
 		super.setHeader(name, value);
 	}
+	
+	@Override
+	public void setContentType(String contentType) {
+		super.setContentType(contentType);
+	}
 
 	@Override
 	public final void setContent(byte[] content) {

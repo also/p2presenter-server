@@ -37,5 +37,8 @@ public class OutgoingResponseMessage extends AbstractResponseMessage implements 
 		super.setHeader(name, value);
 	}
 	
-	
+	@Override
+	public void setContentType(String contentType) {
+		super.setContentType(contentType);
+	}
 }

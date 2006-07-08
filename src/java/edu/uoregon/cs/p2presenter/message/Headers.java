@@ -23,6 +23,8 @@ public interface Headers {
 	 */
 	public int getContentLength();
 	
+	public String getContentType();
+	
 	/** Return true if the message is a request.
 	 */
 	public boolean isRequest();
