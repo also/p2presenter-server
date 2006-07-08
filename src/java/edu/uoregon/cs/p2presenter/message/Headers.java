@@ -14,10 +14,12 @@ public interface Headers {
 	public String getHeader(String name);
 	
 	/** Return true if the message has content.
+	 * A message has content if and only if the Content-Length header is set.
 	 */
 	public boolean hasContent();
 	
 	/** Return the length of the content in bytes.
+	 * If the message has no content, returns -1.
 	 */
 	public int getContentLength();
 	

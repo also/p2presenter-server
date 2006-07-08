@@ -23,9 +23,6 @@ import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 public abstract class AbstractMessage implements Message {
 	private final Map<String, String> headers = new HashMap<String, String>();
 	
-	public static final byte[] EMPTY_CONTENT = new byte[0];
-	public static final CharSequence EMPTY_CHAR_SEQUENCE_CONTENT = "";
-	
 	private byte[] content;
 	private CharSequence contentCharSequence;
 	
@@ -62,10 +59,7 @@ public abstract class AbstractMessage implements Message {
 	}
 	
 	public final byte[] getContent() {
-		if (content != null) {
-			return content;
-		}
-		else if (contentCharSequence != null) {
+		if (contentCharSequence != null) {
 			try {
 				return contentCharSequence.toString().getBytes("UTF-8");
 			}
@@ -74,7 +68,7 @@ public abstract class AbstractMessage implements Message {
 			}
 		}
 		else {
-			return EMPTY_CONTENT;
+			return content;
 		}
 	}
 	
@@ -91,12 +85,18 @@ public abstract class AbstractMessage implements Message {
 			}
 		}
 		else {
-			return (String) EMPTY_CHAR_SEQUENCE_CONTENT;
+			return null;
 		}
 	}
 	
 	public final int getContentLength() {
-		return getContent().length;
+		byte[] content = getContent();
+		if (content != null) {
+			return content.length;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	public final String getHeader(String name) {
@@ -213,17 +213,20 @@ public abstract class AbstractMessage implements Message {
 		String contentLengthHeader = result.getHeader(SpecialHeader.Content_Length);
 		
 		if (contentLengthHeader != null) {
+			byte[] content;
 			try {
-				result.setContent(new byte[Integer.parseInt(contentLengthHeader)]);
+				content = new byte[Integer.parseInt(contentLengthHeader)];
 			}
 			catch (Exception ex) {
 				throw new MessageParsingException("Invalid Content-Length: " + contentLengthHeader);
 			}
 			
-			if (in.read(result.content) != result.content.length) {
+			if (in.read(content) != content.length) {
 				// FIXME pretty sure this is wrong
 				throw new MessageParsingException("Content unavailable");
 			}
+			
+			result.setContent(content);
 		}
 		
 		// Message must be followed by a newline
@@ -267,7 +270,7 @@ public abstract class AbstractMessage implements Message {
 		writeHeaders(new PrintWriter(new OutputStreamWriter(out)), true);
 	}
 	
-	private void writeHeaders(PrintWriter writer, boolean flushHeaders) {
+	private void writeHeaders(PrintWriter writer, boolean flushHeaders) throws IOException {
 		
 		/* send the request or response line */
 		writer.println(getStartLine());
@@ -281,6 +284,10 @@ public abstract class AbstractMessage implements Message {
 			writer.println();
 			writer.flush();
 		}
+		
+		if (writer.checkError()) {
+			throw new IOException("Couldn't write headers");
+		}
 	}
 	
 	public final void write(OutputStream out) throws IOException {
@@ -290,7 +297,7 @@ public abstract class AbstractMessage implements Message {
 		
 		/* send the content, if any */
 		byte[] content = getContent();
-		if(content != EMPTY_CONTENT) {
+		if(content != null) {
 			writer.println("Content-Length: " + content.length);
 			writer.println();
 			writer.flush();
@@ -305,6 +312,9 @@ public abstract class AbstractMessage implements Message {
 		
 		/* don't leave anything in the buffer */
 		writer.flush();
+		if (writer.checkError()) {
+			throw new IOException("Couldn't write message body");
+		}
 	}
 	
 	protected abstract String getStartLine();

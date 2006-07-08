@@ -82,9 +82,6 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		catch (IOException ex) {
 			// exceptions are handled by send and receive
 		}
-		finally {
-			running = false;
-		}
 	}
 	
 	private void responseReceived(IncomingResponseMessage message) {
@@ -107,7 +104,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		responsesLock.lock();
 		try {
 			result = responses.remove(message.getMessageId());
-			while (result == null) {
+			while (result == null && running) {
 				responseReceived.await();
 				result = responses.remove(message.getMessageId());
 			}
@@ -175,14 +172,16 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	}
 	
 	public void close() throws IOException {
+		running = false;
+		responsesLock.lock();
+		responseReceived.signalAll();
+		responsesLock.unlock();
+		
 		// TODO
 		try {
 			socket.close();
 		}
 		finally {
-			if (outLock.isHeldByCurrentThread()) {
-				outLock.unlock();
-			}
 			manager.connectionClosed(this);
 		}
 	}
@@ -252,7 +251,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 			}
 			if (!outLock.isHeldByCurrentThread()) {
 				outLock.lock();
-				if (headers.getContentLength() == 0) {
+				if (headers.getContentLength() <= 0) {
 					throw new IllegalStateException("Content length is 0");
 				}
 				
@@ -264,6 +263,5 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 			}
 		}
-
 	}
 }

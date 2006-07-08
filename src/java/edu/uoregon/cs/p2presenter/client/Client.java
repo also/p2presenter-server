@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionManager;
@@ -50,10 +51,20 @@ public class Client implements Runnable {
 			while ((line = sysIn.readLine()) != null) {
 				if ("send".equals(line)) {
 					try {
-						System.out.println(jsh.eval(commandBuilder.toString()));
+						String result = jsh.eval(commandBuilder.toString());
+						if (result != null) {
+							System.out.println(result);
+						}
+						else {
+							System.out.println("[OK]");
+						}
 					}
-					catch(Exception ex) {
-						System.out.println("Remote evaluation failed: " + ex.getMessage());
+					catch (RemoteException ex) {
+						ex.printStackTrace();
+						return;
+					}
+					catch (Exception ex) {
+						System.err.println("Evaluation failed: " + ex.getMessage());
 					}
 					commandBuilder = new StringBuilder();
 				}
