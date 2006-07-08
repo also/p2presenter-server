@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.message;
 
 import edu.uoregon.cs.p2presenter.Connection;
 
-public class IncomingRequestMessage extends AbstractRequestMessage implements IncomingHeaders {
+public class IncomingRequestMessage extends AbstractRequestMessage implements IncomingRequestHeaders, IncomingMessage {
 	private Connection connection;
 	
 	protected IncomingRequestMessage(Connection connection, RequestType requestType, String url) {

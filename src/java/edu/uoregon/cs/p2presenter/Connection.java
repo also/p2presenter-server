@@ -15,12 +15,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
-import edu.uoregon.cs.p2presenter.message.IncomingHeaders;
+import edu.uoregon.cs.p2presenter.message.IncomingMessage;
+import edu.uoregon.cs.p2presenter.message.IncomingRequestHeaders;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 import edu.uoregon.cs.p2presenter.message.OutgoingHeaders;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
-import edu.uoregon.cs.p2presenter.message.RequestHeaders;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
@@ -59,7 +59,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	public void run() {
 		running = true;
 		
-		IncomingHeaders incomingMessage;
+		IncomingMessage incomingMessage;
 		
 		try {
 			for (;;) {
@@ -72,7 +72,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				}
 
 				if (incomingMessage.isRequest()) {
-					send(requestHandlerMapping.getHandler((RequestHeaders) incomingMessage).handleRequest((RequestMessage) incomingMessage));
+					send(requestHandlerMapping.getHandler((IncomingRequestHeaders) incomingMessage).handleRequest((RequestMessage) incomingMessage));
 				}
 				else {
 					responseReceived((IncomingResponseMessage) incomingMessage);
@@ -116,7 +116,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		return result;
 	}
 	
-	private IncomingHeaders recieve() throws IOException {
+	private IncomingMessage recieve() throws IOException {
 		synchronized (in) {
 			try {
 				return AbstractMessage.read(this, in);

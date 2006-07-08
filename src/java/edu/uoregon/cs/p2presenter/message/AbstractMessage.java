@@ -172,7 +172,7 @@ public abstract class AbstractMessage implements Message {
 		return true;
 	}
 	
-	public static final IncomingHeaders read(Connection connection, PushbackInputStream in) throws IOException {
+	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		
 		/* read the request or response line */
@@ -237,7 +237,7 @@ public abstract class AbstractMessage implements Message {
 			throw new MessageParsingException("Incorrect Content-Length");
 		}
 		
-		return (IncomingHeaders) result;
+		return (IncomingMessage) result;
 	}
 	
 	// TODO will this work with multi-byte characters?
