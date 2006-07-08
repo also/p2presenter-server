@@ -10,9 +10,7 @@ import java.net.Socket;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionManager;
-import edu.uoregon.cs.p2presenter.MessageSender;
-import edu.uoregon.cs.p2presenter.message.ResponseMessage;
-import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
+import edu.uoregon.cs.p2presenter.jsh.JshClient;
 
 public class Client implements Runnable {
 	private Connection connection;
@@ -42,25 +40,21 @@ public class Client implements Runnable {
 	public void run() {
 		connection.start();
 		
-		MessageSender sender = new MessageSender(connection, RequestType.EVALUATE, "bsh");
 		BufferedReader sysIn = new BufferedReader(new InputStreamReader(System.in));
-		ResponseMessage response;
 
+		JshClient jsh = new JshClient(connection);
+		
 		String line;
 		StringBuilder commandBuilder = new StringBuilder();
 		try {
 			while ((line = sysIn.readLine()) != null) {
 				if ("send".equals(line)) {
-					sender.setContent(commandBuilder);
-					
 					try {
-						response = sender.sendAndAwaitResponse();
-						System.out.println("Status: " + response.getStatus());
-						if (response.hasContent()) {
-							System.out.println(response.getContentAsString());
-						}
+						System.out.println(jsh.eval(commandBuilder.toString()));
 					}
-					catch(InterruptedException ex) {}
+					catch(Exception ex) {
+						System.out.println("Remote evaluation failed: " + ex.getMessage());
+					}
 					commandBuilder = new StringBuilder();
 				}
 				else {
