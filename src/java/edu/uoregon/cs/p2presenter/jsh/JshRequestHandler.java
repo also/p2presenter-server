@@ -8,6 +8,7 @@ import java.io.Serializable;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.ParseException;
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
@@ -15,6 +16,14 @@ import edu.uoregon.cs.p2presenter.message.RequestMessage;
 public class JshRequestHandler implements RequestHandler {
 	
 	private Interpreter interpreter = new Interpreter();
+	
+	public JshRequestHandler(Connection connection) {
+		connection.setProperty("interpreter", interpreter);
+	}
+	
+	public static Interpreter getInterpreter(Connection connection) {
+		return (Interpreter) connection.getProperty("interpreter");
+	}
 	
 	public OutgoingResponseMessage handleRequest(RequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);

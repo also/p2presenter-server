@@ -28,7 +28,10 @@ public class ConnectionManager implements MessageIdSource {
 	
 	public void connectionClosed(Connection connection) {
 		connections.remove(connection);
+		connectionClosedInternal(connection);
 	}
+	
+	protected void connectionClosedInternal(Connection connection) {}
 
 	public String generateMessageId() {
 		return messageIdSource.generateMessageId();

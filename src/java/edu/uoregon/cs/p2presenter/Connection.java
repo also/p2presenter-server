@@ -25,6 +25,8 @@ import edu.uoregon.cs.p2presenter.message.RequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 
 public class Connection extends Thread implements MessageIdSource, Closeable {
+	private HashMap<String, Object> properties = new HashMap<String, Object>();
+	
 	public static final String PROTOCOL = "P2PR";
 	public static final String VERSION = "0.1";
 	public static final String PROTOCOL_VERSION = PROTOCOL + '/' + VERSION;
@@ -36,7 +38,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	private ReentrantLock outLock = new ReentrantLock();
 	private PushbackInputStream in;
 
-	private RequestHandlerMapping requestHandlerMapping = new DefaultConnectionRequestHandlerMapping();
+	private RequestHandlerMapping requestHandlerMapping = new DefaultConnectionRequestHandlerMapping(this);
 	
 	private HashMap<String, IncomingResponseMessage> responses = new HashMap<String, IncomingResponseMessage>();
 	private ReentrantLock responsesLock = new ReentrantLock();
@@ -53,6 +55,14 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		
 		out = new BufferedOutputStream(socket.getOutputStream());
 		in = new PushbackInputStream(socket.getInputStream());
+	}
+	
+	public void setProperty(String key, Object value) {
+		properties.put(key, value);
+	}
+	
+	public Object getProperty(String key) {
+		return properties.get(key);
 	}
 	
 	@Override
