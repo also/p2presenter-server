@@ -2,6 +2,8 @@
 
 package edu.uoregon.cs.p2presenter.jsh;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Proxy;
 import java.rmi.RemoteException;
 
@@ -24,7 +26,7 @@ public class JshClient {
 		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new RemoteJshInvocationHandler(connection, interfaceClass, variableName));
 	}
 	
-	public String eval(String statements) throws EvalErrorException, ParseException, RemoteException {
+	public Object eval(String statements) throws EvalErrorException, ParseException, RemoteException {
 		// TODO i don't really like this...
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.EVALUATE, "bsh");
 		request.setContent(statements);
@@ -38,6 +40,15 @@ public class JshClient {
 		}
 			
 		if (response.getStatus() == 200) {
+			if (OutgoingSerializedObjectResponseMessage.CONTENT_TYPE.equals(response.getContentType())) {
+				try {
+					ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(response.getContent()));
+					return in.readObject();
+				}
+				catch (Exception ex) {
+					throw new RemoteException("Couldn't read response object", ex);
+				}
+			}
 			return response.getContentAsString();
 		}
 		else if (response.getStatus() == 400) {

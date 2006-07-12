@@ -20,9 +20,11 @@ public class ConnectionManager implements MessageIdSource {
 	public Connection createConnection(Socket socket) throws IOException {
 		Connection connection = new Connection(socket, this);
 		connections.add(connection);
-		
+		connectionCreatedInternal(connection);
 		return connection;
 	}
+	
+	protected void connectionCreatedInternal(Connection connection) {}
 	
 	public void connectionClosed(Connection connection) {
 		connections.remove(connection);

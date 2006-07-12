@@ -2,6 +2,9 @@
 
 package edu.uoregon.cs.p2presenter.jsh;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.ParseException;
@@ -14,11 +17,14 @@ public class JshRequestHandler implements RequestHandler {
 	private Interpreter interpreter = new Interpreter();
 	
 	public OutgoingResponseMessage handleRequest(RequestMessage request) {
-		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
+		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
 		try {
 			if (request.hasContent()) {
 				Object result = interpreter.eval(request.getContentAsString());
-				if (result != null) {
+				if (result instanceof Serializable) {
+					response.setContentObject((Serializable) result);
+				}
+				else if (result != null){
 					response.setContent(result.toString());
 				}
 			}
@@ -30,6 +36,8 @@ public class JshRequestHandler implements RequestHandler {
 		catch (EvalError ex) {
 			response.setStatus(500);
 			response.setContent(ex.getMessage());
+		} catch (ObjectStreamException e) {
+			e.printStackTrace();
 		}
 		return response;
 	}

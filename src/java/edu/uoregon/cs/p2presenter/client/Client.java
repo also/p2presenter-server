@@ -29,7 +29,8 @@ public class Client implements Runnable {
 	 */
 	public static void main(String[] args) throws Exception {
 		try {
-			Client client = new Client("localhost", 9000);
+			String host = args.length == 0 ? "localhost" : args[0];
+			Client client = new Client(host, 9000);
 			
 			client.run();
 		}
@@ -51,7 +52,7 @@ public class Client implements Runnable {
 			while ((line = sysIn.readLine()) != null) {
 				if ("send".equals(line)) {
 					try {
-						String result = jsh.eval(commandBuilder.toString());
+						Object result = jsh.eval(commandBuilder.toString());
 						if (result != null) {
 							System.out.println(result);
 						}
