@@ -60,12 +60,16 @@ public class PhilosopherVisualization extends JComponent implements ActionListen
 		double plateDiameter = min(tableDiameter / 4, tableDiameter * 1.5 / philosophers.size());
 		double plateInset = plateDiameter / 4;
 		
-		double philosopherWidth = plateDiameter * 1.3;
-		double philosopherHeight = plateDiameter / 3;
+		double bodyWidth = plateDiameter * 1.3;
+		double bodyHeight = plateDiameter / 3;
+		double bodyRadius = bodyHeight * .8;
+		
+		double headWidth = bodyWidth / 3;
+		double headHeight = bodyHeight * 2;
+		double headRadius = headWidth * .8;
 		
 		double chopstickHeight = plateDiameter * .8;
 		double chopstickWidth = plateDiameter / 30;
-		double philosopherRadius = philosopherHeight * .8;
 		
 		//double armHeight = philosopherHeight * .6;
 		//double armWidth = philosopherWidth /2;
@@ -77,7 +81,9 @@ public class PhilosopherVisualization extends JComponent implements ActionListen
 		
 		Ellipse2D plate = new Ellipse2D.Double(centerX - plateDiameter / 2, tableOriginY + plateInset, plateDiameter, plateDiameter);
 		
-		RoundRectangle2D philosopherBody = new RoundRectangle2D.Double(centerX - philosopherWidth / 2, tableOriginY - plateInset - philosopherHeight, philosopherWidth, philosopherHeight, philosopherRadius, philosopherRadius);
+		RoundRectangle2D body = new RoundRectangle2D.Double(centerX - bodyWidth / 2, tableOriginY - plateInset - bodyHeight, bodyWidth, bodyHeight, bodyRadius, bodyRadius);
+		
+		RoundRectangle2D head = new RoundRectangle2D.Double(centerX - headWidth / 2, tableOriginY - plateInset - bodyHeight * 1.5, headWidth, headHeight, headRadius, headRadius);
 		
 		//RoundRectangle2D philosopherUpperArm = new RoundRectangle2D.Double(centerX + philosopherWidth / 2, tableOriginY - plateInset - philosopherHeight / 2, armWidth, armHeight, armRadius, armRadius);
 		
@@ -93,9 +99,23 @@ public class PhilosopherVisualization extends JComponent implements ActionListen
 			g2.setPaint(PLATE_COLOR);
 			g2.fill(transform.createTransformedShape(plate));
 			
-			g2.setPaint(Color.BLUE);
-			g2.fill(transform.createTransformedShape(philosopherBody));
+			switch (philosopher.getState()) {
+			case EATING:
+				g2.setPaint(Color.GREEN);
+				break;
+			case WAITING:
+				g2.setPaint(Color.RED);
+				break;
+			default:
+				g2.setPaint(Color.BLUE);
+				break;
+			}
+			
+			g2.fill(transform.createTransformedShape(body));
 			//g2.fill(transform.createTransformedShape(philosopherArm));
+			
+			g2.setPaint(Color.YELLOW);
+			g2.fill(transform.createTransformedShape(head));
 			
 			theta += halfPhilosopherInterval;
 			transform = AffineTransform.getRotateInstance(theta, centerX, centerY);
@@ -114,6 +134,4 @@ public class PhilosopherVisualization extends JComponent implements ActionListen
 		philosophers = table.getPhilosophers();
 		repaint();
 	}
-	
-	
 }

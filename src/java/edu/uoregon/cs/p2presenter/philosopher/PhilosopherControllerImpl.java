@@ -24,7 +24,7 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 		private Hand(Chopstick chopstick) {
 			this.chopstick = chopstick;
 		}
-		private State state = State.MEDITATING;
+		private HandState state = HandState.EMPTY;
 		private Chopstick chopstick;
 	}
 	
@@ -37,30 +37,32 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 	}
 	
 	private synchronized void releaseChopstick(Hand hand) {
-		if (hand.state == State.EATING) {
+		if (hand.state == HandState.HOLDING) {
 			hand.chopstick.release(this);
-			hand.state = State.MEDITATING;
+			hand.state = HandState.EMPTY;
 			stateChanged();
 		}
 	}
 
-	public State takeLeftChopstick() {
+	public HandState takeLeftChopstick() {
 		return takeChopstick(left);
 	}
 
-	public State takeRightChopstick() {
+	public HandState takeRightChopstick() {
 		return takeChopstick(right);
 	}
 	
-	private State takeChopstick(Hand hand) {
+	private HandState takeChopstick(Hand hand) {
 		synchronized (hand.chopstick) {
 			if (!hand.chopstick.isHeld()) {
 				hand.chopstick.hold(this);
-				hand.state = State.EATING;
+				hand.state = HandState.HOLDING;
 				stateChanged();
 				
 			}
 			else {
+				hand.state = HandState.WAITING;
+				stateChanged();
 				new HolderThread(hand).start();
 			}
 		}
@@ -68,25 +70,28 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 		return hand.state;
 	}
 
-	public State getLeftHandState() {
+	public HandState getLeftHandState() {
 		return left.state;
 	}
 
-	public State getRightHandState() {
+	public HandState getRightHandState() {
 		return right.state;
 	}
 
 	public synchronized State getState() {
-		// TODO needs some synchronization
-		if (left.state == right.state) {
-			return left.state;
-		}
-		else if (left.state == State.WAITING || right.state == State.WAITING) {
+		if (left.state == HandState.WAITING || right.state == HandState.WAITING) {
 			return State.WAITING;
 		}
-		else {
-			return State.INTERMEDIATE;
+		else if (left.state == right.state) {
+			switch (left.state) {
+			case EMPTY:
+				return State.MEDITATING;
+			case HOLDING:
+				return State.EATING;
+			}
 		}
+		
+		return State.INTERMEDIATE;
 	}
 	
 	private void stateChanged() {
@@ -103,9 +108,6 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 		@Override
 		public void run() {
 			synchronized (hand.chopstick) {
-				hand.state = Philosopher.State.WAITING;
-				stateChanged();
-				
 				while (hand.chopstick.isHeld()) {
 					try {
 						hand.chopstick.wait();
@@ -117,7 +119,7 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 				
 				hand.chopstick.hold(philosopher);
 				
-				hand.state = Philosopher.State.EATING;
+				hand.state = HandState.HOLDING;
 					
 				stateChanged();
 			}

@@ -3,10 +3,11 @@
 package edu.uoregon.cs.p2presenter.philosopher;
 
 public interface Philosopher {
-	public enum State { EATING, WAITING, MEDITATING, INTERMEDIATE, INACTIVE };
+	public enum State { EATING, WAITING, MEDITATING, INTERMEDIATE, INACTIVE }
+	public enum HandState { HOLDING, WAITING, EMPTY }
 	
-	public State getLeftHandState();
-	public State getRightHandState();
+	public HandState getLeftHandState();
+	public HandState getRightHandState();
 	
 	public State getState();
 }
