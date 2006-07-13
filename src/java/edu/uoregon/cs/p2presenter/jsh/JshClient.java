@@ -23,7 +23,11 @@ public class JshClient {
 	
 	@SuppressWarnings("unchecked")
 	public <T> T proxy(Class<T> interfaceClass, String variableName) {
-		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new RemoteJshInvocationHandler(connection, interfaceClass, variableName));
+		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass}, new RemoteJshInvocationHandler(this, interfaceClass, variableName));
+	}
+	
+	public Connection getConnection() {
+		return connection;
 	}
 	
 	public Object eval(String statements) throws EvalErrorException, ParseException, RemoteException {

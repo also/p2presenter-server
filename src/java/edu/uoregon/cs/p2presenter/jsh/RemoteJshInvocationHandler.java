@@ -13,17 +13,13 @@ import bsh.Primitive;
 
 public class RemoteJshInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
-	private Connection connection;
+	private JshClient client;
 	
-	public RemoteJshInvocationHandler(Connection connection, Class interfaceClass, String remoteVariableName) {
+	public RemoteJshInvocationHandler(JshClient client, Class interfaceClass, String remoteVariableName) {
 		this.remoteVariableName = remoteVariableName;
-		this.connection = connection;
+		this.client = client;
 		
 		for (Method method : interfaceClass.getMethods()) {
-			if (!canTransferType(method.getReturnType())) {
-				throw new IllegalArgumentException("Unsupported return type in " + method.getName());
-			}
-			
 			for (Class<?> parameterType : method.getParameterTypes()) {
 				if (!canTransferType(parameterType)) {
 					throw new IllegalArgumentException("Unsupported parameter type in " + method.getName());
@@ -48,52 +44,7 @@ public class RemoteJshInvocationHandler implements InvocationHandler {
 		
 		methodCall.append(");");
 		
-		OutgoingRequestMessage message = new OutgoingRequestMessage(connection);
-		message.setContent(methodCall.toString());
-		
-		connection.send(message);
-		ResponseMessage response = null;
-		
-		while (response == null) {
-			try {
-				response = connection.awaitResponse(message);
-			}
-			catch (InterruptedException ex) { 
-				// FIXME
-			}
-		}
-		
-		String content = response.getContentAsString();
-		
-		if (content != null) {
-			Class<?> returnType = method.getReturnType();
-			if (returnType == Short.TYPE) {
-				return new Short(content);
-			}
-			else if (returnType == Integer.TYPE) {
-				return new Integer(content);
-			}
-			else if (returnType == Long.TYPE) {
-				return new Long(content);
-			}
-			else if (returnType == Float.TYPE) {
-				return new Float(content);
-			}
-			else if (returnType == Double.TYPE) {
-				return new Double(content);
-			}
-			else if (returnType == Boolean.TYPE) {
-				return new Boolean(content);
-			}
-			else if (returnType == Character.TYPE) {
-				return new Character(content.charAt(0));
-			}
-			else if (returnType == Byte.TYPE) {
-				return new Byte(content);
-			}
- 		}
-		
-		return null;
+		return client.eval(methodCall.toString());
 	}
 	
 	private static boolean canTransferType(Class<?> type) {
