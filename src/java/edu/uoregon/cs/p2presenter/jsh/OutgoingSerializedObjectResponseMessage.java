@@ -12,7 +12,6 @@ import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestMessage;
 
 public class OutgoingSerializedObjectResponseMessage extends OutgoingResponseMessage {
-	public static final String CONTENT_TYPE = "java/serialized-object";
 	public OutgoingSerializedObjectResponseMessage(RequestMessage inResponseToMessage) {
 		super(inResponseToMessage);
 	}
@@ -24,13 +23,13 @@ public class OutgoingSerializedObjectResponseMessage extends OutgoingResponseMes
 			out.writeObject(content);
 			out.close();
 			
-			setContent(bytes.toByteArray(), CONTENT_TYPE);
+			setContent(bytes.toByteArray(), JshRequestHandler.CONTENT_TYPE);
 		}
 		catch (ObjectStreamException ex) {
 			throw ex;
 		}
 		catch (IOException ex) {
-			// XXX
+			throw new Error(ex);
 		}
 	}
 }

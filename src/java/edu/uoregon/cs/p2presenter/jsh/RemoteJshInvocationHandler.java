@@ -2,53 +2,68 @@
 
 package edu.uoregon.cs.p2presenter.jsh;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-
-import edu.uoregon.cs.p2presenter.Connection;
-import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.ResponseMessage;
-
-import bsh.Primitive;
 
 public class RemoteJshInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
 	private JshClient client;
 	
+	private boolean invokeSimple;
+	
 	public RemoteJshInvocationHandler(JshClient client, Class interfaceClass, String remoteVariableName) {
 		this.remoteVariableName = remoteVariableName;
 		this.client = client;
 		
+		boolean canSendAllParametersAsStrings = true;
+		boolean canSerializeAllParameters = true;
+		
 		for (Method method : interfaceClass.getMethods()) {
 			for (Class<?> parameterType : method.getParameterTypes()) {
-				if (!canTransferType(parameterType)) {
-					throw new IllegalArgumentException("Unsupported parameter type in " + method.getName());
+				if (!JshClient.canSendAsString(parameterType)) {
+					canSendAllParametersAsStrings = false;
+					if (!canSerializeAllParameters) {
+						break;
+					}
+				}
+				else if (!Serializable.class.isAssignableFrom(parameterType)) {
+					canSerializeAllParameters = false;
+					if (!canSendAllParametersAsStrings) {
+						break;
+					}
 				}
 			}
+		}
+		
+		if (canSendAllParametersAsStrings) {
+			invokeSimple = true;
+		}
+		else if (canSerializeAllParameters) {
+			invokeSimple = false;
+		}
+		else {
+			throw new IllegalArgumentException("Invalid parameter type");
 		}
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		StringBuilder methodCall = new StringBuilder(remoteVariableName);
-		methodCall.append('.');
-		methodCall.append(method.getName());
-		methodCall.append('(');
-		
-		if (args != null) {
-			methodCall.append(toArgumentString(args[0]));
+		if (invokeSimple) {
+			String[] simpleArgs = null;
+			if (args != null) {
+				simpleArgs = new String[args.length];
 			
-			for (int i = 1; i < args.length; i++) {
-				methodCall.append(',').append(toArgumentString(args[1]));
+				for (int i = 0; i < args.length; i++) {
+					simpleArgs[i] = toArgumentString(args[i]);
+				}
 			}
+			
+			return client.invokeSimple(remoteVariableName + '.' + method.getName(), simpleArgs);
 		}
 		
-		methodCall.append(");");
-		
-		return client.eval(methodCall.toString());
-	}
-	
-	private static boolean canTransferType(Class<?> type) {
-		return type == Void.TYPE || type == CharSequence.class || type == String.class || Primitive.isWrapperType(type);
+		else {
+			return client.invoke(remoteVariableName + '.' + method.getName(), args);
+		}
 	}
 	
 	private static String toArgumentString(Object argument) {
@@ -59,5 +74,4 @@ public class RemoteJshInvocationHandler implements InvocationHandler {
 			return String.valueOf(argument);
 		}
 	}
-
 }

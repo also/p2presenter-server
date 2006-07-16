@@ -37,6 +37,11 @@ public class OutgoingRequestMessage extends AbstractRequestMessage implements Ou
 	public final void setContent(byte[] content) {
 		super.setContent(content);
 	}
+	
+	@Override
+	public void setContent(byte[] content, String contentType) {
+		super.setContent(content, contentType);
+	}
 
 	@Override
 	public final void setContent(CharSequence content) {
