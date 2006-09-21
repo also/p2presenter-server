@@ -2,7 +2,6 @@
 
 package edu.uoregon.cs.p2presenter.jsh;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -10,68 +9,31 @@ public class RemoteJshInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
 	private JshClient client;
 	
-	private boolean invokeSimple;
-	
-	public RemoteJshInvocationHandler(JshClient client, Class interfaceClass, String remoteVariableName) {
+	public RemoteJshInvocationHandler(JshClient client, Class interfaceClass, String remoteVariableName, boolean validateTypes) {
 		this.remoteVariableName = remoteVariableName;
 		this.client = client;
 		
-		boolean canSendAllParametersAsStrings = true;
-		boolean canSerializeAllParameters = true;
-		
-		for (Method method : interfaceClass.getMethods()) {
-			for (Class<?> parameterType : method.getParameterTypes()) {
-				if (!JshClient.canSendAsString(parameterType)) {
-					canSendAllParametersAsStrings = false;
-					if (!canSerializeAllParameters) {
-						break;
+		if (validateTypes) {
+			for (Method method : interfaceClass.getMethods()) {
+				for (Class<?> parameterType : method.getParameterTypes()) {
+					if (!canTransportType(parameterType)) {
+						throw new IllegalArgumentException("Cannot transport parameter of type " + parameterType.getName());
 					}
 				}
-				else if (!Serializable.class.isAssignableFrom(parameterType)) {
-					canSerializeAllParameters = false;
-					if (!canSendAllParametersAsStrings) {
-						break;
-					}
+				Class returnType = method.getReturnType();
+				if (!canTransportType(returnType)) {
+					throw new IllegalArgumentException("Cannot transport type " + returnType.getName());
 				}
 			}
 		}
-		
-		if (canSendAllParametersAsStrings) {
-			invokeSimple = true;
-		}
-		else if (canSerializeAllParameters) {
-			invokeSimple = false;
-		}
-		else {
-			throw new IllegalArgumentException("Invalid parameter type");
-		}
+	}
+	
+	private boolean canTransportType(Class type) {
+		// TODO enums probably shouldn't be allowed.
+		return type.isPrimitive() || type.isInterface() || Enum.class.isAssignableFrom(type);
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		if (invokeSimple) {
-			String[] simpleArgs = null;
-			if (args != null) {
-				simpleArgs = new String[args.length];
-			
-				for (int i = 0; i < args.length; i++) {
-					simpleArgs[i] = toArgumentString(args[i]);
-				}
-			}
-			
-			return client.invokeSimple(remoteVariableName + '.' + method.getName(), simpleArgs);
-		}
-		
-		else {
-			return client.invoke(remoteVariableName + '.' + method.getName(), args);
-		}
-	}
-	
-	private static String toArgumentString(Object argument) {
-		if(argument instanceof CharSequence) {
-			return '"' + argument.toString() + '"';
-		}
-		else {
-			return String.valueOf(argument);
-		}
+		return client.invoke(remoteVariableName, method, args);
 	}
 }

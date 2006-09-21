@@ -64,7 +64,7 @@ public class Client implements Runnable {
 						ex.printStackTrace();
 						return;
 					}
-					catch (Exception ex) {
+					catch (Throwable ex) {
 						System.err.println("Evaluation failed: " + ex.getMessage());
 					}
 					commandBuilder = new StringBuilder();

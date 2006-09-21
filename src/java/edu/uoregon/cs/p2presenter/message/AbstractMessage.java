@@ -124,10 +124,10 @@ public abstract class AbstractMessage implements Message {
 			throw new IllegalArgumentException(name + " header may not be set manually");
 		}
 		if(containsLineEnd(name)) {
-			throw new IllegalArgumentException("End of line in header name");
+			throw new IllegalArgumentException("End of line in header name: '" + name + "'");
 		}
 		if(containsLineEnd(value)) {
-			throw new IllegalArgumentException("End of line in header value");
+			throw new IllegalArgumentException("End of line in header value: '" + value + "'");
 		}
 		setHeaderUnchecked(name, value);
 	}
@@ -176,10 +176,10 @@ public abstract class AbstractMessage implements Message {
 	protected final boolean containsLineEnd(String string) {
 		for(char character : string.toCharArray()) {
 			if (character == '\r' || character == '\n') {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {

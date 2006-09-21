@@ -10,6 +10,8 @@ public class Table implements PhilosopherStateListener {
 	private TableStateListener listener;
 	private ArrayList<Philosopher> philosophers = new ArrayList<Philosopher>();
 	
+	private List<Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
+	
 	public void setTableStateListener(TableStateListener listener) {
 		this.listener = listener;
 	}
@@ -19,15 +21,15 @@ public class Table implements PhilosopherStateListener {
 	}
 	
 	public List<Philosopher> getPhilosophers() {
-		return Collections.unmodifiableList(philosophers);
+		return unmodifiablePhilosophers;
 	}
 	
 	public int getPhilosopherCount() {
 		return philosophers.size();
 	}
 	
-	public PhilosopherController addPhilosopher() {
-		PhilosopherController philosopher = new PhilosopherControllerImpl(this);
+	public Philosopher addPhilosopher() {
+		Philosopher philosopher = new PhilosopherControllerImpl(this);
 		
 		philosophers.add(philosopher);
 		assignChopsticks();

@@ -2,7 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.philosopher;
 
-public class PhilosopherControllerImpl implements PhilosopherController {
+public class PhilosopherControllerImpl implements Philosopher {
 	private Philosopher philosopher = this;
 	
 	private Table table;
@@ -12,78 +12,92 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 	}
 	
 	public void reset(Chopstick leftChopstick, Chopstick rightChopstick) {
-		left = new Hand(leftChopstick);
-		right = new Hand(rightChopstick);
+		leftHand = new HandImpl(leftChopstick);
+		rightHand = new HandImpl(rightChopstick);
 		stateChanged();
 	}
 	
-	private Hand left;
-	private Hand right;
+	private HandImpl leftHand;
+	private HandImpl rightHand;
 	
-	private class Hand {
-		private Hand(Chopstick chopstick) {
+	private class HandImpl implements Hand {
+		private HandImpl(Chopstick chopstick) {
 			this.chopstick = chopstick;
 		}
-		private HandState state = HandState.EMPTY;
+		private State state = State.EMPTY;
 		private Chopstick chopstick;
-	}
-	
-	public void releaseLeftChopstick() {
-		releaseChopstick(left);
-	}
-
-	public void releaseRightChopstick() {
-		releaseChopstick(right);
-	}
-	
-	private synchronized void releaseChopstick(Hand hand) {
-		if (hand.state == HandState.HOLDING) {
-			hand.chopstick.release(this);
-			hand.state = HandState.EMPTY;
-			stateChanged();
+		
+		public State getState() {
+			return state;
 		}
-	}
-
-	public HandState takeLeftChopstick() {
-		return takeChopstick(left);
-	}
-
-	public HandState takeRightChopstick() {
-		return takeChopstick(right);
-	}
-	
-	private HandState takeChopstick(Hand hand) {
-		synchronized (hand.chopstick) {
-			if (!hand.chopstick.isHeld()) {
-				hand.chopstick.hold(this);
-				hand.state = HandState.HOLDING;
-				stateChanged();
-				
+		
+		public Chopstick getChopstick() {
+			return chopstick;
+		}
+		
+		public State takeChopstick() {
+			synchronized (chopstick) {
+				if (state == State.EMPTY) {
+					if (!chopstick.isHeld()) {
+						chopstick.hold(philosopher);
+						state = State.HOLDING;
+						stateChanged();
+						
+					}
+					else {
+						state = State.WAITING;
+						stateChanged();
+						new WaitingHandThread().start();
+					}
+				}
 			}
-			else {
-				hand.state = HandState.WAITING;
+			
+			return state;
+		}
+		
+		public synchronized void releaseChopstick() {
+			if (state == State.HOLDING) {
+				chopstick.release(philosopher);
+				state = State.EMPTY;
 				stateChanged();
-				new HolderThread(hand).start();
 			}
 		}
 		
-		return hand.state;
+		private class WaitingHandThread extends Thread {
+						
+			@Override
+			public void run() {
+				synchronized (chopstick) {
+					while (chopstick.isHeld()) {
+						try {
+							chopstick.wait();
+						}
+						catch (InterruptedException ex) {
+							// TODO maybe do something
+						}
+					}
+					
+					chopstick.hold(philosopher);
+					
+					state = Hand.State.HOLDING;
+						
+					stateChanged();
+				}
+			}
+		}
+		
 	}
-
-	public HandState getLeftHandState() {
-		return left.state;
-	}
-
-	public HandState getRightHandState() {
-		return right.state;
+	
+	public void makeInactive() {
+		
 	}
 
 	public synchronized State getState() {
-		if (left.state == HandState.WAITING || right.state == HandState.WAITING) {
+		if (leftHand.state == Hand.State.WAITING || rightHand.state == Hand.State.WAITING) {
 			return State.WAITING;
 		}
-		else if (left.state == right.state) {
-			switch (left.state) {
+		else if (leftHand.state == rightHand.state) {
+			switch (leftHand.state) {
 			case EMPTY:
 				return State.MEDITATING;
 			case HOLDING:
@@ -94,36 +108,15 @@ public class PhilosopherControllerImpl implements PhilosopherController {
 		return State.INTERMEDIATE;
 	}
 	
+	public Hand getLeftHand() {
+		return leftHand;
+	}
+	
+	public Hand getRightHand() {
+		return rightHand;
+	}
+	
 	private void stateChanged() {
 		table.philosopherStateChanged(this);
 	}
-	
-	private class HolderThread extends Thread {
-		private Hand hand;
-		
-		private HolderThread(Hand hand) {
-			this.hand = hand;
-		}
-		
-		@Override
-		public void run() {
-			synchronized (hand.chopstick) {
-				while (hand.chopstick.isHeld()) {
-					try {
-						hand.chopstick.wait();
-					}
-					catch (InterruptedException ex) {
-						// TODO maybe do something
-					}
-				}
-				
-				hand.chopstick.hold(philosopher);
-				
-				hand.state = HandState.HOLDING;
-					
-				stateChanged();
-			}
-		}
-	}
-
 }
