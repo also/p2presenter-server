@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="connectionManager" class="edu.uoregon.cs.p2presenter.ConnectionManager">
+		<property name="requestHandlerMapping.uriMappedHandlers"><map>
+			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.authentication.LoginRequestHandler"/></entry>
+			<entry key="/logout"><bean class="edu.uoregon.cs.p2presenter.authentication.LogoutRequestHandler"/></entry>
+		</map></property>
+		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
+			<entry>
+				<key><bean class="edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher">
+					<property name="path" value="join"/>
+				</bean></key>
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.JoinInteractivityRequestHandler">
+					<property name="activeInteractivityController" ref="activeInteractivityController"/>
+				</bean>
+			</entry>
+			<entry>
+				<key><bean class="edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher">
+					<property name="path" value="controller"/>
+				</bean></key>
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.ProxyInteractivityRequestHandler">
+					<property name="activeInteractivityController" ref="activeInteractivityController"/>
+				</bean>
+			</entry>
+		</map></property>
+		<property name="uriMappedFilters"><map>
+			<entry key="/**"><bean class="edu.uoregon.cs.p2presenter.authentication.SecurityContextIntegrationFilter"/></entry>
+		</map></property>
+	</bean>
+	
+	<bean id="portListener" class="edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener" init-method="init">
+		<property name="portNumber" value="9001"/>
+		<property name="connectionManager" ref="connectionManager"/>
+	</bean>
+</beans>
