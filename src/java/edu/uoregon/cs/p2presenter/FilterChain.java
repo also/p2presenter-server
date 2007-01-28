@@ -5,7 +5,6 @@ package edu.uoregon.cs.p2presenter;
 import java.util.Iterator;
 
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
 public class FilterChain implements Filter, RequestHandler {
@@ -24,12 +23,6 @@ public class FilterChain implements Filter, RequestHandler {
 		}
 		else {
 			response = requestHandler.handleRequest(request);
-		}
-	}
-
-	public void filterResponse(IncomingResponseMessage response, Filter chain) throws Exception {
-		if (filterIterator.hasNext()) {
-			filterIterator.next().filterResponse(response, chain);
 		}
 	}
 
