@@ -4,6 +4,7 @@ package edu.uoregon.cs.p2presenter.remoting;
 
 import java.io.Serializable;
 
+// TODO rename (include "descriptor" in name)
 public class ProxyIdentifier implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

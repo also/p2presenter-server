@@ -7,6 +7,7 @@ import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
+import edu.uoregon.cs.p2presenter.remoting.RemoteProxyReference;
 
 public class InteractivityClient {
 	public static final String MODEL_CLASS_HEADER_NAME = "Model-Class";
@@ -24,7 +25,7 @@ public class InteractivityClient {
 		Integer modelProxyId = new Integer(response.getHeader(MODEL_PROXY_ID_HEADER_NAME));
 		remoteInvocationConnection = new RemoteInvocationConnection(connection, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller");
 		
-		model = remoteInvocationConnection.proxy(modelClass, modelProxyId);
+		model = remoteInvocationConnection.proxy(modelClass, new RemoteProxyReference(modelProxyId));
 	}
 	
 	@SuppressWarnings("unchecked")

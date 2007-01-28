@@ -7,12 +7,12 @@ import java.lang.reflect.Method;
 
 public class RemoteInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
-	private int proxyId;
+	private RemoteProxyReference remoteProxyReference;
 	private RemoteInvocationConnection client;
 	
-	public RemoteInvocationHandler(RemoteInvocationConnection client, int proxyId) {
+	public RemoteInvocationHandler(RemoteInvocationConnection client, RemoteProxyReference remoteProxyReference) {
 		this.client = client;
-		this.proxyId = proxyId;
+		this.remoteProxyReference = remoteProxyReference;
 	}
 	
 	public RemoteInvocationHandler(RemoteInvocationConnection client, String remoteVariableName) {
@@ -21,11 +21,14 @@ public class RemoteInvocationHandler implements InvocationHandler {
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		if (remoteVariableName != null) {
+		if (method.getName().equals("getRemoteProxyReference") && method.getParameterTypes().length == 0) {
+			return remoteProxyReference;
+		}
+		else if (remoteVariableName != null) {
 			return client.invoke(remoteVariableName, method, args);
 		}
 		else {
-			return client.invoke(proxyId, method, args);
+			return client.invoke(remoteProxyReference, method, args);
 		}
 	}
 }

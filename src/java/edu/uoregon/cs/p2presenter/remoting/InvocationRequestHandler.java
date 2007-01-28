@@ -19,7 +19,7 @@ public class InvocationRequestHandler implements RequestHandler {
 	public static final String TARGET_PROXY_ID_HEADER_NAME = "Target-Proxy-Id";
 	public static final String TARGET_NAME_HEADER_NAME = "Target-Name";
 	public static final String PARAMETER_TYPES_HEADER_NAME = "Parameter-Types";
-	public static final String CONTENT_TYPE = "java/serialized-object";
+	public static final String CONTENT_TYPE = "application/x-java-serialized-object";
 	public static final String ARGUMENT_COUNT_HEADER_NAME = "Argument-Count";
 	
 	public static final String PROXY_CACHE_ATTRIBUTE_NAME = InvocationRequestHandler.class.getName() + "proxyCache";
@@ -45,8 +45,8 @@ public class InvocationRequestHandler implements RequestHandler {
 						ObjectInputStream in = new ObjectInputStream(bytes);
 						for (int i = 0; i < args.length; i++) {
 							args[i] = in.readObject();
-							if (args[i] instanceof ProxyIdentifier) {
-								args[i] = proxyCache.getTarget((ProxyIdentifier) args[i]);
+							if (args[i] instanceof RemoteProxyReference) {
+								args[i] = proxyCache.getTarget(((RemoteProxyReference) args[i]).getProxyId());
 							}
 						}
 						in.close();
@@ -130,7 +130,6 @@ public class InvocationRequestHandler implements RequestHandler {
 		return response;
 	}
 	
-	// FIXME more than one proxy cache won't work: proxied objects will have the same ids
 	public static final ProxyCache getProxyCache(IncomingRequestHeaders headers) {
 		GlobalProxyCache globalProxyCache = (GlobalProxyCache) headers.getConnection().getAttribute(PROXY_CACHE_ATTRIBUTE_NAME);
 		if (globalProxyCache == null) {
