@@ -1,6 +1,10 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.philosopher;
+package edu.uoregon.cs.p2presenter.philosopher.host;
+
+import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
+import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
+import edu.uoregon.cs.p2presenter.philosopher.Table;
 
 public class PhilosopherControllerImpl implements Philosopher {
 	private Philosopher philosopher = this;

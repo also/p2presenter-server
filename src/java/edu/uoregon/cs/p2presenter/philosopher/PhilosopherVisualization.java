@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import edu.uoregon.cs.p2presenter.philosopher.host.TableStateListener;
+
 public class PhilosopherVisualization extends JComponent implements ActionListener, TableStateListener {
 	private static final long serialVersionUID = 1L;
 

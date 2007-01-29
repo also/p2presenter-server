@@ -4,6 +4,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
+import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 public class ActiveInteractivity<T> {
 	private Connection hostConnection;

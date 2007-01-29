@@ -1,12 +1,13 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.philosopher;
+package edu.uoregon.cs.p2presenter.philosopher.participant;
 
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityClientComponent;
+import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 
 import java.awt.GridBagConstraints;
 

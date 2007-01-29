@@ -9,9 +9,10 @@ import edu.uoregon.cs.p2presenter.authentication.LoginRequestHandler;
 import edu.uoregon.cs.p2presenter.authentication.LogoutRequestHandler;
 import edu.uoregon.cs.p2presenter.authentication.SecurityContextIntegrationFilter;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
-import edu.uoregon.cs.p2presenter.philosopher.SimplePhilosopherInterface;
+import edu.uoregon.cs.p2presenter.philosopher.participant.SimplePhilosopherInterface;
 import edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
+import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 public class DemoInteractivityServer {
 	public static void main(String[] args) throws Exception {

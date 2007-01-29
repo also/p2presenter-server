@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherControllerImpl;
+import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherStateListener;
+import edu.uoregon.cs.p2presenter.philosopher.host.TableStateListener;
+
 public class Table implements PhilosopherStateListener {
 	private TableStateListener listener;
 	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();

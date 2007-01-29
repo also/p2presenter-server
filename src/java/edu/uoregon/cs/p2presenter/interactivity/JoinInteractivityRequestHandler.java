@@ -9,6 +9,7 @@ import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationProxy;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
+import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 public class JoinInteractivityRequestHandler implements RequestHandler {
 	private ActiveInteractivityController activeInteractivityController;
@@ -38,7 +39,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 		response.setHeader(InteractivityClient.CLIENT_VIEW_CLASS_NAME_HEADER_NAME, interactivityDefinition.getClientViewClassName());
-		response.setHeader(InteractivityClient.MODEL_CLASS_NAME_HEADER_NAME, interactivityDefinition.getModelClassName());
+		response.setHeader(InteractivityClient.MODEL_CLASS_NAME_HEADER_NAME, interactivityDefinition.getClientModelClassName());
 		response.setHeader(InteractivityClient.MODEL_PROXY_ID_HEADER_NAME, String.valueOf(((RemoteInvocationProxy) model).getRemoteProxyReference().getId()));
 		return response;
 	}

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher;
+import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherInteractivityRunner;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class PhilosopherDemoHost {

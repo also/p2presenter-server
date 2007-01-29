@@ -1,10 +1,13 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.philosopher;
+package edu.uoregon.cs.p2presenter.philosopher.host;
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+
+import edu.uoregon.cs.p2presenter.philosopher.PhilosopherVisualization;
+import edu.uoregon.cs.p2presenter.philosopher.Table;
 
 public class PhilosopherVisualizer {
 
