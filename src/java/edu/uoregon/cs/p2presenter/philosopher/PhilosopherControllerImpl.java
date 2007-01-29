@@ -39,10 +39,7 @@ public class PhilosopherControllerImpl implements Philosopher {
 			synchronized (chopstick) {
 				if (state == State.EMPTY) {
 					if (!chopstick.isHeld()) {
-						chopstick.hold(philosopher);
-						state = State.HOLDING;
-						stateChanged();
-						
+						doTakeChopstick();
 					}
 					else {
 						state = State.WAITING;
@@ -53,6 +50,12 @@ public class PhilosopherControllerImpl implements Philosopher {
 			}
 			
 			return state;
+		}
+		
+		private void doTakeChopstick() {
+			chopstick.hold(philosopher);
+			state = State.HOLDING;
+			stateChanged();
 		}
 		
 		public synchronized void releaseChopstick() {
@@ -77,18 +80,10 @@ public class PhilosopherControllerImpl implements Philosopher {
 						}
 					}
 					
-					chopstick.hold(philosopher);
-					
-					state = Hand.State.HOLDING;
-						
-					stateChanged();
+					doTakeChopstick();
 				}
 			}
 		}
-		
-	}
-	
-	public void makeInactive() {
 		
 	}
 

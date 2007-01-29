@@ -9,6 +9,7 @@ import edu.uoregon.cs.p2presenter.authentication.LoginRequestHandler;
 import edu.uoregon.cs.p2presenter.authentication.LogoutRequestHandler;
 import edu.uoregon.cs.p2presenter.authentication.SecurityContextIntegrationFilter;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
+import edu.uoregon.cs.p2presenter.philosopher.SimplePhilosopherInterface;
 import edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 
@@ -21,8 +22,8 @@ public class DemoInteractivityServer {
 			@Override
 			protected synchronized void connectionCreatedInternal(Connection connection) {
 				if (connectionCount == 0) {
-					
-					activeInteractivityController.addActiveInteractivity(0, new ActiveInteractivity<Philosopher>(connection, new InteractivityDefinition(0, Philosopher.class)));
+					// use dao
+					activeInteractivityController.addActiveInteractivity(0, new ActiveInteractivity<Philosopher>(connection, new InteractivityDefinition(0, SimplePhilosopherInterface.class.getName(), Philosopher.class.getName())));
 				}
 				connectionCount++;
 			}

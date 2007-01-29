@@ -21,7 +21,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	
 	public void setActiveInteractivityController(ActiveInteractivityController activeInteractivityController) {
 		this.activeInteractivityController = activeInteractivityController;
-	};
+	}
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		Connection connection = request.getConnection();
@@ -37,8 +37,9 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		connection.getRequestHandlerMapping().mapHandler(InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
 		
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
-		response.setHeader(InteractivityClient.MODEL_CLASS_HEADER_NAME, interactivityDefinition.getModelClass().getName());
-		response.setHeader(InteractivityClient.MODEL_PROXY_ID_HEADER_NAME, String.valueOf(((RemoteInvocationProxy) model).getRemoteProxyReference().getProxyId()));
+		response.setHeader(InteractivityClient.CLIENT_VIEW_CLASS_NAME_HEADER_NAME, interactivityDefinition.getClientViewClassName());
+		response.setHeader(InteractivityClient.MODEL_CLASS_NAME_HEADER_NAME, interactivityDefinition.getModelClassName());
+		response.setHeader(InteractivityClient.MODEL_PROXY_ID_HEADER_NAME, String.valueOf(((RemoteInvocationProxy) model).getRemoteProxyReference().getId()));
 		return response;
 	}
 
@@ -59,5 +60,4 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 			interactivityRunner.onDisconnect(model);
 		}
 	}
-
 }

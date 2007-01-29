@@ -1,3 +1,5 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter.remoting;
 
 import java.io.ByteArrayInputStream;
@@ -6,10 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.rmi.RemoteException;
 
 import edu.uoregon.cs.p2presenter.RequestHandler;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestHeaders;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.p2presenter.remoting.GlobalProxyCache.ProxyCache;
@@ -27,7 +27,15 @@ public class InvocationRequestHandler implements RequestHandler {
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
-		ProxyCache proxyCache = getProxyCache(request);
+		
+		GlobalProxyCache globalProxyCache = (GlobalProxyCache) request.getConnection().getAttribute(PROXY_CACHE_ATTRIBUTE_NAME);
+		if (globalProxyCache == null) {
+			globalProxyCache = new GlobalProxyCache();
+			request.getConnection().setAttribute(PROXY_CACHE_ATTRIBUTE_NAME, globalProxyCache);
+		}
+		
+		ProxyCache proxyCache = globalProxyCache.getProxyCache(request.getUri());
+		
 		try {
 			try {
 				Object result;
@@ -46,7 +54,7 @@ public class InvocationRequestHandler implements RequestHandler {
 						for (int i = 0; i < args.length; i++) {
 							args[i] = in.readObject();
 							if (args[i] instanceof RemoteProxyReference) {
-								args[i] = proxyCache.getTarget(((RemoteProxyReference) args[i]).getProxyId());
+								args[i] = proxyCache.getTarget(((RemoteProxyReference) args[i]).getId());
 							}
 						}
 						in.close();
@@ -59,7 +67,6 @@ public class InvocationRequestHandler implements RequestHandler {
 						// FIXME
 						throw new Error(ex);
 					}
-
 					
 					String[] parameterTypeNames = request.getHeader(PARAMETER_TYPES_HEADER_NAME).split(",");
 					parameterTypes = new Class[parameterTypeNames.length];
@@ -67,7 +74,6 @@ public class InvocationRequestHandler implements RequestHandler {
 					for (int i = 0; i < parameterTypes.length; i++) {
 						parameterTypes[i] = Class.forName(parameterTypeNames[i]);
 					}
-					
 				}
 				else {
 					args = new Object[0];
@@ -92,26 +98,16 @@ public class InvocationRequestHandler implements RequestHandler {
 				result = method.invoke(target, args);
 				
 				if (result != null) {
-					Class resultType = method.getReturnType();
+					Class returnType = method.getReturnType();
 					// TODO probably shouldn't serialize enums
-					// TODO shouldn't be ignoring required return type when the result is a wrapper
-					if (resultType == String.class || resultType.isPrimitive() || Enum.class.isAssignableFrom(resultType)) {
+					// TODO serialize wrapper types when method doesn't return primitive
+					if (returnType == String.class || returnType.isPrimitive() || Enum.class.isAssignableFrom(returnType)) {
 						response.setContentObject((Serializable) result);
 					}
 					else {
-						try {
-							Class[] interfaces = resultType.isInterface() ? new Class[] {resultType} : resultType.getInterfaces();
-							response.setContentObject(proxyCache.getOrGenerateProxyId(result, interfaces));
-							
-						}
-						catch (ClassNotFoundException ex) {
-							ex.printStackTrace();
-							response.setStatus(500);
-							response.setContentObject(new RemoteException("Unknown remote type", ex));
-						}
+						response.setContentObject(proxyCache.getProxyIdentifier(result));	
 					}
 				}
-					
 			}
 			catch (Exception ex) {
 				ex.printStackTrace();
@@ -128,15 +124,5 @@ public class InvocationRequestHandler implements RequestHandler {
 			catch (ObjectStreamException exx) {}*/
 		}
 		return response;
-	}
-	
-	public static final ProxyCache getProxyCache(IncomingRequestHeaders headers) {
-		GlobalProxyCache globalProxyCache = (GlobalProxyCache) headers.getConnection().getAttribute(PROXY_CACHE_ATTRIBUTE_NAME);
-		if (globalProxyCache == null) {
-			globalProxyCache = new GlobalProxyCache();
-			headers.getConnection().setAttribute(PROXY_CACHE_ATTRIBUTE_NAME, globalProxyCache);
-		}
-		
-		return globalProxyCache.getProxyCache(headers.getUri());
 	}
 }

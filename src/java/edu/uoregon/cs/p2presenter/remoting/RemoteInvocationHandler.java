@@ -1,11 +1,11 @@
-/* $Id:RemoteJshInvocationHandler.java 84 2007-01-21 01:09:29Z rberdeen@cs.uoregon.edu $ */
+/* $Id$ */
 
 package edu.uoregon.cs.p2presenter.remoting;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public class RemoteInvocationHandler implements InvocationHandler {
+class RemoteInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
 	private RemoteProxyReference remoteProxyReference;
 	private RemoteInvocationConnection client;

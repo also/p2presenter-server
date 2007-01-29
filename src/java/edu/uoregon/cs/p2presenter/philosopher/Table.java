@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Table implements PhilosopherStateListener {
 	private TableStateListener listener;
-	private ArrayList<Philosopher> philosophers = new ArrayList<Philosopher>();
+	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();
 	
-	private List<Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
+	private List<? extends Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
 	
 	public void setTableStateListener(TableStateListener listener) {
 		this.listener = listener;
@@ -20,8 +20,10 @@ public class Table implements PhilosopherStateListener {
 		listener.tableStateChanged(this);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Philosopher> getPhilosophers() {
-		return unmodifiablePhilosophers;
+		// the list is unmodifiable so we don't have to worry about other subclasses being inserted
+		return (List<Philosopher>) unmodifiablePhilosophers;
 	}
 	
 	public int getPhilosopherCount() {
@@ -29,7 +31,7 @@ public class Table implements PhilosopherStateListener {
 	}
 	
 	public Philosopher addPhilosopher() {
-		Philosopher philosopher = new PhilosopherControllerImpl(this);
+		PhilosopherControllerImpl philosopher = new PhilosopherControllerImpl(this);
 		
 		philosophers.add(philosopher);
 		assignChopsticks();

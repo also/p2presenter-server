@@ -11,10 +11,6 @@ public class PhilosopherInteractivityRunner implements InteractivityRunner<Philo
 		this.table = table;
 	}
 
-	public Class<Philosopher> getModelClass() {
-		return Philosopher.class;
-	}
-
 	public Philosopher onConnect() {
 		return table.addPhilosopher();
 	}

@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.remoting;
 
 import java.util.HashMap;
 
-public class GlobalProxyCache {
+class GlobalProxyCache {
 	private HashMap<String, ProxyCache> caches = new HashMap<String, ProxyCache>();
 	
 	private Integer proxyNumber = 1;
@@ -20,7 +20,7 @@ public class GlobalProxyCache {
 	}
 	
 	public class ProxyCache {
-		private HashMap<ProxiedObject, ProxyIdentifier> proxyIds = new HashMap<ProxiedObject, ProxyIdentifier>();
+		private HashMap<Object, ProxyDescriptor> proxyIdentifiers = new HashMap<Object, ProxyDescriptor>();
 		
 		/** Maps from id to target*/
 		private HashMap<Integer, Object> proxiedObjects = new HashMap<Integer, Object>();
@@ -29,24 +29,19 @@ public class GlobalProxyCache {
 			return proxiedObjects.get(id);
 		}
 		
-		public Object getTarget(ProxyIdentifier proxyIdentifier) {
-			return getTarget(proxyIdentifier.getId());
-		}
-		
-		public ProxyIdentifier getOrGenerateProxyId(Object toProxy, Class[] proxyClasses) throws Exception {
-			ProxiedObject proxiedObject = new ProxiedObject(toProxy);
-			ProxyIdentifier proxyId = proxyIds.get(proxiedObject);
+		public ProxyDescriptor getProxyIdentifier(Object toProxy) throws Exception {
+			synchronized (proxyIdentifiers) {
+				ProxyDescriptor proxyIdentifier = proxyIdentifiers.get(toProxy);
 			
-			if (proxyId == null) {
-				proxiedObject.setProxyId(proxyId);
-				synchronized (proxyIds) {
-					proxyId = new ProxyIdentifier(proxyClasses, proxyNumber++);
-					proxyIds.put(proxiedObject, proxyId);
-					proxiedObjects.put(proxyId.getId(), toProxy);
+				if (proxyIdentifier == null) {
+					Class[] interfaces = toProxy.getClass().getInterfaces();
+					proxyIdentifier = new ProxyDescriptor(interfaces, proxyNumber++);
+					proxyIdentifiers.put(toProxy, proxyIdentifier);
+					proxiedObjects.put(proxyIdentifier.getId(), toProxy);
 				}
-			}
 			
-			return proxyId;
+				return proxyIdentifier;
+			}
 		}
 	}
 }

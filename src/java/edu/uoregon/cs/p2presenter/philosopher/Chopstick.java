@@ -5,31 +5,23 @@ package edu.uoregon.cs.p2presenter.philosopher;
 public class Chopstick {
 	private Philosopher heldBy;
 	
-	private boolean held = false;
-	
 	public boolean isHeld() {
-		return held;
+		return heldBy != null;
 	}
 	
 	public synchronized void hold(Philosopher philosopher) {
-		if (held) {
+		if (heldBy != null) {
 			throw new IllegalStateException("Chopstick is already being held");
 		}
-		held = true;
 		heldBy = philosopher;
 	}
 	
 	public synchronized void release(Philosopher philosopher) {
-		if (!held) {
-			throw new IllegalStateException("Chopstick is not being held");
-		}
-		else if (philosopher != heldBy) {
-			throw new IllegalStateException("Chopstick is being held by a different philosopher");
+		if (philosopher != heldBy) {
+			throw new IllegalStateException("Philosopher is not holding chopstick");
 		}
 		
-		held = false;
 		heldBy = null;
 		notify();
 	}
-	
 }

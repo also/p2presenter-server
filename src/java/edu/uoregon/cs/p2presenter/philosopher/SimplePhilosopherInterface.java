@@ -5,9 +5,12 @@ package edu.uoregon.cs.p2presenter.philosopher;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityClientComponent;
+
 import java.awt.GridBagConstraints;
 
-public class SimplePhilosopherInterface extends JPanel {
+public class SimplePhilosopherInterface extends JPanel implements InteractivityClientComponent<Philosopher>{
 
 	private static final long serialVersionUID = 1L;
 	private JButton takeLeftChopstickButton = null;
@@ -25,7 +28,7 @@ public class SimplePhilosopherInterface extends JPanel {
 		initialize();
 	}
 	
-	public void setPhilosopher(Philosopher philosopher) {
+	public void setModel(Philosopher philosopher) {
 		this.philosopher = philosopher;
 	}
 

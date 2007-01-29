@@ -23,6 +23,9 @@ public class PhilosopherDemoHost {
 		if (host == null) {
 			System.exit(0);
 		}
+
+		Connection connection = new Connection(new Socket(host, 9000));
+		connection.start();
 		
 		Table table = new Table();
 		PhilosopherVisualization viz = new PhilosopherVisualization(table);
@@ -32,13 +35,9 @@ public class PhilosopherDemoHost {
 		frame.setSize(new Dimension(500, 500));
 		frame.setVisible(true);
 
-		Connection connection = new Connection(new Socket(host, 9000));
-		connection.start();
-
 		PhilosopherInteractivityRunner philosopherInteractivityRunner = new PhilosopherInteractivityRunner(table);
 		InvocationRequestHandler invoker = new InvocationRequestHandler();
 		connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
 		connection.setAttribute("interactivity", philosopherInteractivityRunner);
 	}
-
 }

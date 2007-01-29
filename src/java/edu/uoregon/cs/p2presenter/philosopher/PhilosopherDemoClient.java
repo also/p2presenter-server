@@ -18,7 +18,7 @@ public class PhilosopherDemoClient {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		JFrame frame = new JFrame("Philosopher");
+		JFrame frame = new JFrame("Interactivity Controller");
 		String host = args.length == 0 ? JOptionPane.showInputDialog("Host address:", "localhost") : args[0];
 		if (host == null) {
 			System.exit(0);
@@ -29,12 +29,8 @@ public class PhilosopherDemoClient {
 			
 			InteractivityClient client = new InteractivityClient(connection, 0);
 			
-			Philosopher philosopher = (Philosopher) client.getModel();
-			
-			SimplePhilosopherInterface philosopherInterface = new SimplePhilosopherInterface();
-			philosopherInterface.setPhilosopher(philosopher);
-			
-			frame.setContentPane(philosopherInterface);
+			// TODO
+			frame.setContentPane(client.getView());
 			frame.setSize(new Dimension(300, 200));
 			frame.setVisible(true);
 		}
