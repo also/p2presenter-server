@@ -27,22 +27,11 @@ public class SlideSession {
 	
 	private Slide slide;
 	
-	private Set<Annotation> annotations;
-	
 	private int inkCount;
 	
 	private Set<SubmissionSession<?>> submissionSessions = new LinkedHashSet<SubmissionSession<?>>();
 	
 	private Set<Submission<?>> submissions = new LinkedHashSet<Submission<?>>();
-
-	@OneToMany(mappedBy="slideSession")
-	public Set<Annotation> getAnnotations() {
-		return annotations;
-	}
-	
-	public void setAnnotations(Set<Annotation> annotations) {
-		this.annotations = annotations;
-	}
 
 	@Id
 	@GeneratedValue

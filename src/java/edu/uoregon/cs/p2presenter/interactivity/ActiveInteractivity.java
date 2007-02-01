@@ -9,7 +9,7 @@ import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 public class ActiveInteractivity<T> {
 	private Connection hostConnection;
 	private RemoteInvocationConnection remoteInvocationConnection;
-	private InteractivityRunner<?> interactivityRunner;
+	private InteractivityController<?> interactivityController;
 	
 	private InteractivityDefinition interactivityDefinition;
 	
@@ -19,7 +19,7 @@ public class ActiveInteractivity<T> {
 		
 		remoteInvocationConnection = new RemoteInvocationConnection(hostConnection, InteractivityRequestMatcher.URI_PREFIX + interactivityDefinition.getId() + "/controller");
 		
-		interactivityRunner = remoteInvocationConnection.proxy(InteractivityRunner.class, "interactivity");
+		interactivityController = remoteInvocationConnection.proxy(InteractivityController.class, "interactivity");
 	}
 	
 	public Connection getHostConnection() {
@@ -30,8 +30,8 @@ public class ActiveInteractivity<T> {
 		return interactivityDefinition;
 	}
 	
-	public InteractivityRunner<?> getInteractivityRunner() {
-		return interactivityRunner;
+	public InteractivityController<?> getInteractivityController() {
+		return interactivityController;
 	}
 	
 	public RemoteInvocationConnection getRemoteInvocationConnection() {

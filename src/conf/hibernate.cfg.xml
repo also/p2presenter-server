@@ -14,7 +14,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
         
         <mapping class="edu.uoregon.cs.presenter.entity.Slide"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Annotation"/>
+        <mapping class="edu.uoregon.cs.presenter.entity.InteractivityDefinition"/>
         <mapping class="edu.uoregon.cs.presenter.entity.Course"/>
         <mapping class="edu.uoregon.cs.presenter.entity.Lecture"/>
         <mapping class="edu.uoregon.cs.presenter.entity.LectureSession"/>

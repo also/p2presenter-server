@@ -16,39 +16,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import edu.uoregon.cs.presenter.entity.Annotation;
 import edu.uoregon.cs.presenter.entity.Course;
 import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.Person;
-import edu.uoregon.cs.presenter.entity.Annotation.Visibility;
 
 public class DaoImpl extends HibernateDaoSupport implements Dao {
 	private static final DetachedCriteria SUBJECTS_CRITERA = DetachedCriteria.forClass(Course.class).setProjection(Projections.distinct(Projections.property("subject"))).addOrder(Order.asc("subject"));
 	
-	public DaoImpl() {
-	}
-	
-	public Annotation getAnnotation(Integer id, Person person) {
-		Annotation annotation = (Annotation) getHibernateTemplate().get(Annotation.class, id);
-		validateAnnotationAccess(annotation, person);
-		return annotation;
-	}
-	
-	private void validateAnnotationAccess(Annotation annotation, Person person) {
-		if (!annotation.getCreator().equals(person)) {
-			if (annotation.getVisibility() == Visibility.PRIVATE) {
-				throw new InvalidAccessException();
-			}
-			
-			Course course = annotation.getSlideSession().getLectureSession().getCourse();
-			if (annotation.getVisibility() == Visibility.INSTRUCTOR && !course.getInstructor().equals(person)) {
-				throw new InvalidAccessException();
-			}
-			else if (!course.getStudents().contains(person)) {
-				throw new InvalidAccessException();
-			}
-		}
-	}
+	public DaoImpl() {}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getEntity(Class<T> entityClass, Serializable id) {

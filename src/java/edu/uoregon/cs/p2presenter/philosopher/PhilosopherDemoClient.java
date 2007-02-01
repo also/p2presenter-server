@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import edu.uoregon.cs.p2presenter.Connection;
-import edu.uoregon.cs.p2presenter.interactivity.InteractivityClient;
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityParticipantClient;
 
 public class PhilosopherDemoClient {
 
@@ -18,7 +18,7 @@ public class PhilosopherDemoClient {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		JFrame frame = new JFrame("Interactivity Controller");
+		JFrame frame = new JFrame("Interactivity Demo Participant");
 		String host = args.length == 0 ? JOptionPane.showInputDialog("Host address:", "localhost") : args[0];
 		if (host == null) {
 			System.exit(0);
@@ -27,7 +27,7 @@ public class PhilosopherDemoClient {
 			Connection connection = new Connection(new Socket(host, 9000));
 			connection.start();
 			
-			InteractivityClient client = new InteractivityClient(connection, 0);
+			InteractivityParticipantClient client = new InteractivityParticipantClient(connection, 0);
 			
 			// TODO
 			frame.setContentPane(client.getView());

@@ -2,6 +2,8 @@
 
 package edu.uoregon.cs.p2presenter.interactivity;
 
+import org.ry1.json.JsonObject;
+
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
 import edu.uoregon.cs.p2presenter.RequestHandler;
@@ -14,12 +16,6 @@ import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 public class JoinInteractivityRequestHandler implements RequestHandler {
 	private ActiveInteractivityController activeInteractivityController;
 	
-	public JoinInteractivityRequestHandler() {}
-	
-	public JoinInteractivityRequestHandler(ActiveInteractivityController activeInteractivityController) {
-		this.activeInteractivityController = activeInteractivityController;
-	}
-	
 	public void setActiveInteractivityController(ActiveInteractivityController activeInteractivityController) {
 		this.activeInteractivityController = activeInteractivityController;
 	}
@@ -28,19 +24,22 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		Connection connection = request.getConnection();
 		Integer interactivityId = (Integer) request.getAttribute(InteractivityRequestMatcher.INTERACTIVITY_ID_ATTRIBUTE_NAME);
 		
+		// XXX make sure the interactivity is active
+		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
 		InteractivityDefinition interactivityDefinition =  activeInteractivity.getInteractivityDefinition();
-		InteractivityRunner<?> interactivityRunner = activeInteractivity.getInteractivityRunner();
 		
-		Object model = interactivityRunner.onConnect();
-		connection.addConnectionListener(new InteractivityConnectionListener(interactivityRunner, model));
+		InteractivityController interactivityController = activeInteractivity.getInteractivityController();
+		Object model = interactivityController.onConnect();
+		connection.addConnectionListener(new InteractivityConnectionListener(interactivityController, model));
 		
 		connection.getRequestHandlerMapping().mapHandler(InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
 		
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
-		response.setHeader(InteractivityClient.CLIENT_VIEW_CLASS_NAME_HEADER_NAME, interactivityDefinition.getClientViewClassName());
-		response.setHeader(InteractivityClient.MODEL_CLASS_NAME_HEADER_NAME, interactivityDefinition.getClientModelClassName());
-		response.setHeader(InteractivityClient.MODEL_PROXY_ID_HEADER_NAME, String.valueOf(((RemoteInvocationProxy) model).getRemoteProxyReference().getId()));
+		JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelClassName");
+		responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteProxyReference().getId());
+		response.setContent(responseObject.toString());
+		
 		return response;
 	}
 
@@ -48,10 +47,10 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	 * @param <T> the model type
 	 */
 	private static class InteractivityConnectionListener implements ConnectionListener {
-		private InteractivityRunner interactivityRunner;
+		private InteractivityController interactivityRunner;
 		private Object model;
 		
-		public InteractivityConnectionListener(InteractivityRunner<?> interactivityRunner, Object model) {
+		public InteractivityConnectionListener(InteractivityController interactivityRunner, Object model) {
 			this.interactivityRunner = interactivityRunner;
 			this.model = model;
 		}

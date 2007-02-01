@@ -3,15 +3,15 @@
 package edu.uoregon.cs.p2presenter.philosopher;
 
 import java.awt.Dimension;
-import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityHostClient;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher;
-import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherInteractivityRunner;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class PhilosopherDemoHost {
@@ -19,26 +19,29 @@ public class PhilosopherDemoHost {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		String host = args.length == 0 ? JOptionPane.showInputDialog("Host address:", "localhost") : args[0];
 		if (host == null) {
 			System.exit(0);
 		}
-
-		Connection connection = new Connection(new Socket(host, 9000));
-		connection.start();
-		
-		Table table = new Table();
-		PhilosopherVisualization viz = new PhilosopherVisualization(table);
-		
-		JFrame frame = new JFrame("Dining Philosophers Demo");
-		frame.setContentPane(viz);
-		frame.setSize(new Dimension(500, 500));
-		frame.setVisible(true);
-
-		PhilosopherInteractivityRunner philosopherInteractivityRunner = new PhilosopherInteractivityRunner(table);
-		InvocationRequestHandler invoker = new InvocationRequestHandler();
-		connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
-		connection.setAttribute("interactivity", philosopherInteractivityRunner);
+		try {
+			Connection connection = new Connection(new Socket(host, 9000));
+			connection.start();
+	
+			InteractivityHostClient client = new InteractivityHostClient(connection, 0);
+			
+			JFrame frame = new JFrame("Interactivity Demo Host");
+			frame.setContentPane(client.getController().getView());
+			frame.setSize(new Dimension(500, 500));
+			frame.setVisible(true);
+	
+			InvocationRequestHandler invoker = new InvocationRequestHandler();
+			connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
+			connection.setAttribute("interactivity", client.getController());
+			client.begin();
+		}
+		catch (ConnectException ex) {
+			JOptionPane.showMessageDialog(null, "Couldn't connect to server '" + host + "'");
+		}
 	}
 }

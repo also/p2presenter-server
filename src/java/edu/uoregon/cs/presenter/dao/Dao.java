@@ -5,14 +5,10 @@ package edu.uoregon.cs.presenter.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import edu.uoregon.cs.presenter.entity.Annotation;
 import edu.uoregon.cs.presenter.entity.Course;
 import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.Person;
 
 public interface Dao {
-
-	public Annotation getAnnotation(Integer id, Person person);
 	
 	public Lecture getLectureByTitle(Course course, String title);
 	

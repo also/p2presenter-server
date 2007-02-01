@@ -108,8 +108,8 @@ xsi:schemaLocation="
 		<property name="dataSource"><jee:jndi-lookup jndi-name="java:/comp/env/jdbc/database"/></property>
 		
 		<property name="annotatedClasses"><list>
-			<value>edu.uoregon.cs.presenter.entity.Annotation</value>
 			<value>edu.uoregon.cs.presenter.entity.Course</value>
+			<value>edu.uoregon.cs.presenter.entity.InteractivityDefinition</value>
 			<value>edu.uoregon.cs.presenter.entity.Lecture</value>
 			<value>edu.uoregon.cs.presenter.entity.LectureSession</value>
 			<value>edu.uoregon.cs.presenter.entity.Person</value>

@@ -9,15 +9,17 @@ import javax.persistence.Id;
 @Entity
 public class InteractivityDefinition {
 	private int id;
-	private String clientViewClassName;
-	private String clientModelClassName;
+	private String hostControllerClassName;
+	private String participantViewClassName;
+	private String participantModelClassName;
 	
 	public InteractivityDefinition() {}
 	
-	public InteractivityDefinition(int id, String clientViewClassName, String modelClassName) {
+	public InteractivityDefinition(int id, String hostControllerClassName, String participantViewClassName, String participantModelClassName) {
 		this.id = id;
-		this.clientViewClassName = clientViewClassName;
-		this.clientModelClassName = modelClassName;
+		this.hostControllerClassName = hostControllerClassName;
+		this.participantViewClassName = participantViewClassName;
+		this.participantModelClassName = participantModelClassName;
 	}
 
 	@Id
@@ -29,20 +31,28 @@ public class InteractivityDefinition {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public String getClientViewClassName() {
-		return clientViewClassName;
-	}
-	
-	public void setClientViewClassName(String clientViewClassName) {
-		this.clientViewClassName = clientViewClassName;
+
+	public String getHostControllerClassName() {
+		return hostControllerClassName;
 	}
 
-	public String getClientModelClassName() {
-		return clientModelClassName;
+	public void setHostControllerClassName(String hostControllerClassName) {
+		this.hostControllerClassName = hostControllerClassName;
 	}
-	
-	public void setClientModelClassName(String clientModelClassName) {
-		this.clientModelClassName = clientModelClassName;
+
+	public String getParticipantModelClassName() {
+		return participantModelClassName;
+	}
+
+	public void setParticipantModelClassName(String participantModelClassName) {
+		this.participantModelClassName = participantModelClassName;
+	}
+
+	public String getParticipantViewClassName() {
+		return participantViewClassName;
+	}
+
+	public void setParticipantViewClassName(String participantViewClassName) {
+		this.participantViewClassName = participantViewClassName;
 	}
 }

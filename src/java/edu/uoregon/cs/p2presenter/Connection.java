@@ -19,9 +19,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.IncomingMessage;
@@ -41,7 +38,6 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	
 	private Socket socket;
 
-	private Log logger = LogFactory.getLog(Connection.class);
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
 	
 	private ArrayList<ConnectionListener> connectionListeners = new ArrayList<ConnectionListener>();
@@ -222,7 +218,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	}
 	
 	private <T extends Throwable> T handle(T t) {
-		logger.warn("Closing connection due to exception", t);
+		t.printStackTrace();
 		try {
 			close();
 		}
@@ -344,6 +340,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		private Condition condition = lock.newCondition();
 		private V result;
 		private Throwable throwable;
+		boolean cancelled = false;
 		
 		public FutureResponseHandler(ResponseHandler<V> responseHandler) {
 			this.responseHandler = responseHandler;
@@ -353,7 +350,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 			lock.lock();
 			try {
 				if (condition != null) {
-					throwable = new CancellationException();
+					cancelled = true;
 					
 					responseHandler = null;
 					condition.signalAll();
@@ -388,10 +385,10 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		
 		private V getInternal() throws ExecutionException, CancellationException {
 			if (throwable != null) {
-				if (isCancelled()) {
-					throw (CancellationException) throwable;
-				}
 				throw new ExecutionException(throwable);
+			}
+			else if (cancelled) {
+				throw new CancellationException();
 			}
 			else {
 				return result;
@@ -399,11 +396,11 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		}
 
 		public boolean isCancelled() {
-			return throwable instanceof CancellationException;
+			return cancelled;
 		}
 
 		public boolean isDone() {
-			return condition == null;
+			return condition == null || cancelled;
 		}
 
 		public V handleResponse(IncomingResponseMessage response) throws Exception {
@@ -430,6 +427,5 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 				lock.unlock();
 			}
 		}
-		
 	}
 }
