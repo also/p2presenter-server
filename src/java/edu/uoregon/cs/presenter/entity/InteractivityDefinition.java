@@ -6,20 +6,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.validator.NotNull;
+
 @Entity
 public class InteractivityDefinition {
 	private int id;
 	private String hostControllerClassName;
 	private String participantViewClassName;
-	private String participantModelClassName;
+	private String participantModelInterfaceClassName;
 	
 	public InteractivityDefinition() {}
 	
-	public InteractivityDefinition(int id, String hostControllerClassName, String participantViewClassName, String participantModelClassName) {
+	public InteractivityDefinition(int id, String hostControllerClassName, String participantViewClassName, String participantModelInterfaceClassName) {
 		this.id = id;
 		this.hostControllerClassName = hostControllerClassName;
 		this.participantViewClassName = participantViewClassName;
-		this.participantModelClassName = participantModelClassName;
+		this.participantModelInterfaceClassName = participantModelInterfaceClassName;
 	}
 
 	@Id
@@ -32,6 +34,7 @@ public class InteractivityDefinition {
 		this.id = id;
 	}
 
+	@NotNull
 	public String getHostControllerClassName() {
 		return hostControllerClassName;
 	}
@@ -40,14 +43,16 @@ public class InteractivityDefinition {
 		this.hostControllerClassName = hostControllerClassName;
 	}
 
-	public String getParticipantModelClassName() {
-		return participantModelClassName;
+	@NotNull
+	public String getParticipantModelInterfaceClassName() {
+		return participantModelInterfaceClassName;
 	}
 
-	public void setParticipantModelClassName(String participantModelClassName) {
-		this.participantModelClassName = participantModelClassName;
+	public void setParticipantModelInterfaceClassName(String participantModelClassName) {
+		this.participantModelInterfaceClassName = participantModelClassName;
 	}
 
+	@NotNull
 	public String getParticipantViewClassName() {
 		return participantViewClassName;
 	}

@@ -11,7 +11,7 @@ import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 import edu.uoregon.cs.presenter.dao.Dao;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
-public class ActiveInteractivityControllerRequestHandler implements RequestHandler, ConnectionListener {
+public class InteractivityAdminRequestHandler implements RequestHandler, ConnectionListener {
 	private Dao dao;
 	private ActiveInteractivityController activeInteractivityController;
 	
@@ -30,18 +30,20 @@ public class ActiveInteractivityControllerRequestHandler implements RequestHandl
 		
 		InteractivityDefinition definition = dao.getEntity(InteractivityDefinition.class, id);
 		
-		if (action.equals("get")) {
-			OutgoingResponseMessage response = new OutgoingResponseMessage(request);
-			JsonObject result = new JsonObject(definition, "id", "hostControllerClassName");
-			response.setContent(result.toString());
-			return response;
-		}
-		else if (action.equals("begin")) {
-			activeInteractivityController.addActiveInteractivity(id, new ActiveInteractivity(request.getConnection(), definition));
-			return new OutgoingResponseMessage(request);
+		if (definition != null) {
+			if (action.equals("get")) {
+				OutgoingResponseMessage response = new OutgoingResponseMessage(request);
+				JsonObject result = new JsonObject(definition, "id", "hostControllerClassName");
+				response.setContent(result.toString());
+				return response;
+			}
+			else if (action.equals("begin")) {
+				activeInteractivityController.addActiveInteractivity(id, new ActiveInteractivity(request.getConnection(), definition));
+				return new OutgoingResponseMessage(request);
+			}
 		}
 		
-		return null;
+		return new OutgoingResponseMessage(request, 404);
 	}
 
 	public void connectionClosed(Connection connection) {

@@ -5,6 +5,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
@@ -21,15 +22,21 @@ public class InteractivityHostClient {
 		
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin");
 		request.setHeader("Action", "get");
-		// XXX make sure response is not null
-		JsonObject responseObject = JsonObject.valueOf(connection.sendRequestAndAwaitResponse(request).getContentAsString());
-
-		Class<InteractivityController> controllerClass = (Class<InteractivityController>) Class.forName(responseObject.get("hostControllerClassName").toString());
-		controller = controllerClass.newInstance();
-		
-		InvocationRequestHandler invoker = new InvocationRequestHandler();
-		connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
-		connection.setAttribute("interactivity", controller);
+		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(request);
+		if (response.getStatus() == 200) {
+			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
+	
+			Class<InteractivityController> controllerClass = (Class<InteractivityController>) Class.forName(responseObject.get("hostControllerClassName").toString());
+			controller = controllerClass.newInstance();
+			
+			InvocationRequestHandler invoker = new InvocationRequestHandler();
+			connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
+			connection.setAttribute("interactivity", controller);
+		}
+		else {
+			// TODO exception type
+			throw new Exception();
+		}
 	}
 	
 	public InteractivityController<?> getController() {

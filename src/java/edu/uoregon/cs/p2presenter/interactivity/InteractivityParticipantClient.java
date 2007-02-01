@@ -24,18 +24,24 @@ public class InteractivityParticipantClient {
 	public InteractivityParticipantClient(Connection connection, int interactivityId) throws Exception {
 		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/join");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
-		JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
-		Class<? extends Container> participantViewClass = (Class<? extends Container>) Class.forName(responseObject.get("participantViewClassName").toString());
-		view = participantViewClass.newInstance();
-		
-		Class<?> modelClass = Class.forName(responseObject.get("participantModelClassName").toString());
-		int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
-		remoteInvocationConnection = new RemoteInvocationConnection(connection, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller");
-		
-		model = remoteInvocationConnection.proxy(modelClass, new RemoteProxyReference(modelProxyId));
-		
-		if (view instanceof InteractivityClientComponent) {
-			((InteractivityClientComponent) view).setModel(model);
+		if (response.getStatus() == 200) {
+			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
+			Class<? extends Container> participantViewClass = (Class<? extends Container>) Class.forName(responseObject.get("participantViewClassName").toString());
+			view = participantViewClass.newInstance();
+			
+			Class<?> modelClass = Class.forName(responseObject.get("participantModelInterfaceClassName").toString());
+			int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
+			remoteInvocationConnection = new RemoteInvocationConnection(connection, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller");
+			
+			model = remoteInvocationConnection.proxy(modelClass, new RemoteProxyReference(modelProxyId));
+			
+			if (view instanceof InteractivityClientComponent) {
+				((InteractivityClientComponent) view).setModel(model);
+			}
+		}
+		else {
+			// TODO exception type
+			throw new Exception();
 		}
 	}
 	

@@ -24,23 +24,26 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		Connection connection = request.getConnection();
 		Integer interactivityId = (Integer) request.getAttribute(InteractivityRequestMatcher.INTERACTIVITY_ID_ATTRIBUTE_NAME);
 		
-		// XXX make sure the interactivity is active
-		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
-		InteractivityDefinition interactivityDefinition =  activeInteractivity.getInteractivityDefinition();
-		
-		InteractivityController interactivityController = activeInteractivity.getInteractivityController();
-		Object model = interactivityController.onConnect();
-		connection.addConnectionListener(new InteractivityConnectionListener(interactivityController, model));
-		
-		connection.getRequestHandlerMapping().mapHandler(InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
-		
-		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
-		JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelClassName");
-		responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteProxyReference().getId());
-		response.setContent(responseObject.toString());
-		
-		return response;
+		if (activeInteractivity != null) {
+			InteractivityDefinition interactivityDefinition =  activeInteractivity.getInteractivityDefinition();
+			
+			InteractivityController interactivityController = activeInteractivity.getInteractivityController();
+			Object model = interactivityController.onConnect();
+			connection.addConnectionListener(new InteractivityConnectionListener(interactivityController, model));
+			
+			connection.getRequestHandlerMapping().mapHandler(InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
+			
+			OutgoingResponseMessage response = new OutgoingResponseMessage(request);
+			JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelInterfaceClassName");
+			responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteProxyReference().getId());
+			response.setContent(responseObject.toString());
+			
+			return response;
+		}
+		else {
+			return new OutgoingResponseMessage(request, 404);
+		}
 	}
 
 	/** Calls the interactivity controller's onDisconnect method.

@@ -25,7 +25,7 @@
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="path" value="admin"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.ActiveInteractivityControllerRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.InteractivityAdminRequestHandler">
 					<property name="dao" ref="dao"/>
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>

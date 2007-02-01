@@ -1,6 +1,6 @@
 /* $Id: PhilosopherDemo.java 86 2007-01-25 09:23:58Z rberdeen@cs.uoregon.edu $ */
 
-package edu.uoregon.cs.p2presenter.philosopher;
+package edu.uoregon.cs.p2presenter.interactivity.demo;
 
 import java.awt.Dimension;
 import java.net.ConnectException;
