@@ -28,7 +28,7 @@ import org.hibernate.validator.NotNull;
 @Entity
 @Table
 public class LectureSession {
-	private int id;
+	private Integer id;
 	
 	private Course course;
 	private Lecture lecture;
@@ -85,11 +85,11 @@ public class LectureSession {
 	
 	@Id
 	@GeneratedValue
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

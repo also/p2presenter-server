@@ -10,15 +10,14 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 public class InteractivityDefinition {
-	private int id;
+	private Integer id;
 	private String hostControllerClassName;
 	private String participantViewClassName;
 	private String participantModelInterfaceClassName;
 	
 	public InteractivityDefinition() {}
 	
-	public InteractivityDefinition(int id, String hostControllerClassName, String participantViewClassName, String participantModelInterfaceClassName) {
-		this.id = id;
+	public InteractivityDefinition(String hostControllerClassName, String participantViewClassName, String participantModelInterfaceClassName) {
 		this.hostControllerClassName = hostControllerClassName;
 		this.participantViewClassName = participantViewClassName;
 		this.participantModelInterfaceClassName = participantModelInterfaceClassName;
@@ -26,11 +25,11 @@ public class InteractivityDefinition {
 
 	@Id
 	@GeneratedValue
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
