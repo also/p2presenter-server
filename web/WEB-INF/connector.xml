@@ -3,7 +3,9 @@
 <!-- $Id$ -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	<bean id="irm" abstract="true" class="edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher"/>
+	<bean id="irm" abstract="true" class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
+		<property name="parameterNames" value="interactivityId"/>
+	</bean>
 	
 	<bean id="connectionManager" class="edu.uoregon.cs.p2presenter.ConnectionManager">
 		<property name="requestHandlerMapping.uriMappedHandlers"><map>
@@ -12,19 +14,19 @@
 		</map></property>
 		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
 			<entry>
-				<key><bean parent="irm"><property name="path" value="join"/></bean></key>
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/join"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.interactivity.JoinInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
-				<key><bean parent="irm"><property name="path" value="controller"/></bean></key>
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/controller"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.interactivity.ProxyInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
-				<key><bean parent="irm"><property name="path" value="admin"/></bean></key>
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.interactivity.InteractivityAdminRequestHandler">
 					<property name="dao" ref="dao"/>
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>

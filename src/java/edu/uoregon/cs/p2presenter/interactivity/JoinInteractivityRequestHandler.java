@@ -22,7 +22,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		Connection connection = request.getConnection();
-		Integer interactivityId = (Integer) request.getAttribute(InteractivityRequestMatcher.INTERACTIVITY_ID_ATTRIBUTE_NAME);
+		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
 		if (activeInteractivity != null) {
@@ -32,7 +32,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 			Object model = interactivityController.onConnect();
 			connection.addConnectionListener(new InteractivityConnectionListener(interactivityController, model));
 			
-			connection.getRequestHandlerMapping().mapHandler(InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
+			connection.getRequestHandlerMapping().mapHandler("/interactivity/" + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
 			
 			OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 			JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelInterfaceClassName");

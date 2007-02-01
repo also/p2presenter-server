@@ -22,7 +22,7 @@ public class InteractivityParticipantClient {
 	//  TODO narrow exceptions
 	@SuppressWarnings("unchecked")
 	public InteractivityParticipantClient(Connection connection, int interactivityId) throws Exception {
-		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/join");
+		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/join");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
 		if (response.getStatus() == 200) {
 			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
@@ -31,7 +31,7 @@ public class InteractivityParticipantClient {
 			
 			Class<?> modelClass = Class.forName(responseObject.get("participantModelInterfaceClassName").toString());
 			int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
-			remoteInvocationConnection = new RemoteInvocationConnection(connection, InteractivityRequestMatcher.URI_PREFIX + interactivityId + "/controller");
+			remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller");
 			
 			model = remoteInvocationConnection.proxy(modelClass, new RemoteProxyReference(modelProxyId));
 			

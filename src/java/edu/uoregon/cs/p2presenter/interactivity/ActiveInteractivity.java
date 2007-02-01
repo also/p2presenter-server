@@ -17,7 +17,7 @@ public class ActiveInteractivity<T> {
 		this.hostConnection = hostConnection;
 		this.interactivityDefinition = interactivityDefinition;
 		
-		remoteInvocationConnection = new RemoteInvocationConnection(hostConnection, InteractivityRequestMatcher.URI_PREFIX + interactivityDefinition.getId() + "/controller");
+		remoteInvocationConnection = new RemoteInvocationConnection(hostConnection, "/interactivity/" + interactivityDefinition.getId() + "/controller");
 		
 		interactivityController = remoteInvocationConnection.proxy(InteractivityController.class, "interactivity");
 	}

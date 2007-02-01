@@ -26,7 +26,7 @@ public class InteractivityAdminRequestHandler implements RequestHandler, Connect
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 		// TODO don't use a header
 		String action = request.getHeader("Action");
-		int id = (Integer) request.getAttribute(InteractivityRequestMatcher.INTERACTIVITY_ID_ATTRIBUTE_NAME);
+		Integer id = new Integer(request.getAttribute("interactivityId").toString());
 		
 		InteractivityDefinition definition = dao.getEntity(InteractivityDefinition.class, id);
 		

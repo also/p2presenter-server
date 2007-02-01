@@ -5,6 +5,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
@@ -30,7 +31,7 @@ public class InteractivityHostClient {
 			controller = controllerClass.newInstance();
 			
 			InvocationRequestHandler invoker = new InvocationRequestHandler();
-			connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
+			connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
 			connection.setAttribute("interactivity", controller);
 		}
 		else {

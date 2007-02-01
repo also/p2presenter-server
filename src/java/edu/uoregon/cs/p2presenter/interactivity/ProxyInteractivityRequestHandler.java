@@ -22,7 +22,7 @@ public class ProxyInteractivityRequestHandler extends AbstractProxyRequestHandle
 
 	@Override
 	protected Connection getTargetConnection(IncomingRequestMessage request) {
-		Integer interactivityId = (Integer) request.getAttribute(InteractivityRequestMatcher.INTERACTIVITY_ID_ATTRIBUTE_NAME);
+		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		return activeInteractivityController.getActiveInteractivity(interactivityId).getHostConnection();
 	}
 }

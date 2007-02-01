@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityHostClient;
-import edu.uoregon.cs.p2presenter.interactivity.InteractivityRequestMatcher;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class PhilosopherDemoHost {
@@ -27,8 +26,10 @@ public class PhilosopherDemoHost {
 		try {
 			Connection connection = new Connection(new Socket(host, 9000));
 			connection.start();
+			
+			int interactivityId = 0;
 	
-			InteractivityHostClient client = new InteractivityHostClient(connection, 0);
+			InteractivityHostClient client = new InteractivityHostClient(connection, interactivityId);
 			
 			JFrame frame = new JFrame("Interactivity Demo Host");
 			frame.setContentPane(client.getController().getView());
@@ -36,7 +37,7 @@ public class PhilosopherDemoHost {
 			frame.setVisible(true);
 	
 			InvocationRequestHandler invoker = new InvocationRequestHandler();
-			connection.getRequestHandlerMapping().mapHandler(new InteractivityRequestMatcher("controller"), invoker);
+			connection.getRequestHandlerMapping().mapHandler("/interactivity/" + interactivityId + "/controller", invoker);
 			connection.setAttribute("interactivity", client.getController());
 			client.begin();
 		}
