@@ -24,6 +24,8 @@ public class InvocationRequestHandler implements RequestHandler {
 	
 	public static final String PROXY_CACHE_ATTRIBUTE_NAME = InvocationRequestHandler.class.getName() + "proxyCache";
 	
+	private RemoteInvocationConnection remoteInvocationConnection;
+	
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
@@ -53,8 +55,14 @@ public class InvocationRequestHandler implements RequestHandler {
 						ObjectInputStream in = new ObjectInputStream(bytes);
 						for (int i = 0; i < args.length; i++) {
 							args[i] = in.readObject();
-							if (args[i] instanceof RemoteProxyReference) {
-								args[i] = proxyCache.getTarget(((RemoteProxyReference) args[i]).getId());
+							if (args[i] instanceof RemoteObjectReference) {
+								if (args[i] instanceof ObjectDescriptor) {
+									Integer scopeId = request.getProxiedForConnectionId();
+									args[i] = remoteInvocationConnection.getProxy((ObjectDescriptor) args[i], scopeId);
+								}
+								else {
+									args[i] = proxyCache.getTarget(((RemoteObjectReference) args[i]).getId());
+								}
 							}
 						}
 						in.close();
@@ -105,7 +113,7 @@ public class InvocationRequestHandler implements RequestHandler {
 						response.setContentObject((Serializable) result);
 					}
 					else {
-						response.setContentObject(proxyCache.getProxyIdentifier(result));	
+						response.setContentObject(proxyCache.getObjectDescriptor(result));	
 					}
 				}
 			}

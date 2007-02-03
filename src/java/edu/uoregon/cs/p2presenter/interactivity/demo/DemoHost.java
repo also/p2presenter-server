@@ -13,7 +13,7 @@ import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityHostClient;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
-public class PhilosopherDemoHost {
+public class DemoHost {
 
 	/**
 	 * @param args

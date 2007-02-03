@@ -16,9 +16,11 @@ import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 public abstract class AbstractProxyRequestHandler implements RequestHandler {
 	protected abstract Connection getTargetConnection(IncomingRequestMessage request);
 	
-	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws IOException {
-		Connection target = getTargetConnection(request);
-		target.sendRequest(new OutgoingRequestMessage(target, request), new ProxyResponseHandler(request));
+	public OutgoingResponseMessage handleRequest(IncomingRequestMessage incomingRequest) throws IOException {
+		Connection target = getTargetConnection(incomingRequest);
+		
+		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
+		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));
 		
 		// the response will be sent by the proxy response handler
 		return null;
@@ -41,7 +43,6 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 			
 			return null;
 		}
-		
 	}
 
 }

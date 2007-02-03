@@ -37,6 +37,7 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	public static final String PROTOCOL_VERSION = PROTOCOL + '/' + VERSION;
 	
 	private Socket socket;
+	private Integer connectionId;
 
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
 	
@@ -67,6 +68,15 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 		
 		out = new BufferedOutputStream(socket.getOutputStream());
 		in = new PushbackInputStream(socket.getInputStream());
+	}
+	
+	public Connection(Socket socket, int connectionId) throws IOException {
+		this(socket);
+		this.connectionId = connectionId;
+	}
+	
+	public Integer getConnectionId() {
+		return connectionId;
 	}
 	
 	public void addConnectionListener(ConnectionListener connectionListener) {

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityParticipantClient;
 
-public class PhilosopherDemoClient {
+public class DemoClient {
 
 	/**
 	 * @param args

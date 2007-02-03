@@ -10,7 +10,7 @@ import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 
 public class ConnectionManager implements ConnectionListener, MessageIdSource {
 	private Collection<Connection> connections = new LinkedList<Connection>();
-	
+	private int connectionId = 0;
 	private MessageIdSource messageIdSource = DefaultMessageIdSource.newUniqueMessageIdSource("GLOBAL");
 	
 	private DefaultRequestHandlerMapping requestHandlerMapping = new DefaultRequestHandlerMapping();
@@ -23,7 +23,10 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 	}
 	
 	public Connection createConnection(Socket socket) throws IOException {
-		Connection connection = new Connection(socket);
+		Connection connection;
+		synchronized (connections) {
+			connection = new Connection(socket, connectionId);
+		}
 		connection.addConnectionListener(this);
 		connection.getRequestHandlerMapping().setParent(requestHandlerMapping);
 		connections.add(connection);

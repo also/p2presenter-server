@@ -11,7 +11,7 @@ import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
-import edu.uoregon.cs.p2presenter.remoting.RemoteProxyReference;
+import edu.uoregon.cs.p2presenter.remoting.RemoteObjectReference;
 
 public class InteractivityParticipantClient {
 	private RemoteInvocationConnection remoteInvocationConnection;
@@ -33,7 +33,7 @@ public class InteractivityParticipantClient {
 			int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
 			remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller");
 			
-			model = remoteInvocationConnection.proxy(modelClass, new RemoteProxyReference(modelProxyId));
+			model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));
 			
 			if (view instanceof InteractivityClientComponent) {
 				((InteractivityClientComponent) view).setModel(model);

@@ -20,27 +20,27 @@ class GlobalProxyCache {
 	}
 	
 	public class ProxyCache {
-		private HashMap<Object, ProxyDescriptor> proxyIdentifiers = new HashMap<Object, ProxyDescriptor>();
+		private HashMap<Object, ObjectDescriptor> objectDescriptors = new HashMap<Object, ObjectDescriptor>();
 		
 		/** Maps from id to target*/
-		private HashMap<Integer, Object> proxiedObjects = new HashMap<Integer, Object>();
+		private HashMap<Integer, Object> localObjects = new HashMap<Integer, Object>();
 		
 		public Object getTarget(Integer id) {
-			return proxiedObjects.get(id);
+			return localObjects.get(id);
 		}
 		
-		public ProxyDescriptor getProxyIdentifier(Object toProxy) throws Exception {
-			synchronized (proxyIdentifiers) {
-				ProxyDescriptor proxyIdentifier = proxyIdentifiers.get(toProxy);
+		public ObjectDescriptor getObjectDescriptor(Object toProxy) throws Exception {
+			synchronized (objectDescriptors) {
+				ObjectDescriptor objectDescriptor = objectDescriptors.get(toProxy);
 			
-				if (proxyIdentifier == null) {
+				if (objectDescriptor == null) {
 					Class[] interfaces = toProxy.getClass().getInterfaces();
-					proxyIdentifier = new ProxyDescriptor(interfaces, proxyNumber++);
-					proxyIdentifiers.put(toProxy, proxyIdentifier);
-					proxiedObjects.put(proxyIdentifier.getId(), toProxy);
+					objectDescriptor = new ObjectDescriptor(interfaces, proxyNumber++);
+					objectDescriptors.put(toProxy, objectDescriptor);
+					localObjects.put(objectDescriptor.getId(), toProxy);
 				}
 			
-				return proxyIdentifier;
+				return objectDescriptor;
 			}
 		}
 	}

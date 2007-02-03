@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 
 import edu.uoregon.cs.p2presenter.Connection;
@@ -20,29 +21,35 @@ import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 public class RemoteInvocationConnection {
 	private Connection connection;
 	private String uri;
+	boolean bidirectional = false;
 	
-	private HashMap<RemoteProxyReference, WeakReference<RemoteInvocationProxy>> proxyReferences = new HashMap<RemoteProxyReference, WeakReference<RemoteInvocationProxy>>();
+	private HashMap<Integer, HashMap<RemoteObjectReference, WeakReference<RemoteInvocationProxy>>> proxyReferences = new HashMap<Integer, HashMap<RemoteObjectReference, WeakReference<RemoteInvocationProxy>>>();
 	
 	public RemoteInvocationConnection(Connection connection, String uri) {
 		this.connection = connection;
 		this.uri = uri;
 	}
 	
+	public RemoteInvocationConnection(Connection connection, String uri, boolean bidirectional) {
+		this(connection, uri);
+		this.bidirectional = bidirectional;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public <T> T proxy(Class<T> interfaceClass, RemoteProxyReference remoteProxyReference) {
-		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass, RemoteInvocationProxy.class}, new RemoteInvocationHandler(this, remoteProxyReference));
+	public <T> T proxy(Class<T> interfaceClass, RemoteObjectReference remoteProxyReference) {
+		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass, RemoteInvocationProxy.class}, new RemoteObjectInvocationHandler(this, remoteProxyReference));
 	}
 	
 	@SuppressWarnings("unchecked")
 	public <T> T proxy(Class<T> interfaceClass, String variableName) {
-		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass, RemoteInvocationProxy.class}, new RemoteInvocationHandler(this, variableName));
+		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] {interfaceClass, RemoteInvocationProxy.class}, new RemoteObjectInvocationHandler(this, variableName));
 	}
 	
 	public Connection getConnection() {
 		return connection;
 	}
 	
-	public Object invoke(RemoteProxyReference remoteProxyReference, Method method, Object[] args) throws Throwable {
+	public Object invoke(RemoteObjectReference remoteProxyReference, Method method, Object[] args) throws Throwable {
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.EVALUATE, uri);
 		request.setHeader(InvocationRequestHandler.TARGET_PROXY_ID_HEADER_NAME, String.valueOf(remoteProxyReference.getId()));
 		return invoke(request, method, args);
@@ -74,7 +81,10 @@ public class RemoteInvocationConnection {
 				
 				for (Object argument : args) {
 					if (argument instanceof RemoteInvocationProxy) {
-						argument = ((RemoteInvocationProxy) argument).getRemoteProxyReference();
+						argument = ((RemoteInvocationProxy) argument).getRemoteObjectReference();
+					}
+					else if (bidirectional) {
+						
 					}
 					out.writeObject(argument);
 				}
@@ -103,7 +113,14 @@ public class RemoteInvocationConnection {
 			return getObjectContent(response);
 		}
 		else {
-			throw (Throwable) getObjectContent(response);
+			Throwable throwable = (Throwable) getObjectContent(response);
+			if (throwable != null) {
+				throw throwable;
+			}
+			else {
+				// TODO throw unchecked exception
+				throw new RemoteException("Remote error " + response.getStatus() + ": " + response.getContentAsString());
+			}
 		}
 	}
 	
@@ -112,8 +129,8 @@ public class RemoteInvocationConnection {
 			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(response.getContent()));
 			Object result = in.readObject();
 			
-			if (result instanceof ProxyDescriptor) {
-				return getProxy((ProxyDescriptor) result);
+			if (result instanceof ObjectDescriptor) {
+				return getProxy((ObjectDescriptor) result, null);
 			}
 			else {
 				return result;
@@ -124,19 +141,31 @@ public class RemoteInvocationConnection {
 		}
 	}
 	
-	private RemoteInvocationProxy getProxy(ProxyDescriptor proxyIdentifier) {
+	public RemoteInvocationProxy getProxy(ObjectDescriptor objectDescriptor, Integer scopeId) {
+		if (scopeId == null) {
+			scopeId = -1;
+		}
+		
+		HashMap<RemoteObjectReference, WeakReference<RemoteInvocationProxy>> scopedProxyReferences;
 		synchronized (proxyReferences) {
+			scopedProxyReferences = proxyReferences.get(scopeId);
+			if (scopedProxyReferences == null) {
+				scopedProxyReferences = new HashMap<RemoteObjectReference, WeakReference<RemoteInvocationProxy>>();
+				proxyReferences.put(scopeId, scopedProxyReferences);
+			}
+		}
+		synchronized (scopedProxyReferences) {
 			RemoteInvocationProxy proxy = null;
-			WeakReference<RemoteInvocationProxy> remoteProxyReference = proxyReferences.get(proxyIdentifier);
+			WeakReference<RemoteInvocationProxy> remoteProxyReference = scopedProxyReferences.get(objectDescriptor);
 			if (remoteProxyReference != null) {
 				proxy = remoteProxyReference.get();
 			}
 			if (proxy == null) {
-				Class[] interfaceClasses = new Class[proxyIdentifier.getProxiedClasses().length + 1];
-				System.arraycopy(proxyIdentifier.getProxiedClasses(), 0, interfaceClasses, 1, proxyIdentifier.getProxiedClasses().length);
+				Class[] interfaceClasses = new Class[objectDescriptor.getProxiedClasses().length + 1];
+				System.arraycopy(objectDescriptor.getProxiedClasses(), 0, interfaceClasses, 1, objectDescriptor.getProxiedClasses().length);
 				interfaceClasses[0] = RemoteInvocationProxy.class;
-				proxy = (RemoteInvocationProxy) Proxy.newProxyInstance(interfaceClasses[0].getClassLoader(), interfaceClasses, new RemoteInvocationHandler(this, new RemoteProxyReference(proxyIdentifier)));
-				proxyReferences.put(proxyIdentifier, new WeakReference<RemoteInvocationProxy>(proxy));
+				proxy = (RemoteInvocationProxy) Proxy.newProxyInstance(interfaceClasses[0].getClassLoader(), interfaceClasses, new RemoteObjectInvocationHandler(this, new RemoteObjectReference(objectDescriptor)));
+				scopedProxyReferences.put(objectDescriptor, new WeakReference<RemoteInvocationProxy>(proxy));
 			}
 			
 			return proxy;

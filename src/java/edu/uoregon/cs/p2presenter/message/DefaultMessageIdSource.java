@@ -9,7 +9,7 @@ public class DefaultMessageIdSource implements MessageIdSource {
 	
 	private String prefix = "";
 	
-	private Integer messageId = 1;
+	private int messageId = 1;
 	
 	public DefaultMessageIdSource() { }
 	
@@ -19,10 +19,8 @@ public class DefaultMessageIdSource implements MessageIdSource {
 		}
 	}
 	
-	public String generateMessageId() {
-		synchronized (messageId) {
-			return Connection.PROTOCOL + prefix + '-' + messageId++;
-		}
+	public synchronized String generateMessageId() {
+		return Connection.PROTOCOL + prefix + '-' + messageId++;
 	}
 	
 	public static synchronized MessageIdSource newUniqueMessageIdSource() {

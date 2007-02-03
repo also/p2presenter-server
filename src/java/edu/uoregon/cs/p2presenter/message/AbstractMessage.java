@@ -32,7 +32,8 @@ public abstract class AbstractMessage implements Message {
 		Content,
 		Status,
 		Message_Id,
-		In_Response_To;
+		In_Response_To,
+		Proxied_For_Connection_Id;
 		
 		private String name;
 		private SpecialHeader() {

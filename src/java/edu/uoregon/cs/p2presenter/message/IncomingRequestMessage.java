@@ -29,4 +29,14 @@ public class IncomingRequestMessage extends AbstractRequestMessage implements In
 		}
 		attributes.put(name, value);
 	}
+	
+	public Integer getProxiedForConnectionId() {
+		String resultString = getHeader(SpecialHeader.Proxied_For_Connection_Id);
+		if (resultString != null) {
+			return new Integer(resultString);
+		}
+		else {
+			return null;
+		}
+	}
 }

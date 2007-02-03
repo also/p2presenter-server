@@ -36,7 +36,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 			
 			OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 			JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelInterfaceClassName");
-			responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteProxyReference().getId());
+			responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteObjectReference().getId());
 			response.setContent(responseObject.toString());
 			
 			return response;

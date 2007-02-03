@@ -5,23 +5,23 @@ package edu.uoregon.cs.p2presenter.remoting;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-class RemoteInvocationHandler implements InvocationHandler {
+class RemoteObjectInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;
-	private RemoteProxyReference remoteProxyReference;
+	private RemoteObjectReference remoteProxyReference;
 	private RemoteInvocationConnection client;
 	
-	public RemoteInvocationHandler(RemoteInvocationConnection client, RemoteProxyReference remoteProxyReference) {
+	public RemoteObjectInvocationHandler(RemoteInvocationConnection client, RemoteObjectReference remoteProxyReference) {
 		this.client = client;
 		this.remoteProxyReference = remoteProxyReference;
 	}
 	
-	public RemoteInvocationHandler(RemoteInvocationConnection client, String remoteVariableName) {
+	public RemoteObjectInvocationHandler(RemoteInvocationConnection client, String remoteVariableName) {
 		this.client = client;
 		this.remoteVariableName = remoteVariableName;
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		if (method.getName().equals("getRemoteProxyReference") && method.getParameterTypes().length == 0) {
+		if (method.getName().equals("getRemoteObjectReference") && method.getParameterTypes().length == 0) {
 			return remoteProxyReference;
 		}
 		else if (remoteVariableName != null) {
