@@ -15,7 +15,7 @@ public class PhilosopherControllerImpl implements Philosopher {
 		this.table = table;
 	}
 	
-	public void reset(Chopstick leftChopstick, Chopstick rightChopstick) {
+	public synchronized void reset(Chopstick leftChopstick, Chopstick rightChopstick) {
 		leftHand = new HandImpl(leftChopstick);
 		rightHand = new HandImpl(rightChopstick);
 		stateChanged();
@@ -78,6 +78,8 @@ public class PhilosopherControllerImpl implements Philosopher {
 					while (chopstick.isHeld()) {
 						try {
 							chopstick.wait();
+							// let the shopstick sit on the table
+							sleep(400);
 						}
 						catch (InterruptedException ex) {
 							// TODO maybe do something
