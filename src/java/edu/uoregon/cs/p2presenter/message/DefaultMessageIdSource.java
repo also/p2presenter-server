@@ -2,7 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 
 public class DefaultMessageIdSource implements MessageIdSource {
 	private static int sourceNumber = 1;
@@ -20,7 +20,7 @@ public class DefaultMessageIdSource implements MessageIdSource {
 	}
 	
 	public synchronized String generateMessageId() {
-		return Connection.PROTOCOL + prefix + '-' + messageId++;
+		return LocalConnection.PROTOCOL + prefix + '-' + messageId++;
 	}
 	
 	public static synchronized MessageIdSource newUniqueMessageIdSource() {

@@ -2,7 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 
 /** Superclass for request messages.
  * @author rberdeen
@@ -49,6 +49,6 @@ public abstract class AbstractRequestMessage extends AbstractMessage implements 
 	
 	@Override
 	protected final String getStartLine() {
-		return requestType.name() + ' ' + uri + ' ' + Connection.PROTOCOL_VERSION;
+		return requestType.name() + ' ' + uri + ' ' + LocalConnection.PROTOCOL_VERSION;
 	}
 }

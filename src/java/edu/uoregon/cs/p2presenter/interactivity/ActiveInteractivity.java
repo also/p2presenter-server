@@ -2,18 +2,18 @@
 
 package edu.uoregon.cs.p2presenter.interactivity;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 public class ActiveInteractivity<T> {
-	private Connection hostConnection;
+	private LocalConnection hostConnection;
 	private RemoteInvocationConnection remoteInvocationConnection;
 	private InteractivityController<?> interactivityController;
 	
 	private InteractivityDefinition interactivityDefinition;
 	
-	public ActiveInteractivity(Connection hostConnection, InteractivityDefinition interactivityDefinition) {
+	public ActiveInteractivity(LocalConnection hostConnection, InteractivityDefinition interactivityDefinition) {
 		this.hostConnection = hostConnection;
 		this.interactivityDefinition = interactivityDefinition;
 		
@@ -22,7 +22,7 @@ public class ActiveInteractivity<T> {
 		interactivityController = remoteInvocationConnection.proxy(InteractivityController.class, "interactivity");
 	}
 	
-	public Connection getHostConnection() {
+	public LocalConnection getHostConnection() {
 		return hostConnection;
 	}
 	

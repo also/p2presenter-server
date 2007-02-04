@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
@@ -13,11 +13,11 @@ import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class InteractivityHostClient {
 	private InteractivityController<?> controller;
-	private Connection connection;
+	private LocalConnection connection;
 	private int interactivityId;
 	
 	@SuppressWarnings("unchecked")
-	public InteractivityHostClient(Connection connection, int interactivityId) throws Exception {
+	public InteractivityHostClient(LocalConnection connection, int interactivityId) throws Exception {
 		this.connection = connection;
 		this.interactivityId = interactivityId;
 		

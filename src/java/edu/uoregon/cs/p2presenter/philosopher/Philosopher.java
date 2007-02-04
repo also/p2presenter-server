@@ -2,6 +2,8 @@
 
 package edu.uoregon.cs.p2presenter.philosopher;
 
+import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherStateListener;
+
 public interface Philosopher {
 	public interface Hand {
 		public enum State { HOLDING, WAITING, EMPTY }
@@ -20,4 +22,6 @@ public interface Philosopher {
 	public Hand getRightHand();
 	
 	public State getState();
+	
+	public void addPhilosopherStateListener(PhilosopherStateListener philosopherStateListener);
 }

@@ -8,10 +8,11 @@ import javax.swing.JButton;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityClientComponent;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
+import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherStateListener;
 
 import java.awt.GridBagConstraints;
 
-public class SimplePhilosopherInterface extends JPanel implements InteractivityClientComponent<Philosopher>{
+public class SimplePhilosopherInterface extends JPanel implements InteractivityClientComponent<Philosopher>, PhilosopherStateListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton takeLeftChopstickButton = null;
@@ -131,6 +132,10 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 					});
 		}
 		return releaseLeftChopstickButton;
+	}
+
+	public void philosopherStateChanged(Philosopher philosopher) {
+		System.out.println("Philosopher state changed to " + philosopher.getState());
 	}
 
 }

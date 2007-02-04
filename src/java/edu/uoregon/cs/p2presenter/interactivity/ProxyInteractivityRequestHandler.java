@@ -3,7 +3,7 @@
 package edu.uoregon.cs.p2presenter.interactivity;
 
 import edu.uoregon.cs.p2presenter.AbstractProxyRequestHandler;
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 
@@ -21,7 +21,7 @@ public class ProxyInteractivityRequestHandler extends AbstractProxyRequestHandle
 	}
 
 	@Override
-	protected Connection getTargetConnection(IncomingRequestMessage request) {
+	protected LocalConnection getTargetConnection(IncomingRequestMessage request) {
 		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		return activeInteractivityController.getActiveInteractivity(interactivityId).getHostConnection();
 	}

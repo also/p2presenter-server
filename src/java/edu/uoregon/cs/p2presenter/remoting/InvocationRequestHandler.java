@@ -9,10 +9,10 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
-import edu.uoregon.cs.p2presenter.remoting.GlobalProxyCache.ProxyCache;
 
 public class InvocationRequestHandler implements RequestHandler {
 	public static final String METHOD_NAME_HEADER_NAME = "Method-Name";
@@ -22,21 +22,12 @@ public class InvocationRequestHandler implements RequestHandler {
 	public static final String CONTENT_TYPE = "application/x-java-serialized-object";
 	public static final String ARGUMENT_COUNT_HEADER_NAME = "Argument-Count";
 	
-	public static final String PROXY_CACHE_ATTRIBUTE_NAME = InvocationRequestHandler.class.getName() + "proxyCache";
-	
-	private RemoteInvocationConnection remoteInvocationConnection;
-	
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
 		
-		GlobalProxyCache globalProxyCache = (GlobalProxyCache) request.getConnection().getAttribute(PROXY_CACHE_ATTRIBUTE_NAME);
-		if (globalProxyCache == null) {
-			globalProxyCache = new GlobalProxyCache();
-			request.getConnection().setAttribute(PROXY_CACHE_ATTRIBUTE_NAME, globalProxyCache);
-		}
-		
-		ProxyCache proxyCache = globalProxyCache.getProxyCache(request.getUri());
+		LocalConnection connection = request.getConnection();
+		ProxyCache proxyCache = ProxyCache.getProxyCache(connection, request.getUri());
 		
 		try {
 			try {
@@ -57,8 +48,8 @@ public class InvocationRequestHandler implements RequestHandler {
 							args[i] = in.readObject();
 							if (args[i] instanceof RemoteObjectReference) {
 								if (args[i] instanceof ObjectDescriptor) {
-									Integer scopeId = request.getProxiedForConnectionId();
-									args[i] = remoteInvocationConnection.getProxy((ObjectDescriptor) args[i], scopeId);
+									// TODO 
+									args[i] = proxyCache.getProxy(connection, true, (ObjectDescriptor) args[i]);
 								}
 								else {
 									args[i] = proxyCache.getTarget(((RemoteObjectReference) args[i]).getId());

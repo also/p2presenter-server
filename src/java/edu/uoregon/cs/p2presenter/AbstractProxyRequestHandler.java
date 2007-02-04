@@ -14,10 +14,10 @@ import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
  *
  */
 public abstract class AbstractProxyRequestHandler implements RequestHandler {
-	protected abstract Connection getTargetConnection(IncomingRequestMessage request);
+	protected abstract LocalConnection getTargetConnection(IncomingRequestMessage request);
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage incomingRequest) throws IOException {
-		Connection target = getTargetConnection(incomingRequest);
+		LocalConnection target = getTargetConnection(incomingRequest);
 		
 		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
 		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));

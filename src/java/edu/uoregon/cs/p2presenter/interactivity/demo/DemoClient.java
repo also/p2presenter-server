@@ -9,7 +9,7 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityParticipantClient;
 
 public class DemoClient {
@@ -24,7 +24,7 @@ public class DemoClient {
 			System.exit(0);
 		}
 		try {
-			Connection connection = new Connection(new Socket(host, 9000));
+			LocalConnection connection = new LocalConnection(new Socket(host, 9000));
 			connection.start();
 			
 			InteractivityParticipantClient client = new InteractivityParticipantClient(connection, 0);

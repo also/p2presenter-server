@@ -7,9 +7,10 @@ import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
 
 public class PhilosopherControllerImpl implements Philosopher {
-	private Philosopher philosopher = this;
-	
 	private Table table;
+	
+	// XXX supposed to support more than one
+	private PhilosopherStateListener philosopherStateListener;
 	
 	public PhilosopherControllerImpl(Table table) {
 		this.table = table;
@@ -57,14 +58,14 @@ public class PhilosopherControllerImpl implements Philosopher {
 		}
 		
 		private void doTakeChopstick() {
-			chopstick.hold(philosopher);
+			chopstick.hold(PhilosopherControllerImpl.this);
 			state = State.HOLDING;
 			stateChanged();
 		}
 		
 		public synchronized void releaseChopstick() {
 			if (state == State.HOLDING) {
-				chopstick.release(philosopher);
+				chopstick.release(PhilosopherControllerImpl.this);
 				state = State.EMPTY;
 				stateChanged();
 			}
@@ -119,5 +120,13 @@ public class PhilosopherControllerImpl implements Philosopher {
 	
 	private void stateChanged() {
 		table.philosopherStateChanged(this);
+		
+		if (philosopherStateListener != null) {
+			this.philosopherStateListener.philosopherStateChanged(this);
+		}
+	}
+
+	public void addPhilosopherStateListener(PhilosopherStateListener philosopherStateListener) {
+		this.philosopherStateListener = philosopherStateListener;
 	}
 }

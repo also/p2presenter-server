@@ -12,7 +12,7 @@ import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 public class MessageSender {
-	private Connection connection;
+	private LocalConnection connection;
 	
 	private RequestType defaultRequestType;
 	private String defaultUrl;
@@ -22,11 +22,11 @@ public class MessageSender {
 	
 	private boolean needsReInit = true;
 	
-	public MessageSender(Connection connection) {
+	public MessageSender(LocalConnection connection) {
 		this.connection = connection;
 	}
 	
-	public MessageSender(Connection connection, RequestType defaultRequestType, String defaultUrl) {
+	public MessageSender(LocalConnection connection, RequestType defaultRequestType, String defaultUrl) {
 		this(connection);
 		this.defaultRequestType = defaultRequestType;
 		this.defaultUrl = defaultUrl;

@@ -1,4 +1,4 @@
-/* $Id: PhilosopherDemo.java 86 2007-01-25 09:23:58Z rberdeen@cs.uoregon.edu $ */
+/* $Id$ */
 
 package edu.uoregon.cs.p2presenter.interactivity.demo;
 
@@ -9,7 +9,7 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityHostClient;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
@@ -24,7 +24,7 @@ public class DemoHost {
 			System.exit(0);
 		}
 		try {
-			Connection connection = new Connection(new Socket(host, 9000));
+			LocalConnection connection = new LocalConnection(new Socket(host, 9000));
 			connection.start();
 			
 			int interactivityId = 0;

@@ -1,3 +1,5 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter;
 
 import java.io.IOException;
@@ -9,7 +11,7 @@ import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 
 public class ConnectionManager implements ConnectionListener, MessageIdSource {
-	private Collection<Connection> connections = new LinkedList<Connection>();
+	private Collection<LocalConnection> connections = new LinkedList<LocalConnection>();
 	private int connectionId = 0;
 	private MessageIdSource messageIdSource = DefaultMessageIdSource.newUniqueMessageIdSource("GLOBAL");
 	
@@ -22,10 +24,10 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 		return requestHandlerMapping;
 	}
 	
-	public Connection createConnection(Socket socket) throws IOException {
-		Connection connection;
+	public LocalConnection createConnection(Socket socket) throws IOException {
+		LocalConnection connection;
 		synchronized (connections) {
-			connection = new Connection(socket, connectionId);
+			connection = new LocalConnection(socket, connectionId);
 		}
 		connection.addConnectionListener(this);
 		connection.getRequestHandlerMapping().setParent(requestHandlerMapping);
@@ -34,14 +36,14 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 		return connection;
 	}
 	
-	protected void connectionCreatedInternal(Connection connection) {}
+	protected void connectionCreatedInternal(LocalConnection connection) {}
 	
-	public void connectionClosed(Connection connection) {
+	public void connectionClosed(LocalConnection connection) {
 		connections.remove(connection);
 		connectionClosedInternal(connection);
 	}
 	
-	protected void connectionClosedInternal(Connection connection) {}
+	protected void connectionClosedInternal(LocalConnection connection) {}
 
 	public String generateMessageId() {
 		return messageIdSource.generateMessageId();

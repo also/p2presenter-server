@@ -1,8 +1,10 @@
+/* $Id$ */
+
 package edu.uoregon.cs.p2presenter.interactivity;
 
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
@@ -46,7 +48,7 @@ public class InteractivityAdminRequestHandler implements RequestHandler, Connect
 		return new OutgoingResponseMessage(request, 404);
 	}
 
-	public void connectionClosed(Connection connection) {
+	public void connectionClosed(LocalConnection connection) {
 		// TODO end interactivity
 	}
 }

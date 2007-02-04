@@ -2,17 +2,17 @@
 
 package edu.uoregon.cs.p2presenter.message;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 
 public class IncomingResponseMessage extends AbstractResponseMessage implements IncomingMessage {
-	private Connection connection;
+	private LocalConnection connection;
 	
-	protected IncomingResponseMessage(Connection connection, int status, String reason) {
+	protected IncomingResponseMessage(LocalConnection connection, int status, String reason) {
 		super(status, reason);
 		this.connection = connection;
 	}
 
-	public final Connection getConnection() {
+	public final LocalConnection getConnection() {
 		return connection;
 	}
 }

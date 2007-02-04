@@ -6,10 +6,12 @@ import java.awt.Container;
 
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
+import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
 import edu.uoregon.cs.p2presenter.remoting.RemoteObjectReference;
 
@@ -21,7 +23,7 @@ public class InteractivityParticipantClient {
 	
 	//  TODO narrow exceptions
 	@SuppressWarnings("unchecked")
-	public InteractivityParticipantClient(Connection connection, int interactivityId) throws Exception {
+	public InteractivityParticipantClient(LocalConnection connection, int interactivityId) throws Exception {
 		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/join");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
 		if (response.getStatus() == 200) {
@@ -31,7 +33,9 @@ public class InteractivityParticipantClient {
 			
 			Class<?> modelClass = Class.forName(responseObject.get("participantModelInterfaceClassName").toString());
 			int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
-			remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller");
+			remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
+			InvocationRequestHandler invoker = new InvocationRequestHandler();
+			connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
 			
 			model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));
 			

@@ -16,7 +16,7 @@ public class OutgoingRequestMessage extends AbstractRequestMessage implements Ou
 	public OutgoingRequestMessage(MessageIdSource messageIdSource, IncomingRequestMessage that) {
 		super(that);
 		setHeader(SpecialHeader.Message_Id, messageIdSource.generateMessageId());
-		setHeader(SpecialHeader.Proxied_For_Connection_Id, that.getConnection().getConnectionId().toString());
+		setHeader(SpecialHeader.Proxied_Connection_Id, that.getConnection().getConnectionId().toString());
 	}
 	
 	@Override

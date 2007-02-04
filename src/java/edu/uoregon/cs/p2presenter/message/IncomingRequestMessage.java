@@ -4,18 +4,18 @@ package edu.uoregon.cs.p2presenter.message;
 
 import java.util.HashMap;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 
 public class IncomingRequestMessage extends AbstractRequestMessage implements IncomingRequestHeaders, IncomingMessage {
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
-	private Connection connection;
+	private LocalConnection connection;
 	
-	protected IncomingRequestMessage(Connection connection, RequestType requestType, String uri) {
+	protected IncomingRequestMessage(LocalConnection connection, RequestType requestType, String uri) {
 		super(requestType, uri);
 		this.connection = connection;
 	}
 
-	public final Connection getConnection() {
+	public final LocalConnection getConnection() {
 		return connection;
 	}
 	
@@ -30,8 +30,8 @@ public class IncomingRequestMessage extends AbstractRequestMessage implements In
 		attributes.put(name, value);
 	}
 	
-	public Integer getProxiedForConnectionId() {
-		String resultString = getHeader(SpecialHeader.Proxied_For_Connection_Id);
+	public Integer getProxiedConnectionId() {
+		String resultString = getHeader(SpecialHeader.Proxied_Connection_Id);
 		if (resultString != null) {
 			return new Integer(resultString);
 		}

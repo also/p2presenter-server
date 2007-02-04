@@ -31,7 +31,7 @@ import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
-public class Connection extends Thread implements MessageIdSource, Closeable {
+public class LocalConnection extends Thread implements MessageIdSource, Closeable {
 	public static final String PROTOCOL = "P2PR";
 	public static final String VERSION = "0.1";
 	public static final String PROTOCOL_VERSION = PROTOCOL + '/' + VERSION;
@@ -63,14 +63,14 @@ public class Connection extends Thread implements MessageIdSource, Closeable {
 	
 	boolean running = false;
 	
-	public Connection(Socket socket) throws IOException {
+	public LocalConnection(Socket socket) throws IOException {
 		this.socket = socket;
 		
 		out = new BufferedOutputStream(socket.getOutputStream());
 		in = new PushbackInputStream(socket.getInputStream());
 	}
 	
-	public Connection(Socket socket, int connectionId) throws IOException {
+	public LocalConnection(Socket socket, int connectionId) throws IOException {
 		this(socket);
 		this.connectionId = connectionId;
 	}

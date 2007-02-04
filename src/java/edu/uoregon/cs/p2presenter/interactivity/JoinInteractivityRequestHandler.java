@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
@@ -21,7 +21,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	}
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
-		Connection connection = request.getConnection();
+		LocalConnection connection = request.getConnection();
 		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
@@ -59,7 +59,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		}
 
 		@SuppressWarnings("unchecked")
-		public void connectionClosed(Connection connection) {
+		public void connectionClosed(LocalConnection connection) {
 			interactivityRunner.onDisconnect(model);
 		}
 	}

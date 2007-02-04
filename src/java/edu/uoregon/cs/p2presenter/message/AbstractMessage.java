@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 /** Superclass for message classes.
@@ -33,7 +33,7 @@ public abstract class AbstractMessage implements Message {
 		Status,
 		Message_Id,
 		In_Response_To,
-		Proxied_For_Connection_Id;
+		Proxied_Connection_Id;
 		
 		private String name;
 		private SpecialHeader() {
@@ -199,7 +199,7 @@ public abstract class AbstractMessage implements Message {
 		return false;
 	}
 	
-	public static final IncomingMessage read(Connection connection, PushbackInputStream in) throws IOException {
+	public static final IncomingMessage read(LocalConnection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		String line;
 		
@@ -213,8 +213,8 @@ public abstract class AbstractMessage implements Message {
 		}
 		
 		/* responses start with the protocol string */
-		if (line.startsWith(Connection.PROTOCOL)) {
-			int indexOfStatus = line.indexOf(' ', Connection.PROTOCOL.length() + 1) + 1;
+		if (line.startsWith(LocalConnection.PROTOCOL)) {
+			int indexOfStatus = line.indexOf(' ', LocalConnection.PROTOCOL.length() + 1) + 1;
 			int indexOfReasonPhrase = line.indexOf(' ', indexOfStatus + 1) + 1;
 			result = new IncomingResponseMessage(connection, Integer.parseInt(line.substring(indexOfStatus, indexOfReasonPhrase - 1)), line.substring(indexOfReasonPhrase));
 		}
