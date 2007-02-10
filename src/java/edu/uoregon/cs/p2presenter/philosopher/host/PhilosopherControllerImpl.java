@@ -4,6 +4,7 @@ package edu.uoregon.cs.p2presenter.philosopher.host;
 
 import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
+import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
 
 public class PhilosopherControllerImpl implements Philosopher {
@@ -17,19 +18,16 @@ public class PhilosopherControllerImpl implements Philosopher {
 	}
 	
 	public synchronized void reset(Chopstick leftChopstick, Chopstick rightChopstick) {
-		leftHand = new HandImpl(leftChopstick);
-		rightHand = new HandImpl(rightChopstick);
+		leftHand.reset(leftChopstick);
+		rightHand.reset(rightChopstick);
 		stateChanged();
 	}
 	
-	private HandImpl leftHand;
-	private HandImpl rightHand;
+	private HandImpl leftHand = new HandImpl();
+	private HandImpl rightHand = new HandImpl();
 	
 	private class HandImpl implements Hand {
-		private HandImpl(Chopstick chopstick) {
-			this.chopstick = chopstick;
-		}
-		private State state = State.EMPTY;
+		private State state;
 		private Chopstick chopstick;
 		
 		public State getState() {
@@ -69,6 +67,11 @@ public class PhilosopherControllerImpl implements Philosopher {
 				state = State.EMPTY;
 				stateChanged();
 			}
+		}
+		
+		private void reset(Chopstick chopstick) {
+			this.chopstick = chopstick;
+			this.state = State.EMPTY;
 		}
 		
 		private class WaitingHandThread extends Thread {
