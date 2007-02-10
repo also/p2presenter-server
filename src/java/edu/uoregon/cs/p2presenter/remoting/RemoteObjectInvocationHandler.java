@@ -80,6 +80,7 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 		if (parameterTypes.length > 0) {
 			parameterTypesStringBuidler.append(parameterTypes[0].getName());
 			for (int i = 1; i < parameterTypes.length; i++) {
+				parameterTypesStringBuidler.append(',');
 				parameterTypesStringBuidler.append(parameterTypes[i].getName());
 			}
 		}
