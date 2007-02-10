@@ -10,8 +10,10 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
+import java.util.concurrent.Future;
 
 import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.ResponseMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
@@ -116,21 +118,27 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 		ResponseMessage response;
 		
 		// TODO check allowed exceptions
-		response = connection.sendRequest(request).get();
-		
-		// TODO check for null response (connection closed)
-		
-		if (response.getStatus() == 200) {
-			return getObjectContent(response);
+		Future<IncomingResponseMessage> futureResponse = connection.sendRequest(request);
+		if (method.getAnnotation(Asynchronous.class) != null) {
+			return null;
 		}
 		else {
-			Throwable throwable = (Throwable) getObjectContent(response);
-			if (throwable != null) {
-				throw throwable;
+			response = futureResponse.get();
+			
+			// TODO check for null response (connection closed)
+			
+			if (response.getStatus() == 200) {
+				return getObjectContent(response);
 			}
 			else {
-				// TODO throw unchecked exception
-				throw new RemoteException("Remote error " + response.getStatus() + ": " + response.getContentAsString());
+				Throwable throwable = (Throwable) getObjectContent(response);
+				if (throwable != null) {
+					throw throwable;
+				}
+				else {
+					// TODO throw unchecked exception
+					throw new RemoteException("Remote error " + response.getStatus() + ": " + response.getContentAsString());
+				}
 			}
 		}
 	}
