@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.remoting;
 
 import java.io.Serializable;
 
-class ObjectDescriptor extends RemoteObjectReference implements Serializable {
+public class ObjectDescriptor extends RemoteObjectReference implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Class[] proxiedClasses;
@@ -16,5 +16,9 @@ class ObjectDescriptor extends RemoteObjectReference implements Serializable {
 	
 	public Class<?>[] getProxiedClasses() {
 		return proxiedClasses;
+	}
+	
+	public RemoteObjectReference getRemoteObjectReference() {
+		return new RemoteObjectReference(getId());
 	}
 }

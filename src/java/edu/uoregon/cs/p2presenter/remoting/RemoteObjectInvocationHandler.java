@@ -21,6 +21,7 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 	private RemoteObjectReference remoteObjectReference;
 	private LocalConnection connection;
 	private String uri;
+	private String proxyCacheScope;
 	private boolean bidirectional;
 	
 	private ProxyCache proxyCache;
@@ -36,6 +37,12 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 		this.remoteObjectReference = remoteObjectReference;
 	}
 	
+	public RemoteObjectInvocationHandler(LocalConnection connection, String uri, boolean bidirectional, RemoteObjectReference remoteObjectReference, String proxyCacheScope) {
+		this(connection, uri, bidirectional);
+		this.remoteObjectReference = remoteObjectReference;
+		this.proxyCacheScope = proxyCacheScope;
+	}
+	
 	public RemoteObjectInvocationHandler(LocalConnection connection, String uri, boolean bidirectional, String remoteVariableName) {
 		this(connection, uri, bidirectional);
 		this.remoteVariableName = remoteVariableName;
@@ -43,7 +50,7 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 	
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (proxyCache == null) {
-			proxyCache = ProxyCache.getProxyCache(connection, uri);
+			proxyCache = ProxyCache.getProxyCache(connection, uri, proxyCacheScope);
 		}
 		if (method.getName().equals("getRemoteObjectReference") && method.getParameterTypes().length == 0) {
 			return remoteObjectReference;
@@ -61,6 +68,10 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 	}
 	
 	private Object invoke(OutgoingRequestMessage request, Method method, Object[] args) throws Throwable {
+		if (proxyCacheScope != null) {
+			request.setHeader("Target-Connection-Id", proxyCacheScope);
+		}
+		
 		request.setHeader(InvocationRequestHandler.METHOD_NAME_HEADER_NAME, method.getName());
 		Class[] parameterTypes = method.getParameterTypes();
 		StringBuilder parameterTypesStringBuidler = new StringBuilder();

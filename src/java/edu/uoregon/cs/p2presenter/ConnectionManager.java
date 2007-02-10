@@ -4,20 +4,22 @@ package edu.uoregon.cs.p2presenter;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
 
 import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
 import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 
 public class ConnectionManager implements ConnectionListener, MessageIdSource {
-	private Collection<LocalConnection> connections = new LinkedList<LocalConnection>();
+	private HashMap<Integer, LocalConnection> connections = new HashMap<Integer, LocalConnection>();
 	private int connectionId = 0;
 	private MessageIdSource messageIdSource = DefaultMessageIdSource.newUniqueMessageIdSource("GLOBAL");
 	
 	private DefaultRequestHandlerMapping requestHandlerMapping = new DefaultRequestHandlerMapping();
 	
-	public ConnectionManager() {
+	/** Returns the connection with the specified ID.
+	 */
+	public LocalConnection getConnection(Integer connectionId) {
+		return connections.get(connectionId);
 	}
 	
 	public DefaultRequestHandlerMapping getRequestHandlerMapping() {
@@ -31,7 +33,7 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 		}
 		connection.addConnectionListener(this);
 		connection.getRequestHandlerMapping().setParent(requestHandlerMapping);
-		connections.add(connection);
+		connections.put(connectionId++, connection);
 		connectionCreatedInternal(connection);
 		return connection;
 	}
@@ -39,7 +41,7 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 	protected void connectionCreatedInternal(LocalConnection connection) {}
 	
 	public void connectionClosed(LocalConnection connection) {
-		connections.remove(connection);
+		connections.remove(connection.getConnectionId());
 		connectionClosedInternal(connection);
 	}
 	

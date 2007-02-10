@@ -2,16 +2,15 @@
 
 package edu.uoregon.cs.p2presenter.interactivity;
 
-import org.ry1.json.JsonObject;
+import java.io.IOException;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.AbstractProxyRequestHandler;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
+import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
-import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationProxy;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
-import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 public class JoinInteractivityRequestHandler implements RequestHandler {
 	private ActiveInteractivityController activeInteractivityController;
@@ -20,47 +19,36 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		this.activeInteractivityController = activeInteractivityController;
 	}
 	
-	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
+	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws IOException {
 		LocalConnection connection = request.getConnection();
 		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
 		if (activeInteractivity != null) {
-			InteractivityDefinition interactivityDefinition =  activeInteractivity.getInteractivityDefinition();
+			connection.addConnectionListener(new InteractivityConnectionListener(activeInteractivity));
 			
-			InteractivityController interactivityController = activeInteractivity.getInteractivityController();
-			Object model = interactivityController.onConnect();
-			connection.addConnectionListener(new InteractivityConnectionListener(interactivityController, model));
+			AbstractProxyRequestHandler.sendProxiedMessage(activeInteractivity.getHostConnection(), request);
 			
-			connection.getRequestHandlerMapping().mapHandler("/interactivity/" + interactivityId + "/controller", new ProxyInteractivityRequestHandler(activeInteractivityController));
-			
-			OutgoingResponseMessage response = new OutgoingResponseMessage(request);
-			JsonObject responseObject = new JsonObject(interactivityDefinition, "participantViewClassName", "participantModelInterfaceClassName");
-			responseObject.set("participantModelProxyId", ((RemoteInvocationProxy) model).getRemoteObjectReference().getId());
-			response.setContent(responseObject.toString());
-			
-			return response;
+			return null;
 		}
 		else {
 			return new OutgoingResponseMessage(request, 404);
 		}
 	}
 
-	/** Calls the interactivity controller's onDisconnect method.
+	/** Notifies the interactivity host when a participant disconnects.
 	 * @param <T> the model type
 	 */
 	private static class InteractivityConnectionListener implements ConnectionListener {
-		private InteractivityController interactivityRunner;
-		private Object model;
+		private ActiveInteractivity activeInteractivity;
 		
-		public InteractivityConnectionListener(InteractivityController interactivityRunner, Object model) {
-			this.interactivityRunner = interactivityRunner;
-			this.model = model;
+		private InteractivityConnectionListener(ActiveInteractivity activeInteractivity) {
+			this.activeInteractivity = activeInteractivity;
 		}
 
 		@SuppressWarnings("unchecked")
 		public void connectionClosed(LocalConnection connection) {
-			interactivityRunner.onDisconnect(model);
+			// FIXME notify the host
 		}
 	}
 }

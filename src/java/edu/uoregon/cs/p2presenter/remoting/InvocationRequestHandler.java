@@ -22,12 +22,24 @@ public class InvocationRequestHandler implements RequestHandler {
 	public static final String CONTENT_TYPE = "application/x-java-serialized-object";
 	public static final String ARGUMENT_COUNT_HEADER_NAME = "Argument-Count";
 	
+	private boolean limitProxyCacheScope = true;
+	
+	public InvocationRequestHandler() {}
+	
+	public InvocationRequestHandler(boolean limitProxyCacheScope) {
+		this.limitProxyCacheScope = limitProxyCacheScope;
+	}
+
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
 		
 		LocalConnection connection = request.getConnection();
-		ProxyCache proxyCache = ProxyCache.getProxyCache(connection, request.getUri());
+		Integer connectionId = connection.getConnectionId();
+		if (connectionId == null) {
+			connectionId = request.getProxiedConnectionId();
+		}
+		ProxyCache proxyCache = ProxyCache.getProxyCache(connection, request.getUri(), limitProxyCacheScope ? connectionId.toString() : "");
 		
 		try {
 			try {

@@ -19,11 +19,15 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage incomingRequest) throws IOException {
 		LocalConnection target = getTargetConnection(incomingRequest);
 		
-		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
-		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));
+		sendProxiedMessage(target, incomingRequest);
 		
 		// the response will be sent by the proxy response handler
 		return null;
+	}
+	
+	public static void sendProxiedMessage(LocalConnection target, IncomingRequestMessage incomingRequest) throws IOException {
+		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
+		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));
 	}
 	
 	/** Handles a response by sending it to the original requestor.
@@ -44,5 +48,4 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 			return null;
 		}
 	}
-
 }

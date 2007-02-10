@@ -24,23 +24,31 @@ public class InteractivityParticipantClient {
 	//  TODO narrow exceptions
 	@SuppressWarnings("unchecked")
 	public InteractivityParticipantClient(LocalConnection connection, int interactivityId) throws Exception {
-		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/join");
-		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
+		OutgoingRequestMessage getInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/get");
+		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(getInteractivityRequest);
 		if (response.getStatus() == 200) {
 			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
 			Class<? extends Container> participantViewClass = (Class<? extends Container>) Class.forName(responseObject.get("participantViewClassName").toString());
 			view = participantViewClass.newInstance();
 			
 			Class<?> modelClass = Class.forName(responseObject.get("participantModelInterfaceClassName").toString());
-			int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
-			remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
-			InvocationRequestHandler invoker = new InvocationRequestHandler();
-			connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
 			
-			model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));
+			OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/join");
+			response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
+			if (response.getStatus() == 200) {
+				responseObject = JsonObject.valueOf(response.getContentAsString());
 			
-			if (view instanceof InteractivityClientComponent) {
-				((InteractivityClientComponent) view).setModel(model);
+			
+				int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
+				remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
+				InvocationRequestHandler invoker = new InvocationRequestHandler(false);
+				connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
+				
+				model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));
+				
+				if (view instanceof InteractivityClientComponent) {
+					((InteractivityClientComponent) view).setModel(model);
+				}
 			}
 		}
 		else {

@@ -11,12 +11,12 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CancellationException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.Condition;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.locks.ReentrantLock;
 
 import edu.uoregon.cs.p2presenter.message.AbstractMessage;
@@ -52,7 +52,9 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 
 	private DefaultRequestHandlerMapping requestHandlerMapping = new DefaultRequestHandlerMapping();
 	
-	private HashMap<String, FutureResponseHandler<?>> responseHandlers = new HashMap<String, FutureResponseHandler<?>>();
+	private ExecutorService executorService = Executors.newCachedThreadPool();
+	
+	private HashMap<String, ResponseHandlerFutureTask<?>> responseHandlers = new HashMap<String, ResponseHandlerFutureTask<?>>();
 	private static final ResponseHandler<IncomingResponseMessage> DEFAULT_RESPONSE_HANDLER = new ResponseHandler<IncomingResponseMessage>() {
 		public IncomingResponseMessage handleResponse(IncomingResponseMessage response) {
 			return response;
@@ -95,6 +97,31 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 		return attributes.get(key);
 	}
 	
+	/** Returns the specified attribute, initializing it with the result of the {@link Callable} if it does not exist.
+	 * This method is thread safe.
+	 */
+	public Object getAttribute(String key, Callable<?> defaultValueCallable) {
+		synchronized (attributes) {
+			Object result = attributes.get(key);
+			
+			if (result == null) {
+				try {
+					result = defaultValueCallable.call();
+				}
+				catch (RuntimeException ex) {
+					throw ex;
+				}
+				catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+				
+				attributes.put(key, result);
+			}
+			
+			return result;
+		}
+	}
+	
 	public long getLastMessageRecievedTime() {
 		return lastMessageRecievedTime;
 	}
@@ -124,12 +151,8 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 					RequestHandler requestHandler = requestHandlerMapping.getHandler((IncomingRequestHeaders) message);
 					
 					if (requestHandler != null) {
-						OutgoingResponseMessage response = requestHandler.handleRequest((IncomingRequestMessage) message);
-						
-						if (response != null) {
-							doSendInternal(response);
-						}
-						// else the handler sent the response itself
+						RequestHandlerRunnable runnable = new RequestHandlerRunnable(requestHandler, (IncomingRequestMessage) message);
+						executorService.execute(runnable);
 					}
 					else {
 						// TODO send error response
@@ -139,9 +162,13 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 				}
 				else {
 					IncomingResponseMessage response = (IncomingResponseMessage) message;
-					ResponseHandler<?> responseHandler = responseHandlers.remove(response.getInResponseTo());
-					if (responseHandler != null) {
-						responseHandler.handleResponse(response);
+					ResponseHandlerFutureTask<?> handler = responseHandlers.remove(response.getInResponseTo());
+					if (handler != null) {
+						handler.setResponse(response);
+						executorService.execute(handler);
+					}
+					else {
+						throw new Exception("ignored response");
 					}
 				}
 			}
@@ -162,17 +189,17 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 	}
 	
 	/** Sends a request whose response will be handled by the specified handler.
-	 * @param <T> the result type of the<code>handleResponse</code> method
+	 * @param <V> the result type of the<code>handleResponse</code> method
 	 * @param request the request message to send
 	 * @param responseHandler the response message handler
 	 * @return a {@link Future} allowing access to the result of the response handler
 	 * @throws IOException if an exception occurs while sending the message
 	 */
-	public <T> Future<T> sendRequest(OutgoingRequestMessage request, ResponseHandler<T> responseHandler) throws IOException {
-		FutureResponseHandler<T> result = new FutureResponseHandler<T>(responseHandler);
-		responseHandlers.put(request.getMessageId(), result);
+	public <V> Future<V> sendRequest(OutgoingRequestMessage request, ResponseHandler<V> responseHandler) throws IOException {
+		ResponseHandlerFutureTask<V> future = new ResponseHandlerFutureTask<V>(responseHandler);
+		responseHandlers.put(request.getMessageId(), future);
 		doSend(request);
-		return result;
+		return future;
 	}
 	
 	public IncomingResponseMessage sendRequestAndAwaitResponse(OutgoingRequestMessage request) throws IOException, InterruptedException {
@@ -251,7 +278,7 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 		
 		// TODO
 		try {
-			for (FutureResponseHandler<?> futureResponseHandler : responseHandlers.values()) {
+			for (ResponseHandlerFutureTask<?> futureResponseHandler : responseHandlers.values()) {
 				futureResponseHandler.cancel(false);
 			}
 			
@@ -344,98 +371,57 @@ public class LocalConnection extends Thread implements MessageIdSource, Closeabl
 		}
 	}
 	
-	private class FutureResponseHandler<V> implements Future<V>, ResponseHandler<V> {
-		private ResponseHandler<V> responseHandler;
-		private ReentrantLock lock = new ReentrantLock();
-		private Condition condition = lock.newCondition();
-		private V result;
-		private Throwable throwable;
-		boolean cancelled = false;
+	private class RequestHandlerRunnable implements Runnable {
+		private RequestHandler requestHandler;
+		private IncomingRequestMessage request;
 		
-		public FutureResponseHandler(ResponseHandler<V> responseHandler) {
+		public RequestHandlerRunnable(RequestHandler requestHandler, IncomingRequestMessage request) {
+			this.requestHandler = requestHandler;
+			this.request = request;
+		}
+		
+		public void run() {
+			try {
+				OutgoingResponseMessage response =  requestHandler.handleRequest(request);
+				if (response != null) {
+					doSendInternal(response);
+				}
+			}
+			catch (Throwable t) {
+				// TODO shouldn't close connection on all exceptions
+				handle(t);
+			}
+		}
+	}
+	
+	private static class ResponseHandlerFutureTask<V> extends FutureTask<V> {
+		private ResponseHandlerCallable<V> responseHandlerCallable;
+		
+		public ResponseHandlerFutureTask(ResponseHandler<V> responseHandler) {
+			this(new ResponseHandlerCallable<V>(responseHandler));
+		}
+		
+		private ResponseHandlerFutureTask(ResponseHandlerCallable<V> responseHandlerCallable) {
+			super(responseHandlerCallable);
+			this.responseHandlerCallable = responseHandlerCallable;
+		}
+		
+		public void setResponse(IncomingResponseMessage response) {
+			responseHandlerCallable.response = response;
+		}
+	}
+	
+	private static class ResponseHandlerCallable<V> implements Callable<V> {
+		private ResponseHandler<V> responseHandler;
+		private IncomingResponseMessage response;
+		
+		public ResponseHandlerCallable(ResponseHandler<V> responseHandler) {
 			this.responseHandler = responseHandler;
 		}
 		
-		public boolean cancel(boolean mayInterruptIfRunning) {
-			lock.lock();
-			try {
-				if (condition != null) {
-					cancelled = true;
-					
-					responseHandler = null;
-					condition.signalAll();
-					
-					condition = null;
-				}
-			}
-			finally {
-				lock.unlock();
-			}
-			
-			return false;
-		}
-
-		public V get() throws InterruptedException, ExecutionException, CancellationException {
-			lock.lock();
-			try {
-				while (!isDone()) {
-					condition.await();
-				}
-				return getInternal();
-			}
-			finally {
-				lock.unlock();
-			}
-		}
-
-		public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException, CancellationException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		private V getInternal() throws ExecutionException, CancellationException {
-			if (throwable != null) {
-				throw new ExecutionException(throwable);
-			}
-			else if (cancelled) {
-				throw new CancellationException();
-			}
-			else {
-				return result;
-			}
-		}
-
-		public boolean isCancelled() {
-			return cancelled;
-		}
-
-		public boolean isDone() {
-			return condition == null || cancelled;
-		}
-
-		public V handleResponse(IncomingResponseMessage response) throws Exception {
-			lock.lock();
-			try {
-				if (responseHandler != null)  {
-					result = responseHandler.handleResponse(response);
-				}
-				
-				return result;
-			}
-			catch (Exception ex) {
-				throwable = ex;
-				throw ex;
-			}
-			catch (Error e) {
-				throwable = e;
-				throw e;
-			}
-			finally {
-				responseHandler = null;
-				condition.signalAll();
-				condition = null;
-				lock.unlock();
-			}
+		public V call() throws Exception {
+			// TODO handle exceptions
+			return responseHandler.handleResponse(response);
 		}
 	}
 }

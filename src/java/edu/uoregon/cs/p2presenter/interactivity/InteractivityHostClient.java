@@ -6,6 +6,7 @@ import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
+import edu.uoregon.cs.p2presenter.interactivity.host.JoinInteractivityRequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
@@ -29,10 +30,13 @@ public class InteractivityHostClient {
 	
 			Class<InteractivityController> controllerClass = (Class<InteractivityController>) Class.forName(responseObject.get("hostControllerClassName").toString());
 			controller = controllerClass.newInstance();
+			connection.setAttribute("interactivity", controller);
+			
+			JoinInteractivityRequestHandler joinHandler = new JoinInteractivityRequestHandler(controller, "/interactivity/" + interactivityId + "/controller");
+			connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/join", "interactivityId"), joinHandler);
 			
 			InvocationRequestHandler invoker = new InvocationRequestHandler();
 			connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
-			connection.setAttribute("interactivity", controller);
 		}
 		else {
 			// TODO exception type

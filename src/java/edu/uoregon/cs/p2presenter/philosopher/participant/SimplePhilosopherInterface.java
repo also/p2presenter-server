@@ -20,7 +20,8 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 	private JButton releaseRightChopstickButton = null;
 	private JButton releaseLeftChopstickButton = null;
 	
-	private Philosopher philosopher;
+	private Philosopher.Hand leftHand;
+	private Philosopher.Hand rightHand;
 
 	/**
 	 * This is the default constructor
@@ -31,7 +32,9 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 	}
 	
 	public void setModel(Philosopher philosopher) {
-		this.philosopher = philosopher;
+		this.leftHand = philosopher.getLeftHand();
+		this.rightHand = philosopher.getRightHand();
+		philosopher.addPhilosopherStateListener(this);
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 			takeLeftChopstickButton.setText("Take Left");
 			takeLeftChopstickButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					philosopher.getLeftHand().takeChopstick();
+					leftHand.takeChopstick();
 				}
 			});
 		}
@@ -89,7 +92,7 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 			takeRightChopstickButton.setText("Take Right");
 			takeRightChopstickButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					philosopher.getRightHand().takeChopstick();
+					rightHand.takeChopstick();
 				}
 			});
 		}
@@ -108,7 +111,7 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 			releaseRightChopstickButton
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							philosopher.getRightHand().releaseChopstick();
+							rightHand.releaseChopstick();
 						}
 					});
 		}
@@ -127,7 +130,7 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 			releaseLeftChopstickButton
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							philosopher.getLeftHand().releaseChopstick();
+							leftHand.releaseChopstick();
 						}
 					});
 		}
