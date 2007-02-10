@@ -8,7 +8,7 @@ import javax.swing.JButton;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityClientComponent;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
-import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherStateListener;
+import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
 
 import java.awt.GridBagConstraints;
 

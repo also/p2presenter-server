@@ -38,7 +38,7 @@ public class PhilosopherControllerImpl implements Philosopher {
 			return chopstick;
 		}
 		
-		public State takeChopstick() {
+		public void takeChopstick() {
 			synchronized (chopstick) {
 				if (state == State.EMPTY) {
 					if (!chopstick.isHeld()) {
@@ -51,8 +51,6 @@ public class PhilosopherControllerImpl implements Philosopher {
 					}
 				}
 			}
-			
-			return state;
 		}
 		
 		private void doTakeChopstick() {
