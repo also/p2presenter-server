@@ -49,8 +49,8 @@ public class LectureCreateController extends AbstractPresenterSimpleFormControll
 	protected Map referenceData(HttpServletRequest request) throws Exception {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		int crn = ServletRequestUtils.getRequiredIntParameter(request, "crn");
-		result.put("course", getDao().loadEntity(Course.class, crn));
+		int courseId = ServletRequestUtils.getRequiredIntParameter(request, "courseId");
+		result.put("course", getDao().loadEntity(Course.class, courseId));
 		
 		return result;
 	}

@@ -25,10 +25,10 @@ public class LectureStartController extends AbstractPresenterController {
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO should require post
-		int crn = ServletRequestUtils.getRequiredIntParameter(request, "crn");
+		int courseId = ServletRequestUtils.getRequiredIntParameter(request, "courseId");
 		int lectureId = ServletRequestUtils.getRequiredIntParameter(request, "lectureId");
 		
-		Course course = getDao().getEntity(Course.class, crn);
+		Course course = getDao().getEntity(Course.class, courseId);
 		Lecture lecture = getDao().getEntity(Lecture.class, lectureId);
 		
 		LectureSession lectureSession = activeLectureController.newLectureSession(course, lecture);

@@ -14,8 +14,8 @@ public class CourseController extends AbstractPresenterController {
 
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Integer crn = ServletRequestUtils.getRequiredIntParameter(request, "crn");
-		return new ModelAndView(getViewName(), "course", getDao().getEntity(Course.class, crn));
+		Integer courseId = ServletRequestUtils.getRequiredIntParameter(request, "courseId");
+		return new ModelAndView(getViewName(), "course", getDao().getEntity(Course.class, courseId));
 	}
 
 }

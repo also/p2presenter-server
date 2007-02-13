@@ -284,7 +284,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		
 		while (iterator.hasNext()) {
 			course = iterator.next();
-			resultBuilder.append(course.getTitle() + " (" + course.getCrn() + ")");
+			resultBuilder.append(course.getTitle() + " (" + course.getId() + ")");
 			
 			if (iterator.hasNext()) {
 				resultBuilder.append('|');

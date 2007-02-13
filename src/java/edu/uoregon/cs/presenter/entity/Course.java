@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -17,13 +18,14 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 /** A particular course.
- * Each course has it's own CRN.
  * @author rberdeen
  *
  */
 @Entity
 @Table
 public class Course {
+	private Integer id;
+	
 	private Integer crn;
 	
 	private String title;
@@ -36,6 +38,15 @@ public class Course {
 	private Set<Lecture> lectures = new LinkedHashSet<Lecture>();
 	
 	@Id
+	@GeneratedValue
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getCrn() {
 		return crn;
 	}

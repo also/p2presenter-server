@@ -5,10 +5,10 @@
 <h2>${course.subject} ${course.number}</h2>
 <table><tbody>
 <tr><th scope="row">Instructor: </th><td>${course.instructor}</td></tr>
-<tr><th scope="row">CRN: </th><td>${course.crn}</td></tr>
+<c:if test="${!empty course.crn}"><tr><th scope="row">CRN: </th><td>${course.crn}</td></tr></c:if>
 </tbody></table>
 
-<p><a href="<c:url value="/courses/${course.crn}/drop"/>">Drop this course</a></p>
+<p><a href="<c:url value="/courses/${course.id}/drop"/>">Drop this course</a></p>
 </div>
 
 <c:if test="${empty course.lectures}">
@@ -19,7 +19,7 @@
 
 <ul>
 <c:forEach items="${course.lectures}" var="lecture">
-<li><a href="<c:url value="/courses/${course.crn}/lectures/${lecture.id}"/>">${lecture.title}</a></li>
+<li><a href="<c:url value="/courses/${course.id}/lectures/${lecture.id}"/>">${lecture.title}</a></li>
 </c:forEach>
 </ul>
 </c:if>

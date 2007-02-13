@@ -18,26 +18,26 @@ public class EnrollCourseController extends AbstractPresenterController {
 
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Integer crn = null;
+		Integer courseId = null;
 		String message = null;
 	
 		try {
-			crn = ServletRequestUtils.getIntParameter(request, "crn");
+			courseId = ServletRequestUtils.getIntParameter(request, "courseId");
 
 		}
 		catch (ServletRequestBindingException ex) {
-			message = "Invalid CRN";
+			message = "Invalid course";
 		}
 		Course course = null;
 
 		HashMap<String, Object> model = new HashMap<String, Object>();
 
 		Person person = getPerson(request);
-		if (crn != null) {
-			course = getDao().getEntity(Course.class, crn);
+		if (courseId != null) {
+			course = getDao().getEntity(Course.class, courseId);
 			if (course == null) {
 				// TODO exception type
-				message = "Invalid CRN";
+				message = "Invalid course";
 			}
 			else if (course.getStudents().contains(person)) {
 				flashMessage("course.alreadyEnrolled", new Object[] {course}, "course {0} already enrolled");

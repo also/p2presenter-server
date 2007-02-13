@@ -22,11 +22,11 @@ public class LectureSessionAdminController extends AbstractPresenterController {
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO this was copied verbatim from LectureSessionController
-		Integer crn = ServletRequestUtils.getIntParameter(request, "crn");
+		Integer courseId = ServletRequestUtils.getIntParameter(request, "courseId");
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
 		ActiveLecture activeLecture;
-		if (crn != null && lectureId != null) {
-			activeLecture = activeLectureController.getActiveLecture(crn, lectureId);
+		if (courseId != null && lectureId != null) {
+			activeLecture = activeLectureController.getActiveLecture(courseId, lectureId);
 		}
 		else {
 			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "lectureSessionId");

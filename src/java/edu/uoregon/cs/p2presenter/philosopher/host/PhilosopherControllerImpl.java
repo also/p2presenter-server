@@ -120,10 +120,10 @@ public class PhilosopherControllerImpl implements Philosopher {
 	}
 	
 	private void stateChanged() {
-		table.philosopherStateChanged(this);
+		table.philosopherStateChanged(this, getState(), leftHand.getState(), rightHand.getState());
 		
 		if (philosopherStateListener != null) {
-			this.philosopherStateListener.philosopherStateChanged(this);
+			this.philosopherStateListener.philosopherStateChanged(this, getState(), leftHand.getState(), rightHand.getState());
 		}
 	}
 

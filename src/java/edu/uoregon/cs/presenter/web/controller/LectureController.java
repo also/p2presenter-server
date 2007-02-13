@@ -21,7 +21,7 @@ public class LectureController extends AbstractPresenterController {
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Course course = getDao().getEntity(Course.class, ServletRequestUtils.getRequiredIntParameter(request, "crn"));
+		Course course = getDao().getEntity(Course.class, ServletRequestUtils.getRequiredIntParameter(request, "courseId"));
 		Lecture lecture = getDao().getEntity(Lecture.class, ServletRequestUtils.getRequiredIntParameter(request, "lectureId"));
 		ModelAndView result = new ModelAndView(getViewName(), "lecture", lecture);
 		result.addObject("course", course);

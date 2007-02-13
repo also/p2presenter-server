@@ -10,7 +10,7 @@
 <h2>You are missing a lecture!</h2>
 <ul>
 <c:forEach items="${activeLectures}" var="activeLecture">
-<li><a href="<c:url value="/courses/${activeLecture.course.crn}/lectures/${activeLecture.lecture.id}/watch"/>">${activeLecture.lecture.title}</a> started at <fmt:formatDate value="${activeLecture.lectureSession.timestamp}" type="time" timeStyle="short"/>.</li>
+<li><a href="<c:url value="/courses/${activeLecture.course.id}/lectures/${activeLecture.lecture.id}/watch"/>">${activeLecture.lecture.title}</a> started at <fmt:formatDate value="${activeLecture.lectureSession.timestamp}" type="time" timeStyle="short"/>.</li>
 </c:forEach>
 </ul>
 </div>
@@ -24,7 +24,7 @@
 <thead><tr><th scope="col">Course</th></tr></thead>
 <tbody>
 <c:forEach items="${person.coursesAttended}" var="course">
-<tr><td><a href="<c:url value="/courses/${course.crn}/"/>">${course.title}</a></td></tr>
+<tr><td><a href="<c:url value="/courses/${course.id}/"/>">${course.title}</a></td></tr>
 </c:forEach>
 </tbody>
 </table>
@@ -44,7 +44,7 @@
 <c:forEach items="${person.coursesTaught}" var="course">
 <tr><td>${course.crn}</td>
     <td>${course.subject} ${course.number}</td>
-    <td><a href="<c:url value="/instructor/courses/${course.crn}/"/>">${course.title}</a></td></tr>
+    <td><a href="<c:url value="/instructor/courses/${course.id}/"/>">${course.title}</a></td></tr>
 </c:forEach>
 </tbody>
 </table>

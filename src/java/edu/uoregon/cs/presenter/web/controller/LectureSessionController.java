@@ -28,16 +28,16 @@ public class LectureSessionController extends AbstractPresenterController {
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Integer crn = ServletRequestUtils.getIntParameter(request, "crn");
+		Integer courseId = ServletRequestUtils.getIntParameter(request, "courseId");
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
 		ActiveLecture activeLecture;
-		if (crn != null && lectureId != null) {
-			Course course = getDao().loadEntity(Course.class, crn);
+		if (courseId != null && lectureId != null) {
+			Course course = getDao().loadEntity(Course.class, courseId);
 			Lecture lecture = getDao().loadEntity(Lecture.class, lectureId);
-			activeLecture = activeLectureController.getActiveLecture(crn, lectureId);
+			activeLecture = activeLectureController.getActiveLecture(courseId, lectureId);
 			if (activeLecture == null) {
 				flashMessage("lecture.session.inactive", new Object[] {lecture, course}, "lecture {0} is not active in course {1}");
-				return new ModelAndView("redirect:/courses/" + crn + "/lectures/" + lectureId + '/');
+				return new ModelAndView("redirect:/courses/" + courseId + "/lectures/" + lectureId + '/');
 			}
 		}
 		else {

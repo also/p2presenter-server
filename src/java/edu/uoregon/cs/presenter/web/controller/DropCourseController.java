@@ -15,8 +15,8 @@ public class DropCourseController extends AbstractPresenterController {
 
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Integer crn = ServletRequestUtils.getRequiredIntParameter(request, "crn");
-		Course course = getDao().getEntity(Course.class, crn);
+		Integer courseId = ServletRequestUtils.getRequiredIntParameter(request, "courseId");
+		Course course = getDao().getEntity(Course.class, courseId);
 		
 		if ("post".equalsIgnoreCase(request.getMethod())) {
 			Person person = getPerson(request);

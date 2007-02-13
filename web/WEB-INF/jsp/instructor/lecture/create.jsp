@@ -8,7 +8,7 @@
 <tr><th scope="col"><form:label path="title">Title: </form:label></th><td><form:input path="title"/></td></tr>
 </tbody>
 </table>
-<p><input type="submit" value="Create"/> or <a href="<c:url value="/courses/${course.crn}/"/>">Cancel</a></p>
+<p><input type="submit" value="Create"/> or <a href="<c:url value="/courses/${course.id}/"/>">Cancel</a></p>
 </form:form>
 </c:set>
 <%@ include file="/WEB-INF/jsp/template/default.jsp" %>

@@ -2,7 +2,7 @@
 <c:set var="pageTitle" value="Roster"/>
 <c:set var="subtitle" value="${course.title}"/>
 <c:set var="body">
-<p>&larr; <a href="<c:url value="/instructor/courses/${course.crn}/"/>">Back to course</a></p>
+<p>&larr; <a href="<c:url value="/instructor/courses/${course.id}/"/>">Back to course</a></p>
 <table>
 <thead><tr><th scope="col">Last Name</th><th scope="col">First Name</th></tr></thead>
 <tbody>

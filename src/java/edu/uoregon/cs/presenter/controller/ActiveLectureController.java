@@ -39,7 +39,7 @@ public class ActiveLectureController {
 		LinkedHashSet<ActiveLecture> result = new LinkedHashSet<ActiveLecture>();
 		
 		for (ActiveLectureInfo activeLectureInfo : activeLecturesInfo.values()) {
-			if (activeLectureInfo.getCourseId() == course.getCrn()) {
+			if (activeLectureInfo.getCourseId() == course.getId()) {
 				result.add(new ActiveLecture(dao, activeLectureInfo));
 			}
 		}
@@ -48,7 +48,7 @@ public class ActiveLectureController {
 	}
 	
 	public ActiveLecture getActiveLecture(Course course, Lecture lecture) {
-		return getActiveLecture(course.getCrn(), lecture.getId());
+		return getActiveLecture(course.getId(), lecture.getId());
 	}
 	
 	public ActiveLecture getActiveLecture(int courseId, int lectureId) {
@@ -85,7 +85,7 @@ public class ActiveLectureController {
 	 * @param lectureSession
 	 */
 	public void reactivateLectureSession(LectureSession lectureSession) {
-		ActiveLectureInfo activeLecture = new ActiveLectureInfo(lectureSession.getId(), lectureSession.getCourse().getCrn(), lectureSession.getLecture().getId());
+		ActiveLectureInfo activeLecture = new ActiveLectureInfo(lectureSession.getId(), lectureSession.getCourse().getId(), lectureSession.getLecture().getId());
 		activeLecturesInfo.put(lectureSession.getId(), activeLecture);
 	}
 	

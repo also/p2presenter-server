@@ -27,7 +27,7 @@
 <table>
 <tbody>
 <c:forEach items="${person.coursesAttended}" var="course">
-<tr><td><a href="<c:url value="/courses/${course.crn}/"/>">${course.title}</a></td></tr>
+<tr><td><a href="<c:url value="/courses/${course.id}/"/>">${course.title}</a></td></tr>
 </c:forEach>
 </tbody>
 </table>

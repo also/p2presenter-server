@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="pageTitle" value="${lecture}"/>
 <c:set var="body">
-<p>&larr; <a href="<c:url value="/courses/${course.crn}"/>">Back to course</a></p>
-<c:if test="${!empty activeLecture}"><p>This lecture is active. <a href="<c:url value="/courses/${course.crn}/lectures/${lecture.id}/watch"/>">Watch</a> the active lecture.</p></c:if>
+<p>&larr; <a href="<c:url value="/courses/${course.id}"/>">Back to course</a></p>
+<c:if test="${!empty activeLecture}"><p>This lecture is active. <a href="<c:url value="/courses/${course.id}/lectures/${lecture.id}/watch"/>">Watch</a> the active lecture.</p></c:if>
 
 <c:if test="${empty lecture.lectureSessions}">
 <p>This lecture has not been presented</p>

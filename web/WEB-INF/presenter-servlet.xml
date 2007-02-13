@@ -12,23 +12,23 @@
 			<entry key="/subjects/*{subject}" value="subjectCourseListController"/>
 			<entry key="/course-list" value="subjectCourseListController"/>
 			<entry key="/courses" value="courseListController"/>
-			<entry key="/courses/*{crn}" value="courseController"/>
-			<entry key="/courses/*{crn}/enroll" value="enrollCourseController"/>
-			<entry key="/courses/*{crn}/drop" value="dropCourseController"/>
-			<entry key="/courses/*{crn}/lectures/*{lectureId}" value="lectureController"/>
-			<entry key="/courses/*{crn}/lectures/*{lectureId}/watch" value="lectureSessionController"/>
+			<entry key="/courses/*{courseId}" value="courseController"/>
+			<entry key="/courses/*{courseId}/enroll" value="enrollCourseController"/>
+			<entry key="/courses/*{courseId}/drop" value="dropCourseController"/>
+			<entry key="/courses/*{courseId}/lectures/*{lectureId}" value="lectureController"/>
+			<entry key="/courses/*{courseId}/lectures/*{lectureId}/watch" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}/submit/freeform" value="acceptFreeformSubmissionController"/>
 			<entry key="/slides/*{slideId}.png" value="slideImageController"/>
 			<entry key="/ink/slides/*{slideSessionId}/*{inkIndex}.png" value="inkImageController"/>
 			<entry key="/ink/whiteboards/*{whiteboardId}/*{inkIndex}.png" value="whiteboardImageController"/>
 			<entry key="/instructor/courses/create" value="createCourseController"/>
-			<entry key="/instructor/courses/*{crn}/" value="instructorCourseDetailsController"/>
-			<entry key="/instructor/courses/*{crn}/roster" value="instructorCourseRosterController"/>
-			<entry key="/instructor/courses/*{crn}/lectures/create" value="lectureCreateController"/>
-			<entry key="/instructor/courses/*{crn}/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
-			<entry key="/instructor/courses/*{crn}/lectures/*{lectureId}/start" value="lectureStartController"/>
-			<entry key="/instructor/courses/*{crn}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
+			<entry key="/instructor/courses/*{courseId}/" value="instructorCourseDetailsController"/>
+			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/create" value="lectureCreateController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/start" value="lectureStartController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
 			<entry key="/instructor/control/*{lectureSessionId}" value="lectureSessionAdminController"/>
 			<entry key="/ubiquitous/lib/soap_server.php" value="upSoapServerController"/>
 			<entry key="/ubiquitous/lib/http_transfers.php" value="upHttpTransfersController"/>

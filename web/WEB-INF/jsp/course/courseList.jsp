@@ -15,7 +15,7 @@
     <td>${course.subject} ${course.number}</td>
     <td>${course.title}</td>
     <td>${course.instructor}</td>
-    <td><a href="<c:url value="/courses/${course.crn}/enroll"/>">enroll</a></td></tr>
+    <td><a href="<c:url value="/courses/${course.id}/enroll"/>">enroll</a></td></tr>
 </c:forEach>
 </tbody>
 </table>

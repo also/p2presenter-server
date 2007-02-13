@@ -19,7 +19,7 @@ public class Table implements PhilosopherStateListener {
 		this.listener = listener;
 	}
 	
-	public void philosopherStateChanged(Philosopher philosopher) {
+	public void philosopherStateChanged(Philosopher philosopher, Philosopher.State philosopherState, Philosopher.Hand.State leftHandState, Philosopher.Hand.State rightHandState) {
 		listener.tableStateChanged(this);
 	}
 	
