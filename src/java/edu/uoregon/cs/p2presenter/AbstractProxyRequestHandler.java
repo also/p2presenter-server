@@ -32,7 +32,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 		}
 		else {
 			target = getTargetConnection(incomingRequest);
-			proxiedConnectionId = incomingRequest.getConnection().getConnectionId();
+			proxiedConnectionId = incomingRequest.getLocalConnection().getConnectionId();
 		}
 		
 		sendProxiedRequest(target, incomingRequest, proxiedConnectionId);

@@ -30,7 +30,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 			
 			LocalConnection target = activeInteractivity.getHostConnection();
 			
-			AbstractProxyRequestHandler.sendProxiedRequest(target, request, request.getConnection().getConnectionId());
+			AbstractProxyRequestHandler.sendProxiedRequest(target, request, request.getLocalConnection().getConnectionId());
 			
 			return null;
 		}
