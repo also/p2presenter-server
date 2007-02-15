@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
@@ -40,7 +40,7 @@ public class InteractivityAdminRequestHandler implements RequestHandler, Connect
 				return response;
 			}
 			else if (action.equals("begin")) {
-				activeInteractivityController.addActiveInteractivity(id, new ActiveInteractivity(request.getConnection(), definition));
+				activeInteractivityController.addActiveInteractivity(id, new ActiveInteractivity(request.getLocalConnection(), definition));
 				return new OutgoingResponseMessage(request);
 			}
 		}
@@ -48,7 +48,7 @@ public class InteractivityAdminRequestHandler implements RequestHandler, Connect
 		return new OutgoingResponseMessage(request, 404);
 	}
 
-	public void connectionClosed(LocalConnection connection) {
+	public void connectionClosed(Connection connection) {
 		// TODO end interactivity
 	}
 }

@@ -4,19 +4,31 @@ package edu.uoregon.cs.p2presenter.message;
 
 import java.util.HashMap;
 
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.ProxiedConnection;
 
 public class IncomingRequestMessage extends AbstractRequestMessage implements IncomingRequestHeaders, IncomingMessage {
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
-	private LocalConnection connection;
+	private LocalConnection localConnection;
 	
-	protected IncomingRequestMessage(LocalConnection connection, RequestType requestType, String uri) {
+	protected IncomingRequestMessage(LocalConnection localConnection, RequestType requestType, String uri) {
 		super(requestType, uri);
-		this.connection = connection;
+		this.localConnection = localConnection;
+	}
+	
+	public final Connection getConnection() {
+		String proxiedConnectionId = getHeader("Proxied-Connection-Id");
+		if (proxiedConnectionId != null) {
+			return ProxiedConnection.getProxiedConnection(localConnection, proxiedConnectionId);
+		}
+		else {
+			return localConnection;
+		}
 	}
 
-	public final LocalConnection getConnection() {
-		return connection;
+	public final LocalConnection getLocalConnection() {
+		return localConnection;
 	}
 	
 	public Object getAttribute(String name) {
@@ -28,15 +40,5 @@ public class IncomingRequestMessage extends AbstractRequestMessage implements In
 			attributes = new HashMap<String, Object>();
 		}
 		attributes.put(name, value);
-	}
-	
-	public Integer getProxiedConnectionId() {
-		String resultString = getHeader(SpecialHeader.Proxied_Connection_Id);
-		if (resultString != null) {
-			return new Integer(resultString);
-		}
-		else {
-			return null;
-		}
 	}
 }

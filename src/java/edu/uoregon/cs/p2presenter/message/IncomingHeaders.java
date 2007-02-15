@@ -11,5 +11,5 @@ import edu.uoregon.cs.p2presenter.LocalConnection;
 public interface IncomingHeaders extends Headers {
 	/** Return the connection that received the headers.
 	 */
-	public LocalConnection getConnection();
+	public LocalConnection getLocalConnection();
 }

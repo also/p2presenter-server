@@ -32,8 +32,7 @@ public abstract class AbstractMessage implements Message {
 		Content,
 		Status,
 		Message_Id,
-		In_Response_To,
-		Proxied_Connection_Id;
+		In_Response_To;
 		
 		private String name;
 		private SpecialHeader() {
@@ -143,7 +142,7 @@ public abstract class AbstractMessage implements Message {
 		if(containsLineEnd(name)) {
 			throw new IllegalArgumentException("End of line in header name: '" + name + "'");
 		}
-		if(containsLineEnd(value)) {
+		if(value != null && containsLineEnd(value)) {
 			throw new IllegalArgumentException("End of line in header value: '" + value + "'");
 		}
 		setHeaderUnchecked(name, value);
@@ -314,7 +313,9 @@ public abstract class AbstractMessage implements Message {
 		
 		/* send the headers */
 		for(Map.Entry<String, String> header : headers.entrySet()) {
-			writer.println(header.getKey() + ": " + header.getValue());
+			if (header.getValue() != null) {
+				writer.println(header.getKey() + ": " + header.getValue());
+			}
 		}
 		
 		if (flushHeaders) {

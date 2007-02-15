@@ -22,7 +22,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 		Object model = interactivityController.onConnect();
 		
-		ProxyCache proxyCache = ProxyCache.getProxyCache(request.getConnection(), proxyCacheUri, request.getProxiedConnectionId().toString());
+		ProxyCache proxyCache = ProxyCache.getProxyCache(request.getConnection(), proxyCacheUri);
 		
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 		
@@ -33,5 +33,4 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		
 		return response;
 	}
-
 }

@@ -38,10 +38,9 @@ public class InteractivityParticipantClient {
 			if (response.getStatus() == 200) {
 				responseObject = JsonObject.valueOf(response.getContentAsString());
 			
-			
 				int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
 				remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
-				InvocationRequestHandler invoker = new InvocationRequestHandler(false);
+				InvocationRequestHandler invoker = new InvocationRequestHandler();
 				connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
 				
 				model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));

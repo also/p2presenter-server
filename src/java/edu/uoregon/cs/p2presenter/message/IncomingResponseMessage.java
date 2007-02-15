@@ -12,7 +12,7 @@ public class IncomingResponseMessage extends AbstractResponseMessage implements 
 		this.connection = connection;
 	}
 
-	public final LocalConnection getConnection() {
+	public final LocalConnection getLocalConnection() {
 		return connection;
 	}
 }

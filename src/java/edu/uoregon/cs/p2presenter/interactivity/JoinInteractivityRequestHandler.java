@@ -5,6 +5,7 @@ package edu.uoregon.cs.p2presenter.interactivity;
 import java.io.IOException;
 
 import edu.uoregon.cs.p2presenter.AbstractProxyRequestHandler;
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.ConnectionListener;
 import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
@@ -20,14 +21,16 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	}
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws IOException {
-		LocalConnection connection = request.getConnection();
+		Connection connection = request.getConnection();
 		Integer interactivityId = new Integer(request.getAttribute("interactivityId").toString());
 		
 		ActiveInteractivity<?> activeInteractivity = activeInteractivityController.getActiveInteractivity(interactivityId);
 		if (activeInteractivity != null) {
 			connection.addConnectionListener(new InteractivityConnectionListener(activeInteractivity));
 			
-			AbstractProxyRequestHandler.sendProxiedMessage(activeInteractivity.getHostConnection(), request);
+			LocalConnection target = activeInteractivity.getHostConnection();
+			
+			AbstractProxyRequestHandler.sendProxiedRequest(target, request, request.getConnection().getConnectionId());
 			
 			return null;
 		}
@@ -47,7 +50,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		}
 
 		@SuppressWarnings("unchecked")
-		public void connectionClosed(LocalConnection connection) {
+		public void connectionClosed(Connection connection) {
 			// FIXME notify the host
 		}
 	}

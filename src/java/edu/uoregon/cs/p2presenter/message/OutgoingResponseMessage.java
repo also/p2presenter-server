@@ -21,7 +21,7 @@ public class OutgoingResponseMessage extends AbstractResponseMessage implements 
 		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
 	}
 	
-	public OutgoingResponseMessage(RequestMessage inResponseToMessage, IncomingResponseMessage that) {
+	public OutgoingResponseMessage(RequestMessage inResponseToMessage, AbstractResponseMessage that) {
 		super(that);
 		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
 	}

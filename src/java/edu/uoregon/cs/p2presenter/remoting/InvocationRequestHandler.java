@@ -9,7 +9,7 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
+import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
@@ -21,25 +21,13 @@ public class InvocationRequestHandler implements RequestHandler {
 	public static final String PARAMETER_TYPES_HEADER_NAME = "Parameter-Types";
 	public static final String CONTENT_TYPE = "application/x-java-serialized-object";
 	public static final String ARGUMENT_COUNT_HEADER_NAME = "Argument-Count";
-	
-	private boolean limitProxyCacheScope = true;
-	
-	public InvocationRequestHandler() {}
-	
-	public InvocationRequestHandler(boolean limitProxyCacheScope) {
-		this.limitProxyCacheScope = limitProxyCacheScope;
-	}
 
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
 		OutgoingSerializedObjectResponseMessage response = new OutgoingSerializedObjectResponseMessage(request);
 		
-		LocalConnection connection = request.getConnection();
-		Integer connectionId = connection.getConnectionId();
-		if (connectionId == null) {
-			connectionId = request.getProxiedConnectionId();
-		}
-		ProxyCache proxyCache = ProxyCache.getProxyCache(connection, request.getUri(), limitProxyCacheScope ? connectionId.toString() : "");
+		Connection connection = request.getConnection();
+		ProxyCache proxyCache = ProxyCache.getProxyCache(connection, request.getUri());
 		
 		try {
 			try {

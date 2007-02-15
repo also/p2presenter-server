@@ -12,6 +12,8 @@ import java.io.OutputStream;
 public interface OutgoingHeaders extends Headers {
 	public void setContentType(String contentType);
 	
+	public void setHeader(String header, String value);
+	
 	/** Write the headers, including the request/response line, to the output stream.
 	 * The headers include the blank line that separates headers from content.
 	 */

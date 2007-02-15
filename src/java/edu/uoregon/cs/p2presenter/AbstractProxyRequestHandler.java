@@ -14,19 +14,38 @@ import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
  *
  */
 public abstract class AbstractProxyRequestHandler implements RequestHandler {
+	private ConnectionManager connectionManager;
+	
+	public void setConnectionManager(ConnectionManager connectionManager) {
+		this.connectionManager = connectionManager;
+	}
+	
 	protected abstract LocalConnection getTargetConnection(IncomingRequestMessage request);
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage incomingRequest) throws IOException {
-		LocalConnection target = getTargetConnection(incomingRequest);
+		LocalConnection target;
 		
-		sendProxiedMessage(target, incomingRequest);
+		String targetConnectionId = incomingRequest.getHeader("Target-Connection-Id");
+		String proxiedConnectionId = null;
+		if (targetConnectionId != null) {
+			target = connectionManager.getConnection(targetConnectionId);
+		}
+		else {
+			target = getTargetConnection(incomingRequest);
+			proxiedConnectionId = incomingRequest.getConnection().getConnectionId();
+		}
+		
+		sendProxiedRequest(target, incomingRequest, proxiedConnectionId);
 		
 		// the response will be sent by the proxy response handler
 		return null;
 	}
 	
-	public static void sendProxiedMessage(LocalConnection target, IncomingRequestMessage incomingRequest) throws IOException {
+	public static void sendProxiedRequest(LocalConnection target, IncomingRequestMessage incomingRequest, String proxiedConnectionId) throws IOException {
 		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
+		if (proxiedConnectionId != null) {
+			outgoingRequest.setHeader("Proxied-Connection-Id", proxiedConnectionId);
+		}
 		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));
 	}
 	
@@ -43,6 +62,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 		
 		public Object handleResponse(IncomingResponseMessage targetResponse) throws Exception {
 			OutgoingResponseMessage response = new OutgoingResponseMessage(request, targetResponse);
+			
 			request.getConnection().sendResponse(response);
 			
 			return null;
