@@ -133,7 +133,7 @@ public class ActiveLecture {
 	/** Returns the ink count of the current slide session.
 	 * @throws NullPointerException in there is no current slide session
 	 */
-	public int getCurrentSlideSessionInkCount() {
+	public Integer getCurrentSlideSessionInkCount() {
 		return activeLectureInfo.getCurrentSlideSessionInkCount();
 	}
 	
@@ -146,7 +146,7 @@ public class ActiveLecture {
 		return result;
 	}
 	
-	public int getCurrentWhiteboardInkCount() {
+	public Integer getCurrentWhiteboardInkCount() {
 		return activeLectureInfo.getCurrentWhiteboardInkCount();
 	}
 	

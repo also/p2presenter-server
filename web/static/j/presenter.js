@@ -1,5 +1,5 @@
 
-var ImageType = {NONE: 0, SLIDE: 1, WHITEBOARD: 2};
+var DisplayType = {NONE: 0, SLIDE: 1, WHITEBOARD: 2, INTERACTIVITY: 3};
 
 var SlideDisplay = Class.create();
 SlideDisplay.prototype = {
@@ -7,6 +7,7 @@ SlideDisplay.prototype = {
 		this.container = $(container);
 		this.baseImage = Builder.node('img', {style: 'width: 100%; display: none;'});
 		this.overlayImage = Builder.node('img', {style: 'width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: none;'});
+		this.interactivityContainer = Builder.node('div', {style: 'width: 100%; display: none;'}, 'interactivity goes here');
 		
 		this.toolbar = Builder.node('p', [
 			this.statusSpan = Builder.node('span', 'synched'),
@@ -46,11 +47,13 @@ SlideDisplay.prototype = {
 		}.bindAsEventListener(this));
 		
 		this.container.appendChild(this.baseImage);
+		this.container.appendChild(this.interactivityContainer);
 		this.container.appendChild(this.overlayImage);
 		this.container.parentNode.appendChild(this.toolbar);
 		
-		this.baseType = ImageType.NONE;
-		this.overlayType = ImageType.NONE;
+		this.baseType = DisplayType.NONE;
+		this.interactivityType = DisplayType.NONE;
+		this.overlayType = DisplayType.NONE;
 		
 		this.sync = true;
 	},
@@ -62,55 +65,37 @@ SlideDisplay.prototype = {
 		else {
 			if (this.sync) {
 				this.displayState = state;
-				 if (state.currentWhiteboardId) {
-				 	// hide the base image if shown
-				 	if (this.overlayType != ImageType.NONE) {
-				 		Element.hide(this.overlayImage);
-				 	}
-				 	if (state.inkCount > 0) {
-					 	// show the overlay image if hidden
-					 	if (this.baseType == ImageType.NONE) {
-							Element.show(this.baseImage);
-						}
+				if (state.currentInteractivityDefinitionId) {
+					try {
+					this.hideOverlay();
+					this.showInteractivity(Builder.node('applet', {code: 'edu.uoregon.cs.p2presenter.interactivity.participant.InteractivityParticipantApplet', archive: prefix + '/static/interactivity.jar', width: 640, height: 480}, [
+						Builder.node('param', {name: 'host', value: 'localhost'}),
+						Builder.node('param', {name: 'interactivityDefinitionId', value: state.currentInteractivityDefinitionId})]));
+						}catch(e) {alert(e);}
+				}
+				else if (state.currentWhiteboardId) {
+					this.hideOverlay();
+					if (state.currentWhiteboardInkCount > 0) {
+						this.showBase(DisplayType.WHITEBOARD);
 						
-						this.baseImage.src = prefix + '/ink/whiteboards/' + state.currentWhiteboardId + '/' + (state.inkCount - 1) + '.png';
-						
-						this.baseType = ImageType.WHITEBOARD;
+						this.baseImage.src = prefix + '/ink/whiteboards/' + state.currentWhiteboardId + '/' + (state.currentWhiteboardInkCount - 1) + '.png';
 					}
 					else {
 						// TODO show a blank whiteboard instead
-						if (this.baseType != ImageType.NONE) {
-							Element.hide(this.baseImage);
-						}
-						this.baseType = ImageType.NONE;
+						this.hideBase();
 					}
-					this.overlayType = ImageType.NONE;
 				}
 				else if (state.currentSlideSessionId) {
-					// show the base image if hidden
-					if (this.baseType == ImageType.NONE) {
-						Element.show(this.baseImage);
-					}
 					this.baseImage.src = prefix + '/slides/' + state.currentSlideId + '.png';
-					if (state.inkCount > 0) {
-						if (this.overlayType == ImageType.NONE) {
-							Element.show(this.overlayImage);
-						}
-						this.overlayImage.src = prefix + '/ink/slides/' + state.currentSlideSessionId + '/' + (state.inkCount - 1) + '.png';
-						this.overlayType = ImageType.SLIDE;
+					if (state.currentSlideSessionInkCount > 0) {
+						this.showOverlay(DisplayType.SLIDE);
+						this.overlayImage.src = prefix + '/ink/slides/' + state.currentSlideSessionId + '/' + (state.currentSlideSessionInkCount - 1) + '.png';
 					}
 					else {
-						if (this.overlayType != ImageType.NONE) {
-							Element.hide(this.overlayImage);
-						}
-						this.overlayType = ImageType.NONE;
+						this.hideOverlay();
 					}
 					
-					// show the base image if it is hidden
-					if (this.baseType == ImageType.NONE) {
-				 		Element.show(this.baseImage);
-				 	}
-					this.baseType = ImageType.SLIDE;
+					this.showBase(DisplayType.SLIDE);
 				}
 				else {
 					state = null;
@@ -118,6 +103,53 @@ SlideDisplay.prototype = {
 				}
 			}
 			this.state = state;
+		}
+	},
+	
+	hideBase: function() {
+		if (this.baseType != DisplayType.NONE) {
+			Element.hide(this.baseImage);
+		}
+		this.baseType = DisplayType.NONE;
+	},
+	
+	showBase: function(baseType) {
+		this.hideOverlay();
+		if (this.baseType == DisplayType.NONE) {
+			Element.show(this.baseImage);
+		}
+		this.baseType = baseType;
+	},
+	
+	hideOverlay: function() {
+		if (this.overlayType != DisplayType.NONE) {
+			Element.hide(this.overlayImage);
+		}
+		this.overlayType = DisplayType.NONE;
+	},
+	
+	showOverlay: function(overlayType) {
+		if (this.overlayType == DisplayType.NONE) {
+			Element.show(this.overlayImage);
+		}
+		this.overlayType = overlayType;
+	},
+	
+	hideInteractivity: function() {
+		if (this.interactivityType != DisplayType.NONE) {
+			Element.hide(this.interactivityContainer);
+			this.interactivityContainer.innerHTML = '';
+		}
+		this.interactivityType = DisplayType.NONE;
+	},
+	
+	showInteractivity: function(element) {
+		this.hideBase();
+		if (this.interactivityType == DisplayType.NONE) {
+			Element.show(this.interactivityContainer);
+			this.interactivityType = DisplayType.INTERACTIVITY;
+			this.interactivityContainer.innerHTML = '';
+			this.interactivityContainer.appendChild(element);
 		}
 	},
 	

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 import edu.uoregon.cs.presenter.entity.Course;
+import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 import edu.uoregon.cs.presenter.entity.Lecture;
 import edu.uoregon.cs.presenter.entity.SlideSession;
 import edu.uoregon.cs.presenter.entity.Whiteboard;
@@ -54,7 +55,14 @@ public class LectureSessionController extends AbstractPresenterController {
 			slideSession = activeLecture.getCurrentSlideSession();
 			whiteboard = activeLecture.getCurrentWhiteboard();
 			
-			response.setHeader("X-JSON", getJson(activeLecture).toString());
+			// FIXME
+			InteractivityDefinition interactivityDefinition = activeLecture.getCurrentSlideSession().getSlide().getInteractivityDefinition();
+			JsonObject json = getJson(activeLecture);
+			if (interactivityDefinition != null) {
+				json.set("currentInteractivityDefinitionId", interactivityDefinition.getId());
+			}
+			
+			response.setHeader("X-JSON", json.toString());
 			
 			logger.info("Updated to state " + newStateCount);
 			
@@ -78,19 +86,7 @@ public class LectureSessionController extends AbstractPresenterController {
 	}
 	
 	private JsonObject getJson(ActiveLecture activeLecture) {
-		JsonObject json = new JsonObject();
-		json.set("stateCount", activeLecture.getStateCount());
-		Integer currentWhiteboardId = activeLecture.getCurrentWhiteboardId();
-		Integer currentSlideSessionId = activeLecture.getCurrentSlideSessionId();
-		if (currentWhiteboardId != null) {
-			json.set("currentWhiteboardId", currentWhiteboardId);
-			json.set("inkCount", activeLecture.getCurrentWhiteboardInkCount());
-		}
-		else if (currentSlideSessionId != null) {
-			json.set("currentSlideSessionId", currentSlideSessionId);
-			json.set("currentSlideId", activeLecture.getCurrentSlideId());
-			json.set("inkCount", activeLecture.getCurrentSlideSessionInkCount());
-		}
+		JsonObject json = new JsonObject(activeLecture, "stateCount", "currentWhiteboardId", "currentWhiteboardInkCount", "currentSlideSessionId", "currentSlideId", "currentSlideSessionInkCount");
 		
 		return json;
 	}
