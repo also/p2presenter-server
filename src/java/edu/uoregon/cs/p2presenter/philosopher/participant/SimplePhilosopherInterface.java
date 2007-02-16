@@ -140,7 +140,7 @@ public class SimplePhilosopherInterface extends JPanel implements InteractivityC
 	public void philosopherStateChanged(Philosopher philosopher, Philosopher.State philosopherState, Philosopher.Hand.State leftHandState, Philosopher.Hand.State rightHandState) {
 		updateHandButtons(leftHandState, takeLeftChopstickButton, releaseLeftChopstickButton);
 		updateHandButtons(rightHandState, takeRightChopstickButton, releaseRightChopstickButton);
-		System.out.println("Philosopher state changed to " + philosopher.getState());
+		System.out.println("Philosopher state changed to " + philosopherState);
 	}
 	
 	private void updateHandButtons(Philosopher.Hand.State state, JButton takeButton, JButton releaseButton) {
