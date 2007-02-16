@@ -12,6 +12,7 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 	
 	<bean id="acegiFilter" class="org.acegisecurity.util.FilterChainProxy">
 		<property name="filterInvocationDefinitionSource"><value>
@@ -102,7 +103,7 @@ xsi:schemaLocation="
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties"><props>
 			<prop key="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</prop>
-			<prop key="hibernate.connection.url">jdbc:hsqldb:file:/presenter/db</prop>
+			<prop key="hibernate.connection.url">jdbc:hsqldb:file:${user.home}/.p2presenter/db</prop>
 			<prop key="hibernate.connection.username">sa</prop>
 			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
 			<prop key="hibernate.connection.hsqldb.default_table_type">cached</prop>

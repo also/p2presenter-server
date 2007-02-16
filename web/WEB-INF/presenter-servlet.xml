@@ -28,6 +28,7 @@
 			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/create" value="lectureCreateController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/slides/create" value="simpleNewSlideController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/start" value="lectureStartController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
@@ -137,6 +138,10 @@
 	<bean id="lectureCreateController" class="edu.uoregon.cs.presenter.web.controller.instructor.LectureCreateController" parent="abstractPresenterController">
 		<property name="formView" value="instructor/lecture/create"/>
 		<property name="successView" value="redirect:/courses"/>
+	</bean>
+	
+	<bean id="simpleNewSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleNewSlideController" parent="abstractPresenterController">
+		<property name="viewName" value="redirect:/courses"/>
 	</bean>
 	
 	<bean id="simpleEditSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleEditSlideController" parent="abstractPresenterController">

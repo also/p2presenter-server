@@ -17,6 +17,7 @@
 </c:if>
 
 <h2>Slides</h2>
+<p><a href="<c:url value="/instructor/courses/${course.id}/lectures/${lecture.id}/slides/create"/>">Create</a> a new slide.</p>
 <c:if test="${empty lecture.slides}">
 <p>This lecture has no slides.</p>
 </c:if>
