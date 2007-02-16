@@ -27,7 +27,7 @@
 </c:if>
 <c:if test="${param.showSlides}">
 <c:forEach items="${lecture.slides}" var="slide">
-<div class="slide"><c:url value="/slides/${slide.id}.png" var="slideUrl"/><a href="${slideUrl}"><img src="${slideUrl}" alt="Slide" width="200"/></a></div>
+<div class="slide"><c:url value="/slides/${slide.id}.png" var="slideUrl"/><a href="<c:url value="/instructor/courses/${course.id}/lectures/${lecture.id}/slides/${slide.id}"/>"><img src="${slideUrl}" alt="Slide" width="200"/></a></div>
 </c:forEach>
 </c:if>
 </c:if>

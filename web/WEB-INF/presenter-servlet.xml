@@ -28,9 +28,11 @@
 			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/create" value="lectureCreateController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
+			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/start" value="lectureStartController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
 			<entry key="/instructor/control/*{lectureSessionId}" value="lectureSessionAdminController"/>
+			<entry key="/admin/" value-ref="adminDashboardController"/>
 			<entry key="/admin/addRole" value-ref="simpleAddRoleController"/>
 			<entry key="/admin/removeRole" value-ref="simpleRemoveRoleController"/>
 			<entry key="/ubiquitous/lib/soap_server.php" value="upSoapServerController"/>
@@ -137,6 +139,11 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
+	<bean id="simpleEditSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleEditSlideController" parent="abstractPresenterController">
+		<property name="formView" value="instructor/lecture/editSlide"/>
+		<property name="successView" value="redirect:/courses"/>
+	</bean>
+	
 	<bean id="lectureStartController" class="edu.uoregon.cs.presenter.web.controller.instructor.LectureStartController" parent="abstractPresenterController">
 		<property name="viewName" value="lecture/sessionAdmin"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
@@ -165,6 +172,10 @@
 	<bean id="createCourseController" class="edu.uoregon.cs.presenter.web.controller.instructor.CourseCreationController" parent="abstractPresenterController">
 		<property name="formView" value="instructor/course/create"/>
 		<property name="successView" value="redirect:/courses"/>
+	</bean>
+	
+	<bean id="adminDashboardController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="admin/default"/>
 	</bean>
 	
 	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractPresenterController">

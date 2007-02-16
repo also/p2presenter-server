@@ -27,7 +27,9 @@ public class Slide {
 	
 	private Lecture lecture;
 	
-	private List<SubmissionDefinition> submissionDefinitions = new ArrayList<SubmissionDefinition>(); 
+	private List<SubmissionDefinition> submissionDefinitions = new ArrayList<SubmissionDefinition>();
+	
+	private InteractivityDefinition interactivityDefinition; 
 	
 	private Set<SlideSession> slideSessions = new HashSet<SlideSession>();
 	
@@ -113,5 +115,15 @@ public class Slide {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@ManyToOne
+	public InteractivityDefinition getInteractivityDefinition() {
+		return interactivityDefinition;
+	}
+	
+	public void setInteractivityDefinition(
+			InteractivityDefinition interactivityDefinition) {
+		this.interactivityDefinition = interactivityDefinition;
 	}
 }
