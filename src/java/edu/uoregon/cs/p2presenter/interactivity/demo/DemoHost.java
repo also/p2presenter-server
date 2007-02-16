@@ -23,11 +23,15 @@ public class DemoHost {
 		if (host == null) {
 			System.exit(0);
 		}
+		String interactivityIdString = JOptionPane.showInputDialog("Interactivity Id:", 1);
+		if (interactivityIdString == null) {
+			System.exit(0);
+		}
 		try {
 			LocalConnection connection = new LocalConnection(new Socket(host, 9000));
 			connection.start();
 			
-			int interactivityId = 0;
+			Integer interactivityId = new Integer(interactivityIdString);
 	
 			InteractivityHostClient client = new InteractivityHostClient(connection, interactivityId);
 			

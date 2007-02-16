@@ -23,11 +23,15 @@ public class DemoClient {
 		if (host == null) {
 			System.exit(0);
 		}
+		String interactivityIdString = JOptionPane.showInputDialog("Interactivity Id:", 1);
+		if (interactivityIdString == null) {
+			System.exit(0);
+		}
 		try {
 			LocalConnection connection = new LocalConnection(new Socket(host, 9000));
 			connection.start();
 			
-			InteractivityParticipantClient client = new InteractivityParticipantClient(connection, 0);
+			InteractivityParticipantClient client = new InteractivityParticipantClient(connection, new Integer(interactivityIdString));
 			
 			// TODO
 			frame.setContentPane(client.getView());
