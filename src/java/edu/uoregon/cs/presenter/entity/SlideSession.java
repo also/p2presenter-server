@@ -92,7 +92,7 @@ public class SlideSession {
 	}
 	
 	@OneToMany(mappedBy = "slideSession")
-	@OrderBy("begin")
+	@OrderBy("began")
 	public Set<SubmissionSession<?>> getSubmissionSessions() {
 		return submissionSessions;
 	}

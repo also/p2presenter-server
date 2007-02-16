@@ -100,13 +100,13 @@ public class ActiveLectureController {
 	
 	public void beginSubmissionSession(SubmissionSession<?> submissionSession) {
 		// TODO track
-		submissionSession.setBegin(new Date());
+		submissionSession.setBegan(new Date());
 		dao.flush();
 	}
 	
 	public void endSubmissionSession(SubmissionSession<?> submissionSession) {
 		// TODO track
-		submissionSession.setEnd(new Date());
+		submissionSession.setEnded(new Date());
 		dao.flush();
 	}
 }

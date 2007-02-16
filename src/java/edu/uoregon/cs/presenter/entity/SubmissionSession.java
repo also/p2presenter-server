@@ -22,8 +22,8 @@ public class SubmissionSession<T extends Submission> {
 	private SubmissionDefinition<T> submissionDefinition;
 	private SlideSession slideSession;
 	private Set<T> submissions;
-	private Date begin;
-	private Date end;
+	private Date began;
+	private Date ended;
 	
 	public SubmissionSession() {}
 	
@@ -33,19 +33,19 @@ public class SubmissionSession<T extends Submission> {
 	}
 	
 	@Temporal(TemporalType.TIME)
-	public Date getBegin() {
-		return begin;
+	public Date getBegan() {
+		return began;
 	}
-	public void setBegin(Date begin) {
-		this.begin = begin;
+	public void setBegan(Date began) {
+		this.began = began;
 	}
 	
 	@Temporal(TemporalType.TIME)
-	public Date getEnd() {
-		return end;
+	public Date getEnded() {
+		return ended;
 	}
-	public void setEnd(Date end) {
-		this.end = end;
+	public void setEnded(Date ended) {
+		this.ended = ended;
 	}
 	
 	@Id

@@ -174,7 +174,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		if (activeLecture != null) {
 			for (SlideSession slideSession : activeLecture.getLectureSession().getSlideSessions().values()) {
 				for (SubmissionSession submissionSession : slideSession.getSubmissionSessions()) {
-					if (submissionSession.getBegin() != null && submissionSession.getEnd() == null) {
+					if (submissionSession.getBegan() != null && submissionSession.getEnded() == null) {
 						activeLectureController.endSubmissionSession(submissionSession);
 					}
 				}

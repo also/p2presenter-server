@@ -235,7 +235,7 @@ public abstract class AbstractMessage implements Message {
 			String name = line.substring(0, colonPosition);
 			
 			/* more than one header of the same name are combined into a comma separated list */
-			String value = result.headers.get(name);
+			String value = result.getHeader(name);
 			if (value != null) {
 				value += ',' + line.substring(colonPosition + 2);
 			}
