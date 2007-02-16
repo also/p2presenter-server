@@ -29,7 +29,6 @@
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/controller"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.interactivity.ProxyInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
-					<property name="connectionManager" ref="connectionManager"/>
 				</bean>
 			</entry>
 			<entry>

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
@@ -17,6 +18,7 @@ public class ProxiedConnection extends AbstractConnection {
 	public ProxiedConnection(LocalConnection localConnection, String targetConnectionId) {
 		super(targetConnectionId);
 		this.localConnection = localConnection;
+		localConnection.getRequestHandlerMapping().mapHandler("/connection/proxied/" + targetConnectionId + "/closed", new ProxiedConnectionClosedRequestHandler());
 	}
 	
 	@Override
@@ -60,5 +62,14 @@ public class ProxiedConnection extends AbstractConnection {
 		public ProxiedConnection call() throws Exception {
 			return new ProxiedConnection(localConnection, targetConnectionId);
 		}
+	}
+	
+	private class ProxiedConnectionClosedRequestHandler implements RequestHandler {
+		public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
+			onClose();
+			localConnection.getRequestHandlerMapping().mapHandler("/connection/proxied/" + getConnectionId() + "/closed", null);
+			return null;
+		}
+		
 	}
 }
