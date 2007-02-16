@@ -26,7 +26,7 @@ ${roles}
 ${roles}
 </tbody>
 </table>
-<p><input type="submit" value="Add"/></p>
+<p><input type="submit" value="Remove"/></p>
 </div>
 </form>
 </c:set>
