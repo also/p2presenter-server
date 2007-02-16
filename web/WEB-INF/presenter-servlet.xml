@@ -6,6 +6,7 @@
 	<bean id="handlerMapping" class="org.ry1.springframework.web.servlet.handler.RequestMatcherHandlerMapping">
 		<property name="urlMap"><map>
 			<entry key="/" value="homeController"/>
+			<entry key="/welcome" value="newUserController"/>
 			<entry key="/enter" value="loginFormController"/>
 			<entry key="/profile" value="profileController"/>
 			<entry key="/subjects/" value="subjectListController"/>
@@ -30,6 +31,8 @@
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/start" value="lectureStartController"/>
 			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
 			<entry key="/instructor/control/*{lectureSessionId}" value="lectureSessionAdminController"/>
+			<entry key="/admin/addRole" value-ref="simpleAddRoleController"/>
+			<entry key="/admin/removeRole" value-ref="simpleRemoveRoleController"/>
 			<entry key="/ubiquitous/lib/soap_server.php" value="upSoapServerController"/>
 			<entry key="/ubiquitous/lib/http_transfers.php" value="upHttpTransfersController"/>
 		</map></property>
@@ -60,6 +63,12 @@
 	
 	<bean id="homeController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
 		<property name="viewName" value="home"/>
+	</bean>
+	
+	<bean id="newUserController" class="edu.uoregon.cs.presenter.web.controller.NewUserController">
+		<property name="dao" ref="dao"/>
+		<property name="formView" value="security/newUser"/>
+		<property name="successView" value="redirect:/"/>
 	</bean>
 	
 	<bean id="loginFormController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
@@ -156,6 +165,14 @@
 	<bean id="createCourseController" class="edu.uoregon.cs.presenter.web.controller.instructor.CourseCreationController" parent="abstractPresenterController">
 		<property name="formView" value="instructor/course/create"/>
 		<property name="successView" value="redirect:/courses"/>
+	</bean>
+	
+	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractPresenterController">
+		<property name="viewName" value="redirect:/admin/"/>
+	</bean>
+	
+	<bean id="simpleRemoveRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleRemoveRollController" parent="abstractPresenterController">
+		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
 	
 	<bean id="upSoapServerController" class="org.codehaus.xfire.spring.remoting.XFireExporter">

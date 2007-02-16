@@ -91,6 +91,7 @@ xsi:schemaLocation="
 			/static/**=IS_AUTHENTICATED_ANONYMOUSLY
 			/enter**=IS_AUTHENTICATED_ANONYMOUSLY
 			/exit=IS_AUTHENTICATED_ANONYMOUSLY
+			/welcome**=IS_AUTHENTICATED_ANONYMOUSLY
 			/ubiquitous/**=IS_AUTHENTICATED_ANONYMOUSLY
 			/instructor/**=ROLE_INSTRUCTOR,ROLE_ADMIN
 			/admin/**=ROLE_ADMIN
@@ -100,12 +101,17 @@ xsi:schemaLocation="
 	
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties"><props>
-			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+			<prop key="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</prop>
+			<prop key="hibernate.connection.url">jdbc:hsqldb:file:/presenter/db</prop>
+			<prop key="hibernate.connection.username">sa</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+			<prop key="hibernate.connection.hsqldb.default_table_type">cached</prop>
+			
 			<!-- debugging -->
 			<prop key="hibernate.show_sql">true</prop>
 		</props></property>
 		
-		<property name="dataSource"><jee:jndi-lookup jndi-name="java:/comp/env/jdbc/database"/></property>
+		<!-- <property name="dataSource"><jee:jndi-lookup jndi-name="java:/comp/env/jdbc/database"/></property> -->
 		
 		<property name="annotatedClasses"><list>
 			<value>edu.uoregon.cs.presenter.entity.Course</value>
