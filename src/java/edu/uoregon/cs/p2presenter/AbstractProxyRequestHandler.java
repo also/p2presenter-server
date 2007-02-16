@@ -9,6 +9,7 @@ import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
+import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 /** Handles a request by sending it to another connection.
  * @author rberdeen
@@ -57,7 +58,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 		}
 		
 		public LocalConnection call() throws Exception {
-			targetConnection.addConnectionListener(new ProxiedConnectionClosedListener(targetConnection, proxiedConnection));
+			proxiedConnection.addConnectionListener(new ProxiedConnectionClosedListener(targetConnection, proxiedConnection));
 			return proxiedConnection;
 		}
 	}
@@ -71,12 +72,17 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 			this.proxiedConnection = proxiedConnection;
 		}
 
-
 		public void connectionClosed(Connection connection) {
-			// TODO Auto-generated method stub
+			targetConnection.setAttribute(PROXIED_CONNECTIONS_ATTRIBUTE_NAME_PREFIX + proxiedConnection.getConnectionId(), null);
 			
+			try {
+				targetConnection.sendRequest(new OutgoingRequestMessage(targetConnection, RequestType.GET, "/connection/proxied/" + proxiedConnection.getConnectionId() + "/closed"));
+			}
+			catch (IOException ex) {
+				// TODO log
+				// too bad
+			}
 		}
-		
 	}
 	
 	/** Handles a response by sending it to the original requestor.
@@ -92,7 +98,6 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 		
 		public Object handleResponse(IncomingResponseMessage targetResponse) throws Exception {
 			OutgoingResponseMessage response = new OutgoingResponseMessage(request, targetResponse);
-			
 			request.getConnection().sendResponse(response);
 			
 			return null;
