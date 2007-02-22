@@ -1,6 +1,6 @@
 /* $Id:EnrollCourseController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
 
-package edu.uoregon.cs.presenter.web.controller;
+package edu.uoregon.cs.presenter.web.controller.student;
 
 import java.util.HashMap;
 
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.uoregon.cs.presenter.entity.Course;
 import edu.uoregon.cs.presenter.entity.Person;
+import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 
 public class EnrollCourseController extends AbstractPresenterController {
 

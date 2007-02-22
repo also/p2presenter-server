@@ -96,11 +96,11 @@
 		<property name="viewName" value="course/courseList"/>
 	</bean>
 	
-	<bean id="enrollCourseController" class="edu.uoregon.cs.presenter.web.controller.EnrollCourseController" parent="abstractPresenterController">
+	<bean id="enrollCourseController" class="edu.uoregon.cs.presenter.web.controller.student.EnrollCourseController" parent="abstractPresenterController">
 		<property name="viewName" value="course/enroll"/>
 	</bean>
 	
-	<bean id="dropCourseController" class="edu.uoregon.cs.presenter.web.controller.DropCourseController" parent="abstractPresenterController">
+	<bean id="dropCourseController" class="edu.uoregon.cs.presenter.web.controller.student.DropCourseController" parent="abstractPresenterController">
 		<property name="viewName" value="course/drop"/>
 	</bean>
 	

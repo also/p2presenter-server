@@ -7,11 +7,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.MessageIdSource;
+import edu.uoregon.cs.p2presenter.message.IdGenerator;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
-public interface Connection extends MessageIdSource {
+public interface Connection extends IdGenerator {
 	public String getConnectionId();
 
 	public void addConnectionListener(ConnectionListener connectionListener);
@@ -53,10 +53,5 @@ public interface Connection extends MessageIdSource {
 
 	public void sendResponse(OutgoingResponseMessage response)
 			throws IOException;
-
-	/** Return a message id for a message.
-	 * The message id is guaranteed to be unique for the duration of the connection.
-	 */
-	public String generateMessageId();
 
 }

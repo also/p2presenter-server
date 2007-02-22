@@ -22,13 +22,12 @@ import edu.uoregon.cs.p2presenter.message.IncomingMessage;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestHeaders;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.MessageIdSource;
 import edu.uoregon.cs.p2presenter.message.OutgoingHeaders;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
-public class LocalConnection extends AbstractConnection implements MessageIdSource, Closeable, Runnable {
+public class LocalConnection extends AbstractConnection implements Closeable, Runnable {
 	public static final String PROTOCOL = "P2PR";
 	public static final String VERSION = "0.1";
 	public static final String PROTOCOL_VERSION = PROTOCOL + '/' + VERSION;

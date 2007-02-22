@@ -14,7 +14,7 @@ ${head}
 <body>
 <div id="page">
 <div id="header">
-<div id="siteTitle"><a href="<c:url value="/"/>">p2presenter</a> <sup>PRE-ALPHA</sup></div>
+<div id="siteTitle"><a href="<c:url value="/"/>">p2presenter</a></div>
 <c:if test="${!empty person}"><div id="userNav">${person}: <a href="<c:url value="/courses"/>">My Courses</a> &bull; <a href="<c:url value="/profile"/>">Edit Profile</a><authz:authorize ifAllGranted="ROLE_ADMIN"> &bull; <a href="<c:url value="/admin"/>"><strong>ADMIN</strong></a></authz:authorize> &bull; <a href="<c:url value="/exit"/>">Log Out</a></div></c:if>
 <!-- <ul id="secondaryNav">
 <authz:authorize ifAllGranted="ROLE_STUDENT">

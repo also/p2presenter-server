@@ -4,18 +4,18 @@ package edu.uoregon.cs.p2presenter.message;
 
 public class OutgoingRequestMessage extends AbstractRequestMessage implements OutgoingMessage {
 
-	public OutgoingRequestMessage(MessageIdSource messageIdSource) {
+	public OutgoingRequestMessage(IdGenerator messageIdSource) {
 		this(messageIdSource, RequestType.GET, "*");
 	}
 	
-	public OutgoingRequestMessage(MessageIdSource messageIdSource, RequestType requestType, String url) {
+	public OutgoingRequestMessage(IdGenerator idSource, RequestType requestType, String url) {
 		super(requestType, url);
-		setHeader(SpecialHeader.Message_Id, messageIdSource.generateMessageId());
+		setHeader(SpecialHeader.Message_Id, idSource.generateId());
 	}
 	
-	public OutgoingRequestMessage(MessageIdSource messageIdSource, AbstractRequestMessage that) {
+	public OutgoingRequestMessage(IdGenerator idSource, AbstractRequestMessage that) {
 		super(that);
-		setHeader(SpecialHeader.Message_Id, messageIdSource.generateMessageId());
+		setHeader(SpecialHeader.Message_Id, idSource.generateId());
 	}
 	
 	@Override

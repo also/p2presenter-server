@@ -9,9 +9,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
+import edu.uoregon.cs.p2presenter.message.DefaultIdGenerator;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.MessageIdSource;
+import edu.uoregon.cs.p2presenter.message.IdGenerator;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 
 public abstract class AbstractConnection implements Connection {
@@ -24,7 +24,7 @@ public abstract class AbstractConnection implements Connection {
 	
 	private ArrayList<ConnectionListener> connectionListeners = new ArrayList<ConnectionListener>();
 	
-	private MessageIdSource messageIdSource = new DefaultMessageIdSource();
+	private IdGenerator idSource = new DefaultIdGenerator();
 	
 	private static final ResponseHandler<IncomingResponseMessage> DEFAULT_RESPONSE_HANDLER = new ResponseHandler<IncomingResponseMessage>() {
 		public IncomingResponseMessage handleResponse(IncomingResponseMessage response) {
@@ -95,11 +95,11 @@ public abstract class AbstractConnection implements Connection {
 		}
 	}
 	
-	/** Return a message id for a message.
-	 * The message id is guaranteed to be unique for the duration of the connection.
+	/** Return an id.
+	 * The id is guaranteed to be unique for the duration of the connection.
 	 */
-	public String generateMessageId() {
-		return messageIdSource.generateMessageId();
+	public String generateId() {
+		return idSource.generateId();
 	}
 	
 	/** Sends a request whose response will be handled by the caller.

@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 
-import edu.uoregon.cs.p2presenter.message.DefaultMessageIdSource;
-import edu.uoregon.cs.p2presenter.message.MessageIdSource;
+import edu.uoregon.cs.p2presenter.message.DefaultIdGenerator;
+import edu.uoregon.cs.p2presenter.message.IdGenerator;
 
-public class ConnectionManager implements ConnectionListener, MessageIdSource {
+public class ConnectionManager implements ConnectionListener, IdGenerator {
 	private HashMap<String, LocalConnection> connections = new HashMap<String, LocalConnection>();
-	private int connectionId = 0;
-	private MessageIdSource messageIdSource = DefaultMessageIdSource.newUniqueMessageIdSource("GLOBAL");
+	private IdGenerator idSource = DefaultIdGenerator.newUniqueIdGenerator("GLOBAL");
 	
 	private DefaultRequestHandlerMapping requestHandlerMapping = new DefaultRequestHandlerMapping();
 	
@@ -29,11 +28,11 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 	public LocalConnection createConnection(Socket socket) throws IOException {
 		LocalConnection connection;
 		synchronized (connections) {
-			connection = new LocalConnection(socket, String.valueOf(connectionId));
+			connection = new LocalConnection(socket, idSource.generateId());
 		}
 		connection.addConnectionListener(this);
 		connection.getRequestHandlerMapping().setParent(requestHandlerMapping);
-		connections.put(String.valueOf(connectionId++), connection);
+		connections.put(connection.getConnectionId(), connection);
 		connectionCreatedInternal(connection);
 		return connection;
 	}
@@ -47,7 +46,7 @@ public class ConnectionManager implements ConnectionListener, MessageIdSource {
 	
 	protected void connectionClosedInternal(Connection connection) {}
 
-	public String generateMessageId() {
-		return messageIdSource.generateMessageId();
+	public String generateId() {
+		return idSource.generateId();
 	}
 }
