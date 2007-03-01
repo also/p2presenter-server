@@ -75,7 +75,6 @@ public class Course {
 		this.lectures = lectures;
 	}
 
-	@NotNull
 	@Column(name = "nr")
 	public Integer getNumber() {
 		return number;
@@ -95,7 +94,6 @@ public class Course {
 		this.students = students;
 	}
 	
-	@NotNull
 	@Length(min = 1, max = 5)
 	public String getSubject() {
 		return subject;
