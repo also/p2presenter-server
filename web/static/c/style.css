@@ -219,3 +219,33 @@ p, table {
 #slideDisplayContainer img {
 	display: block;
 }
+
+/* forms. copied from http://nidahas.com/sandbox/form_template.html */
+div.formContainer { margin: 10px; padding: 5px; background-color: #FFF; border: #EEE 1px solid; }
+
+p.legend { margin-bottom: 1em; }
+p.legend em { color: #C00; font-style: normal; }
+
+div.errors { margin: 0 0 10px 0; padding: 5px 10px; border: #FC6 1px solid; background-color: #FFC; }
+div.errors p { margin: 0; }
+div.errors p em { color: #C00; font-style: normal; font-weight: bold; }
+
+div.formContainer form p { margin: 0; }
+div.formContainer form p.note { margin-left: 170px; font-size: 90%; color: #333; }
+div.formContainer form fieldset { margin: 10px 0; padding: 10px; border: #DDD 1px solid; }
+div.formContainer form legend { font-weight: bold; color: #666; }
+div.formContainer form fieldset div { padding: 0.25em 0; }
+div.formContainer label, 
+div.formContainer span.label { margin-right: 10px; padding-right: 10px; width: 150px; display: block; float: left; text-align: right; position: relative; }
+div.formContainer label.error, 
+div.formContainer span.error { color: #C00; }
+div.formContainer label em, 
+div.formContainer span.label em { position: absolute; right: 0; font-size: 120%; font-style: normal; color: #C00; }
+div.formContainer input.error { border-color: #C00; background-color: #FEF; }
+div.formContainer input:focus,
+div.formContainer input.error:focus, 
+div.formContainer textarea:focus {	background-color: #FFC; border-color: #FC6; }
+div.formContainer div.controlset label, 
+div.formContainer div.controlset input { display: inline; float: none; }
+div.formContainer div.controlset div { margin-left: 170px; }
+div.formContainer div.buttonRow { margin-left: 180px; }
