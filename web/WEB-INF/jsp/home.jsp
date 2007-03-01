@@ -21,7 +21,7 @@
 <div class="box floatRight">
 <h2>My Courses</h2>
 <c:if test="${empty person.coursesAttended}">
-<p><a href="/subjects">Enroll Now</a></p>
+<p><a href="<c:url value="/subjects/"/>">Enroll Now</a></p>
 </c:if>
 <c:if test="${!empty person.coursesAttended}">
 <table>
