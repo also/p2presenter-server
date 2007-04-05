@@ -142,7 +142,7 @@ public class ActiveLecture {
 		int result = slideSession.incrementInkCount();
 		
 		dao.flush();
-		activeLectureInfo.stateChanged();
+		activeLectureInfo.setCurrentSlideSessionInkCount(result);
 		return result;
 	}
 	
@@ -155,7 +155,7 @@ public class ActiveLecture {
 		int result = whiteboard.incrementInkCount();
 		
 		dao.flush();
-		activeLectureInfo.stateChanged();
+		activeLectureInfo.setCurrentWhiteboardInkCount(result);
 		return result;
 	}
 	

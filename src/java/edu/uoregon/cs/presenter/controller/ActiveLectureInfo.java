@@ -54,6 +54,11 @@ class ActiveLectureInfo {
 		return currentSlideSessionInkCount;
 	}
 	
+	public void setCurrentSlideSessionInkCount(Integer currentSlideSessionInkCount) {
+		this.currentSlideSessionInkCount = currentSlideSessionInkCount;
+		stateChanged();
+	}
+	
 	public Integer getCurrentSlideId() {
 		return currentSlideId;
 	}
@@ -83,6 +88,11 @@ class ActiveLectureInfo {
 	
 	public Integer getCurrentWhiteboardInkCount() {
 		return currentWhiteboardInkCount;
+	}
+	
+	public void setCurrentWhiteboardInkCount(Integer currentWhiteboardInkCount) {
+		this.currentWhiteboardInkCount = currentWhiteboardInkCount;
+		stateChanged();
 	}
 
 	public void setCurrentWhiteboard(Whiteboard currentWhiteboard) {
