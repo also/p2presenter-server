@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import edu.uoregon.cs.p2presenter.LocalConnection;
-import edu.uoregon.cs.p2presenter.interactivity.InteractivityHostClient;
+import edu.uoregon.cs.p2presenter.interactivity.host.InteractivityHostClient;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class DemoHost {

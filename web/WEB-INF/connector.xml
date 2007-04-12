@@ -15,25 +15,25 @@
 		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/get"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.GetInteractivityRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/join"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.JoinInteractivityRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.JoinInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/controller"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.ProxyInteractivityRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.ProxyInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.InteractivityAdminRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityAdminRequestHandler">
 					<property name="dao" ref="dao"/>
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>

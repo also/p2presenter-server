@@ -5,7 +5,12 @@ package edu.uoregon.cs.p2presenter.interactivity;
 import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
-public class ActiveInteractivity<T> {
+/** Stores information about an active interactivity, such as the connection of the host.
+ * @author Ryan Berdeen
+ *
+ * @param <T>
+ */
+public class ActiveInteractivity {
 	private LocalConnection hostConnection;
 	
 	private InteractivityDefinition interactivityDefinition;
@@ -15,10 +20,14 @@ public class ActiveInteractivity<T> {
 		this.interactivityDefinition = interactivityDefinition;
 	}
 	
+	/** Returns the Connection of the host. 
+	 */
 	public LocalConnection getHostConnection() {
 		return hostConnection;
 	}
 	
+	/** Returns the definition of the interactivity.
+	 */
 	public InteractivityDefinition getInteractivityDefinition() {
 		return interactivityDefinition;
 	}

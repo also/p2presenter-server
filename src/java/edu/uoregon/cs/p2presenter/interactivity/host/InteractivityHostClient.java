@@ -1,12 +1,12 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.interactivity;
+package edu.uoregon.cs.p2presenter.interactivity.host;
 
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
-import edu.uoregon.cs.p2presenter.interactivity.host.JoinInteractivityRequestHandler;
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
 import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
