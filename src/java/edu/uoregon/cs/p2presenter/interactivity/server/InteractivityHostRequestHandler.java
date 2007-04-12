@@ -14,7 +14,11 @@ import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 import edu.uoregon.cs.presenter.dao.Dao;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
-public class InteractivityAdminRequestHandler implements RequestHandler, ConnectionListener {
+/** Handles request from interactivity hosts.
+ * @author Ryan Berdeen
+ *
+ */
+public class InteractivityHostRequestHandler implements RequestHandler, ConnectionListener {
 	private Dao dao;
 	private ActiveInteractivityController activeInteractivityController;
 	
@@ -27,8 +31,7 @@ public class InteractivityAdminRequestHandler implements RequestHandler, Connect
 	}
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
-		// TODO don't use a header
-		String action = request.getHeader("Action");
+		String action = (String) request.getAttribute("action");
 		Integer id = new Integer(request.getAttribute("interactivityId").toString());
 		
 		InteractivityDefinition definition = dao.getEntity(InteractivityDefinition.class, id);

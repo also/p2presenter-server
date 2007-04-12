@@ -22,8 +22,7 @@ public class InteractivityHostClient {
 		this.connection = connection;
 		this.interactivityId = interactivityId;
 		
-		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin");
-		request.setHeader("Action", "get");
+		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin/get");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(request);
 		if (response.getStatus() == 200) {
 			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
@@ -49,8 +48,7 @@ public class InteractivityHostClient {
 	}
 	
 	public void begin() throws Exception {
-		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin");
-		request.setHeader("Action", "begin");
+		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin/begin");
 		connection.sendRequestAndAwaitResponse(request);
 		// TODO make sure request was successful
 	}

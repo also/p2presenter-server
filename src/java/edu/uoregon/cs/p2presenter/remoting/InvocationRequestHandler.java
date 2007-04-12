@@ -89,7 +89,7 @@ public class InvocationRequestHandler implements RequestHandler {
 					target = proxyCache.getTarget(new Integer(request.getHeader(TARGET_PROXY_ID_HEADER_NAME)));
 				}
 				
-				Class targetClass = target.getClass();
+				Class<?> targetClass = target.getClass();
 				Method method = targetClass.getMethod(request.getHeader(METHOD_NAME_HEADER_NAME), parameterTypes);
 				// TODO why is this necessary
 				method.setAccessible(true);

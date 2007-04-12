@@ -4,7 +4,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<bean id="irm" abstract="true" class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
-		<property name="parameterNames" value="interactivityId"/>
+		<property name="parameterNames" ><list><value>interactivityId</value><value>action</value></list></property>
 	</bean>
 	
 	<bean id="connectionManager" class="edu.uoregon.cs.p2presenter.ConnectionManager">
@@ -14,14 +14,8 @@
 		</map></property>
 		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
 			<entry>
-				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/get"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityRequestHandler">
-					<property name="activeInteractivityController" ref="activeInteractivityController"/>
-				</bean>
-			</entry>
-			<entry>
-				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/join"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.JoinInteractivityRequestHandler">
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityClientRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
@@ -32,8 +26,8 @@
 				</bean>
 			</entry>
 			<entry>
-				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityAdminRequestHandler">
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
+				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityHostRequestHandler">
 					<property name="dao" ref="dao"/>
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
