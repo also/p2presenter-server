@@ -10,12 +10,12 @@ public class OutgoingRequestMessage extends AbstractRequestMessage implements Ou
 	
 	public OutgoingRequestMessage(IdGenerator idSource, RequestType requestType, String url) {
 		super(requestType, url);
-		setHeader(SpecialHeader.Message_Id, idSource.generateId());
+		setHeader(MESSAGE_ID, idSource.generateId());
 	}
 	
 	public OutgoingRequestMessage(IdGenerator idSource, AbstractRequestMessage that) {
 		super(that);
-		setHeader(SpecialHeader.Message_Id, idSource.generateId());
+		setHeader(MESSAGE_ID, idSource.generateId());
 	}
 	
 	@Override

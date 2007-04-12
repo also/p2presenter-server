@@ -8,6 +8,8 @@ package edu.uoregon.cs.p2presenter.message;
  *
  */
 public interface Headers {
+	public static final String CONTENT_LENGTH = "Content-Length";
+	public static final String CONTENT_TYPE = "Content-Type";
 	
 	/** Return the value of the named header.
 	 */
@@ -15,7 +17,7 @@ public interface Headers {
 	
 	/** Return true if the message has content.
 	 * A message has content if and only if the Content-Length header is set.
-	 * Equivalent fo getContentType() != -1.
+	 * Equivalent to getContentType() != -1.
 	 */
 	public boolean hasContent();
 	

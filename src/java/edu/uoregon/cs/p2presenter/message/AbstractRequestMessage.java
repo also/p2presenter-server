@@ -44,7 +44,7 @@ public abstract class AbstractRequestMessage extends AbstractMessage implements 
 	}
 	
 	public final String getMessageId() {
-		return getHeader(SpecialHeader.Message_Id);
+		return getHeader(MESSAGE_ID);
 	}
 	
 	@Override

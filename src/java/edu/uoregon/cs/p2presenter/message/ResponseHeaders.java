@@ -6,7 +6,8 @@ package edu.uoregon.cs.p2presenter.message;
  * @author rberdeen
  *
  */
-public interface ResponseHeaders extends Headers{
+public interface ResponseHeaders extends Headers {
+	public static final String IN_RESPONSE_TO = "In-Response-To";
 	
 	/** Return the status code.
 	 */

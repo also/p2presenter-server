@@ -26,34 +26,6 @@ public abstract class AbstractMessage implements Message {
 	private byte[] content;
 	private CharSequence contentCharSequence;
 	
-	protected enum SpecialHeader {
-		Content_Type,
-		Content_Length,
-		Content,
-		Status,
-		Message_Id,
-		In_Response_To;
-		
-		private String name;
-		private SpecialHeader() {
-			this.name = name().replace('_', '-');
-		}
-		
-		public String getName() {
-			return name;
-		}
-
-		public static boolean isSpecialHeader(String name) {
-			try {
-				valueOf(name.replace('-', '_'));
-				return true;
-			}
-			catch (IllegalArgumentException ex) {
-				return false;
-			}
-		}
-	}
-	
 	protected AbstractMessage() {
 		headers = new HashMap<String, String>();
 	}
@@ -61,7 +33,7 @@ public abstract class AbstractMessage implements Message {
 	@SuppressWarnings("unchecked")
 	protected AbstractMessage(AbstractMessage that) {
 		this.headers = (HashMap<String, String>) that.headers.clone();
-		this.headers.remove(SpecialHeader.Content_Length.getName());
+		this.headers.remove(CONTENT_LENGTH);
 		if (that.content != null) {
 			this.content = (byte[]) that.content.clone();
 		}
@@ -80,6 +52,7 @@ public abstract class AbstractMessage implements Message {
 				return contentCharSequence.toString().getBytes("UTF-8");
 			}
 			catch (UnsupportedEncodingException ex) {
+				// utf-8 should always be supported
 				throw new Error(ex);
 			}
 		}
@@ -116,29 +89,21 @@ public abstract class AbstractMessage implements Message {
 	}
 	
 	public final String getContentType() {
-		return getHeader(SpecialHeader.Content_Type);
+		return getHeader(CONTENT_TYPE);
 	}
 	
+	/** Sets the Content-Type header of the message.
+	 * @param contentType
+	 */
 	protected void setContentType(String contentType) {
-		setHeader(SpecialHeader.Content_Type, contentType);
+		setHeader(CONTENT_TYPE, contentType);
 	}
 	
 	public final String getHeader(String name) {
 		return headers.get(name);
 	}
 	
-	protected final String getHeader(SpecialHeader header) {
-		return getHeader(header.getName());
-	}
-	
-	protected final void setHeader(SpecialHeader header, String value) {
-		headers.put(header.getName(), value);
-	}
-	
 	protected void setHeader(String name, String value) {
-		if(SpecialHeader.isSpecialHeader(name)) {
-			throw new IllegalArgumentException(name + " header may not be set manually");
-		}
 		if(containsLineEnd(name)) {
 			throw new IllegalArgumentException("End of line in header name: '" + name + "'");
 		}
@@ -148,12 +113,16 @@ public abstract class AbstractMessage implements Message {
 		setHeaderUnchecked(name, value);
 	}
 	
-	/** Set a header without checking for line breaks or special headers.
+	/** Set a header without checking for line breaks.
 	 */
-	private void setHeaderUnchecked(String name, String value) {
+	protected void setHeaderUnchecked(String name, String value) {
 		headers.put(name, value);
 	}
 	
+	/** Sets the character content of the message.
+	 * If the content type of the message has not been set, the content type is set to <code>text/plain</code>.
+	 * @param contentCharSequence
+	 */
 	protected void setContent(CharSequence contentCharSequence) {
 		content = null;
 		if (contentCharSequence == null || contentCharSequence.length() == 0) {
@@ -162,16 +131,23 @@ public abstract class AbstractMessage implements Message {
 		else {
 			this.contentCharSequence = contentCharSequence;
 		}
-		if(getHeader(SpecialHeader.Content_Type) == null) {
-			setHeader(SpecialHeader.Content_Type, "text/plain");
+		if(getHeader(CONTENT_TYPE) == null) {
+			setHeader(CONTENT_TYPE, "text/plain");
 		}
 	}
 	
+	/** Sest the character content of the message, along with the content type.
+	 * @param content
+	 * @param contentType
+	 */
 	protected void setContent(CharSequence content, String contentType) {
 		setContent(content);
 		setContentType(contentType);
 	}
 	
+	/** Sets the byte content of the message.
+	 * @param content
+	 */
 	protected void setContent(byte[] content) {
 		contentCharSequence = null;
 		if (content == null || content.length == 0) {
@@ -187,8 +163,7 @@ public abstract class AbstractMessage implements Message {
 		setContentType(contentType);
 	}
 	
-	/** Return true if the String contains \r or \n.
-	 */
+	/** Return true if the String contains \r or \n. */
 	protected final boolean containsLineEnd(String string) {
 		for(char character : string.toCharArray()) {
 			if (character == '\r' || character == '\n') {
@@ -198,6 +173,12 @@ public abstract class AbstractMessage implements Message {
 		return false;
 	}
 	
+	/** Reads a messge. 
+	 * @param connection
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
 	public static final IncomingMessage read(LocalConnection connection, PushbackInputStream in) throws IOException {
 		AbstractMessage result;
 		String line;
@@ -246,7 +227,7 @@ public abstract class AbstractMessage implements Message {
 			result.setHeaderUnchecked(name, value);
 		}
 		
-		String contentLengthHeader = result.getHeader(SpecialHeader.Content_Length);
+		String contentLengthHeader = result.getHeader(CONTENT_LENGTH);
 		
 		if (contentLengthHeader != null) {
 			byte[] content;
@@ -328,6 +309,10 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
+	/** Writes the message to the output stream.
+	 * @param out
+	 * @throws IOException
+	 */
 	public final void write(OutputStream out) throws IOException {
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out));
 		
@@ -355,5 +340,8 @@ public abstract class AbstractMessage implements Message {
 		}
 	}
 	
+	/** Returns the first line of a message,
+	 * which indicates whether the message is a request or a response.
+	 */
 	protected abstract String getStartLine();
 }

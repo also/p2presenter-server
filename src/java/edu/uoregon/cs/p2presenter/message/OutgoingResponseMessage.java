@@ -12,18 +12,18 @@ public class OutgoingResponseMessage extends AbstractResponseMessage implements 
 	
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage, int status) {
 		super(status);
-		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
+		setHeader(IN_RESPONSE_TO, inResponseToMessage.getMessageId());
 	}
 	
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage, int status, CharSequence content) {
 		this(inResponseToMessage, status);
 		setContent(content);
-		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
+		setHeader(IN_RESPONSE_TO, inResponseToMessage.getMessageId());
 	}
 	
 	public OutgoingResponseMessage(RequestMessage inResponseToMessage, AbstractResponseMessage that) {
 		super(that);
-		setHeader(SpecialHeader.In_Response_To, inResponseToMessage.getMessageId());
+		setHeader(IN_RESPONSE_TO, inResponseToMessage.getMessageId());
 	}
 	
 	@Override

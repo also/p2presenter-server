@@ -48,7 +48,7 @@ public abstract class AbstractResponseMessage extends AbstractMessage implements
 	}
 	
 	public final String getInResponseTo() {
-		return getHeader(SpecialHeader.In_Response_To);
+		return getHeader(IN_RESPONSE_TO);
 	}
 
 	@Override

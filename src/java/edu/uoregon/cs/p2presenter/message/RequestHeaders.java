@@ -12,6 +12,8 @@ public interface RequestHeaders extends Headers {
 		EVALUATE;
 	}
 	
+	public static final String MESSAGE_ID = "Message-Id";
+	
 	/** Return the type of request, if one of the standard types.
 	 */
 	public RequestType getRequestType();
