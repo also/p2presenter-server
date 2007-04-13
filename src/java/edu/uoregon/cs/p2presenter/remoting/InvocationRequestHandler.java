@@ -15,12 +15,19 @@ import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
 public class InvocationRequestHandler implements RequestHandler {
+	public static final String PARAMETER_TYPES_HEADER_SEPARATOR = ",";
 	public static final String METHOD_NAME_HEADER_NAME = "Method-Name";
 	public static final String TARGET_PROXY_ID_HEADER_NAME = "Target-Proxy-Id";
 	public static final String TARGET_NAME_HEADER_NAME = "Target-Name";
 	public static final String PARAMETER_TYPES_HEADER_NAME = "Parameter-Types";
 	public static final String CONTENT_TYPE = "application/x-java-serialized-object";
 	public static final String ARGUMENT_COUNT_HEADER_NAME = "Argument-Count";
+	
+	private InvocationListener invocationListener;
+	
+	public void setInvocationListener(InvocationListener invocationListener) {
+		this.invocationListener = invocationListener;
+	}
 
 	// TODO ensure required headers are set
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) {
@@ -59,15 +66,15 @@ public class InvocationRequestHandler implements RequestHandler {
 						in.close();
 					}
 					catch (IOException ex) {
-						// FIXME
+						// an io exceptions should never happen while using a byte arry stream
 						throw new Error(ex);
 					}
 					catch (ClassNotFoundException ex) {
 						// FIXME
-						throw new Error(ex);
+						throw new RuntimeException(ex);
 					}
 					
-					String[] parameterTypeNames = request.getHeader(PARAMETER_TYPES_HEADER_NAME).split(",");
+					String[] parameterTypeNames = request.getHeader(PARAMETER_TYPES_HEADER_NAME).split(PARAMETER_TYPES_HEADER_SEPARATOR);
 					parameterTypes = new Class[parameterTypeNames.length];
 					
 					for (int i = 0; i < parameterTypes.length; i++) {
@@ -93,7 +100,18 @@ public class InvocationRequestHandler implements RequestHandler {
 				Method method = targetClass.getMethod(request.getHeader(METHOD_NAME_HEADER_NAME), parameterTypes);
 				// TODO why is this necessary
 				method.setAccessible(true);
+				
 				// TODO unwrap invocation target exception
+				
+				if (invocationListener != null) {
+					Object before = invocationListener.beforeMethodInvocation(target, method, args);
+					result = method.invoke(target, args);
+					invocationListener.afterMethodInvocation(before, result);
+				}
+				else {
+					result = method.invoke(target, args);
+				}
+				
 				result = method.invoke(target, args);
 				
 				if (result != null) {
@@ -112,6 +130,7 @@ public class InvocationRequestHandler implements RequestHandler {
 				ex.printStackTrace();
 				response.setStatus(500);
 				response.setContentObject(ex);
+				// TODO send the exception message if it can't be serialized
 			}
 		}
 		catch (ObjectStreamException ex) {
