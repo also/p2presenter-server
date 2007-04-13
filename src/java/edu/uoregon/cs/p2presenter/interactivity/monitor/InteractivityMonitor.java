@@ -1,4 +1,4 @@
-/* $Id $ */
+/* $Id$ */
 
 package edu.uoregon.cs.p2presenter.interactivity.monitor;
 
