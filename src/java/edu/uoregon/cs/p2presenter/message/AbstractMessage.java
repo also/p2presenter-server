@@ -70,6 +70,7 @@ public abstract class AbstractMessage implements Message {
 				return new String(content, "UTF-8");
 			}
 			catch (UnsupportedEncodingException ex) {
+				// utf-8 should always be supported
 				throw new Error(ex);
 			}
 		}

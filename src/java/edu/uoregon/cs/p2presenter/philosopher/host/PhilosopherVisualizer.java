@@ -15,7 +15,7 @@ public class PhilosopherVisualizer {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Table table = new Table();
-		PhilosopherVisualization viz = new PhilosopherVisualization(table);
+		PhilosopherVisualization viz = new PhilosopherVisualization();
 		JFrame frame = new JFrame();
 		frame.setContentPane(viz);
 		frame.setSize(new Dimension(500, 500));

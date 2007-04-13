@@ -26,6 +26,7 @@ import edu.uoregon.cs.p2presenter.message.OutgoingHeaders;
 import edu.uoregon.cs.p2presenter.message.OutgoingMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
+import edu.uoregon.cs.p2presenter.message.RequestMessage;
 
 public class LocalConnection extends AbstractConnection implements Closeable, Runnable {
 	public static final String PROTOCOL = "P2PR";
@@ -73,13 +74,20 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 	public void run() {
 		running = true;
 		
-		IncomingMessage message;
+		IncomingMessage message = null;
 		
 		try {
 			for (;;) {
-				message = AbstractMessage.read(this, in);
+				try {
+					message = AbstractMessage.read(this, in);
+				}
+				catch (IOException ex) {
+					// TODO the connection was closed
+					throw new RuntimeException("Connection closed", ex);
+				}
 				onRecieve();
 				
+				// a null message should indicate some kind of failure
 				if (message == null) {
 					close();
 					// TODO more stuff
@@ -94,9 +102,7 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 						executorService.execute(runnable);
 					}
 					else {
-						// TODO send error response
-						// TODO exception type
-						throw new Exception("No handler found for uri " + ((IncomingRequestHeaders) message).getUri());
+						sendResponse(new OutgoingResponseMessage((RequestMessage) message, 404));
 					}
 				}
 				else {
@@ -293,15 +299,25 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 		
 		public void run() {
 			try {
-				OutgoingResponseMessage response =  requestHandler.handleRequest(request);
+				OutgoingResponseMessage response = null;
+				try {
+					response = requestHandler.handleRequest(request);
+				}
+				catch (Throwable t) {
+					/* send a response indicating server error */
+					// TODO send more information about failure
+					response = new OutgoingResponseMessage(request, 500);
+					response.setContent(t.getMessage());
+				}
 				if (response != null) {
-					doSendInternal(response);
+					doSend(response);
 				}
 			}
-			catch (Throwable t) {
-				// TODO shouldn't close connection on all exceptions
-				handle(t);
+			catch (IOException ex) {
+				// exception handled by doSend
+				// TODO connection exception handling is confusing
 			}
+			
 		}
 	}
 	

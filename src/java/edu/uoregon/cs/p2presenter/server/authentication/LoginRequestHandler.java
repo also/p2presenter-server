@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.authentication;
+package edu.uoregon.cs.p2presenter.server.authentication;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationManager;

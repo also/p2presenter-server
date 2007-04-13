@@ -6,21 +6,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
+import edu.uoregon.cs.p2presenter.interactivity.StateListener;
 import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherControllerImpl;
-import edu.uoregon.cs.p2presenter.philosopher.host.TableStateListener;
 
-public class Table implements PhilosopherStateListener {
-	private TableStateListener listener;
+public class Table implements PhilosopherStateListener, InteractivityModel {
+	private StateListener listener;
 	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();
 	
 	private List<? extends Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
 	
-	public void setTableStateListener(TableStateListener listener) {
+	public void setStateListener(StateListener listener) {
 		this.listener = listener;
 	}
 	
 	public void philosopherStateChanged(Philosopher philosopher, Philosopher.State philosopherState, Philosopher.Hand.State leftHandState, Philosopher.Hand.State rightHandState) {
-		listener.tableStateChanged(this);
+		listener.stateChanged();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -67,6 +68,6 @@ public class Table implements PhilosopherStateListener {
 			firstPhilosopher.reset(firstChopstick, previousChopstick);
 		}
 		
-		listener.tableStateChanged(this);
+		listener.stateChanged();
 	}
 }

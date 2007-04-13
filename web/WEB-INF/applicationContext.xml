@@ -102,11 +102,11 @@ xsi:schemaLocation="
 	
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties"><props>
-			<prop key="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</prop>
-			<prop key="hibernate.connection.url">jdbc:hsqldb:file:${user.home}/.p2presenter/db</prop>
-			<prop key="hibernate.connection.username">sa</prop>
-			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-			<prop key="hibernate.connection.hsqldb.default_table_type">cached</prop>
+			<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+			<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/presenter</prop>
+			<prop key="hibernate.connection.username">presenter</prop>
+			<prop key="hibernate.connection.password">presenter</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 			
 			<!-- debugging -->
 			<prop key="hibernate.show_sql">true</prop>
@@ -148,6 +148,7 @@ xsi:schemaLocation="
 
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.dao.Dao.*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.connector.LectureRequestHandler.*(..))"/>
 	</aop:config>
 	
 	<bean id="activeLectureController" class="edu.uoregon.cs.presenter.controller.ActiveLectureController">

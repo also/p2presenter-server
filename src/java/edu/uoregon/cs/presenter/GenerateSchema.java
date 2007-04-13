@@ -17,7 +17,7 @@ public class GenerateSchema {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Configuration configuration = new AnnotationConfiguration().configure();
-		configuration.setProperty("hibernate.connection.url", "jdbc:hsqldb:file:" + System.getProperty("user.home") + "/.p2presenter/db/");
+		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/presenter");
 		SchemaExport schemaExport = new SchemaExport(configuration);
 		schemaExport.create(true, true);
 		

@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.authentication;
+package edu.uoregon.cs.p2presenter.server.authentication;
 
 import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;

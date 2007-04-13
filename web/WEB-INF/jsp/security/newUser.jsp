@@ -8,6 +8,7 @@
 <tbody>
 <tr><th scope="row"><label for="username">Username: </label></th><td><form:input path="username"/></td></tr>
 <tr><th scope="row"><label for="password">Password: </label></th><td><form:password path="password"/></td></tr>
+<tr><th scope="row"><label for="confirmPassword">Confirm Password: </label></th><td><input type="password" name="confirmPassword" id="confirmPassword"/></td></tr>
 <tr><th scope="row"><label for="firstName">First Name: </label></th><td><form:input path="firstName"/></td></tr>
 <tr><th scope="row"><label for="lastName">Last Name: </label></th><td><form:input path="lastName"/></td></tr>
 </tbody>

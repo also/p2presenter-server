@@ -14,7 +14,7 @@ public class PhilosopherInteractivityController implements InteractivityControll
 	
 	public PhilosopherInteractivityController() {
 		table = new Table();
-		view = new PhilosopherVisualization(table);
+		view = new PhilosopherVisualization();
 	}
 	
 	public Container getView() {
@@ -27,6 +27,10 @@ public class PhilosopherInteractivityController implements InteractivityControll
 
 	public void onDisconnect(Philosopher philosopher) {
 		table.removePhilosopher(philosopher);
+	}
+	
+	public Table getModel() {
+		return table;
 	}
 
 }

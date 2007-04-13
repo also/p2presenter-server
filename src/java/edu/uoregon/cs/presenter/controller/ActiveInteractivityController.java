@@ -4,7 +4,7 @@ package edu.uoregon.cs.presenter.controller;
 
 import java.util.HashMap;
 
-import edu.uoregon.cs.p2presenter.interactivity.ActiveInteractivity;
+import edu.uoregon.cs.p2presenter.server.interactivity.ActiveInteractivity;
 
 // TODO right now this just wraps a map
 public class ActiveInteractivityController {

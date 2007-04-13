@@ -15,4 +15,6 @@ public interface InteractivityController<T> {
 	public void onDisconnect(T model);
 	
 	public Container getView();
+	
+	public InteractivityModel getModel();
 }

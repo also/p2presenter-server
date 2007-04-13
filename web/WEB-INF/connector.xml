@@ -9,32 +9,39 @@
 	
 	<bean id="connectionManager" class="edu.uoregon.cs.p2presenter.ConnectionManager">
 		<property name="requestHandlerMapping.uriMappedHandlers"><map>
-			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.authentication.LoginRequestHandler"/></entry>
-			<entry key="/logout"><bean class="edu.uoregon.cs.p2presenter.authentication.LogoutRequestHandler"/></entry>
+			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler"/></entry>
+			<entry key="/logout"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LogoutRequestHandler"/></entry>
 		</map></property>
 		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
 			<entry>
-				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityClientRequestHandler">
+				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/(get|join)"/></bean></key>
+				<bean class="edu.uoregon.cs.p2presenter.server.interactivity.InteractivityClientRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/controller"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.ProxyInteractivityRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.server.interactivity.ProxyInteractivityRequestHandler">
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
-				<bean class="edu.uoregon.cs.p2presenter.interactivity.server.InteractivityHostRequestHandler">
+				<bean class="edu.uoregon.cs.p2presenter.server.interactivity.InteractivityHostRequestHandler">
 					<property name="dao" ref="dao"/>
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
+			<entry><key><bean class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
+				<property name="pattern" value="/entity/lecture/(\d+)/(.+)"/>
+				<property name="parameterNames" ><list><value>lectureId</value><value>action</value></list></property>
+			</bean></key>
+			<bean class="edu.uoregon.cs.presenter.connector.LectureRequestHandler">
+				<property name="dao" ref="dao"/>
+			</bean></entry>
 		</map></property>
 		<property name="requestHandlerMapping.uriMappedFilters"><map>
-			<entry key="/**"><bean class="edu.uoregon.cs.p2presenter.authentication.SecurityContextIntegrationFilter"/></entry>
+			<entry key="/**"><bean class="edu.uoregon.cs.p2presenter.server.authentication.SecurityContextIntegrationFilter"/></entry>
 		</map></property>
 	</bean>
 	

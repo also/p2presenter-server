@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.interactivity.server;
+package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import edu.uoregon.cs.p2presenter.AbstractProxyRequestHandler;
 import edu.uoregon.cs.p2presenter.LocalConnection;

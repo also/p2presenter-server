@@ -7,10 +7,10 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="hibernate.connection.username">sa</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
-        <property name="hibernate.connection.hsqldb.default_table_type">cached</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">presenter</property>
+        <property name="hibernate.connection.password">presenter</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         
         <mapping class="edu.uoregon.cs.presenter.entity.Slide"/>
         <mapping class="edu.uoregon.cs.presenter.entity.InteractivityDefinition"/>

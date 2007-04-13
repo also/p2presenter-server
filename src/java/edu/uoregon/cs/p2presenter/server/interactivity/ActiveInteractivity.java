@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.interactivity;
+package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import edu.uoregon.cs.p2presenter.LocalConnection;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
