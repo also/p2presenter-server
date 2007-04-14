@@ -14,6 +14,10 @@ import edu.uoregon.cs.p2presenter.RequestHandler;
 import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
+/** Handles invocation request messages.
+ * @author rmberdeen
+ *
+ */
 public class InvocationRequestHandler implements RequestHandler {
 	public static final String PARAMETER_TYPES_HEADER_SEPARATOR = ",";
 	public static final String METHOD_NAME_HEADER_NAME = "Method-Name";

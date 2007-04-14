@@ -48,12 +48,13 @@ public class InteractivityParticipantClient {
 				if (view instanceof InteractivityClientComponent) {
 					((InteractivityClientComponent) view).setModel(model);
 				}
+				
+				return;
 			}
 		}
-		else {
-			// TODO exception type
-			throw new Exception();
-		}
+		
+		// TODO exception type
+		throw new Exception();
 	}
 	
 	public Object getModel() {

@@ -10,7 +10,7 @@ import edu.uoregon.cs.p2presenter.LocalConnection;
  */
 public abstract class AbstractResponseMessage extends AbstractMessage implements ResponseMessage {
 	private int status;
-	private String reason;
+	private String reason = "None";
 	
 	protected AbstractResponseMessage(int status) {
 		this.status = status;
@@ -31,6 +31,8 @@ public abstract class AbstractResponseMessage extends AbstractMessage implements
 		return status;
 	}
 	
+	/** Sets the status of the message.
+	 */
 	protected void setStatus(int status) {
 		this.status = status;
 	}
@@ -39,6 +41,8 @@ public abstract class AbstractResponseMessage extends AbstractMessage implements
 		return reason;
 	}
 	
+	/** Sets the reason for the message.
+	 */
 	protected void setReason(String reason) {
 		this.reason = reason;
 	}
@@ -53,7 +57,6 @@ public abstract class AbstractResponseMessage extends AbstractMessage implements
 
 	@Override
 	protected final String getStartLine() {
-		// TODO reason
-		return LocalConnection.PROTOCOL_VERSION + ' ' + getStatus() + " None";
+		return LocalConnection.PROTOCOL_VERSION + ' ' + getStatus() + ' ' + getReason();
 	}
 }

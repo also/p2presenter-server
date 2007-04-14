@@ -7,16 +7,16 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
-import edu.uoregon.cs.p2presenter.interactivity.StateListener;
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherControllerImpl;
 
 public class Table implements PhilosopherStateListener, InteractivityModel {
-	private StateListener listener;
+	private InteractivityStateListener listener;
 	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();
 	
 	private List<? extends Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
 	
-	public void setStateListener(StateListener listener) {
+	public void setStateListener(InteractivityStateListener listener) {
 		this.listener = listener;
 	}
 	

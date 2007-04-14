@@ -63,18 +63,15 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 	}
 	
 	public Lecture getLectureByTitle(final Course course, final String title) {
-		// TODO Auto-generated method stub
 		return (Lecture) getHibernateTemplate().execute(new HibernateCallback() {
 		
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				// TODO Auto-generated method stub
 				return session.createQuery("from Lecture l where title=:title and :course in elements(l.courses)")
 						.setString("title", title)
 						.setEntity("course", course)
 						.setMaxResults(1)
 						.uniqueResult();
 			}
-		
 		});
 	}
 }

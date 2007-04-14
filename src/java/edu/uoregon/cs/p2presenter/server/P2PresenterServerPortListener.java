@@ -28,7 +28,7 @@ public class P2PresenterServerPortListener implements Runnable {
 	
 	public void run() {
 		
-		while(true) {
+		while(!serverSocket.isClosed()) {
 			try {
 				connectionManager.createConnection(serverSocket.accept()).start();
 			}
@@ -41,5 +41,14 @@ public class P2PresenterServerPortListener implements Runnable {
 	public void init() throws Exception {
 		serverSocket = new ServerSocket(portNumber);
 		new Thread(this).start();
+	}
+	
+	public void destroy() {
+		try {
+			serverSocket.close();
+		}
+		catch (IOException ex) {
+			// TODO
+		}
 	}
 }

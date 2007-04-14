@@ -37,7 +37,6 @@ public class EnrollCourseController extends AbstractPresenterController {
 		if (courseId != null) {
 			course = getDao().getEntity(Course.class, courseId);
 			if (course == null) {
-				// TODO exception type
 				message = "Invalid course";
 			}
 			else if (course.getStudents().contains(person)) {
