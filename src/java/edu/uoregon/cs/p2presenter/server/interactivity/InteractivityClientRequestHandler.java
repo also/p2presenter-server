@@ -48,7 +48,9 @@ public class InteractivityClientRequestHandler implements RequestHandler {
 		}
 		
 		// either the interactivity id or the action were invalid
-		return new OutgoingResponseMessage(request, 404);
+		OutgoingResponseMessage response = new OutgoingResponseMessage(request, 404);
+		response.setContent("The interactivity does not exist.");
+		return response;
 	}
 
 }

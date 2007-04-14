@@ -1,6 +1,8 @@
 package edu.uoregon.cs.p2presenter.interactivity;
 
-public interface InteractivityModel {
+import java.io.Serializable;
+
+public interface InteractivityModel extends Serializable {
 	
 	public void setStateListener(InteractivityStateListener stateListener);
 

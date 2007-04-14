@@ -304,6 +304,8 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 					response = requestHandler.handleRequest(request);
 				}
 				catch (Throwable t) {
+					// TODO log
+					t.printStackTrace();
 					/* send a response indicating server error */
 					// TODO send more information about failure
 					response = new OutgoingResponseMessage(request, 500);

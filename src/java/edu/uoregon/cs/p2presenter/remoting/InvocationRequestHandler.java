@@ -116,8 +116,6 @@ public class InvocationRequestHandler implements RequestHandler {
 					result = method.invoke(target, args);
 				}
 				
-				result = method.invoke(target, args);
-				
 				if (result != null) {
 					Class returnType = method.getReturnType();
 					// TODO probably shouldn't serialize enums
@@ -138,6 +136,7 @@ public class InvocationRequestHandler implements RequestHandler {
 			}
 		}
 		catch (ObjectStreamException ex) {
+			ex.printStackTrace();
 			/*try {
 				response.setStatus(500);
 				response.setContentObject(ex);

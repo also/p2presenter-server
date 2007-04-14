@@ -11,7 +11,7 @@ import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherControllerImpl;
 
 public class Table implements PhilosopherStateListener, InteractivityModel {
-	private InteractivityStateListener listener;
+	private transient InteractivityStateListener listener;
 	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();
 	
 	private List<? extends Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);

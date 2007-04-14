@@ -19,6 +19,7 @@ public class DemoClient {
 	 */
 	public static void main(String[] args) throws Exception {
 		JFrame frame = new JFrame("Interactivity Demo Participant");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		String host = args.length == 0 ? JOptionPane.showInputDialog("Host address:", "localhost") : args[0];
 		if (host == null) {
 			System.exit(0);

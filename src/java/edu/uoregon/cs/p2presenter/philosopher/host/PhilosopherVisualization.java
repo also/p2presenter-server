@@ -19,12 +19,11 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.JComponent;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityView;
-import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher.Hand;
 
-public class PhilosopherVisualization extends JComponent implements InteractivityStateListener, InteractivityView<Table> {
+public class PhilosopherVisualization extends JComponent implements InteractivityView<Table> {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Color TABLE_COLOR = new Color(204, 153, 102);
@@ -60,6 +59,10 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 	private ArmShapes rightArms = new ArmShapes();
 	
 	private Table table;
+	
+	public PhilosopherVisualization() {
+		setDoubleBuffered(true);
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {

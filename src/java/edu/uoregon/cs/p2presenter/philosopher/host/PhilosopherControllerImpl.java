@@ -2,16 +2,18 @@
 
 package edu.uoregon.cs.p2presenter.philosopher.host;
 
+import java.io.Serializable;
+
 import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
 
-public class PhilosopherControllerImpl implements Philosopher {
+public class PhilosopherControllerImpl implements Philosopher, Serializable {
 	private Table table;
 	
 	// XXX supposed to support more than one
-	private PhilosopherStateListener philosopherStateListener;
+	private transient PhilosopherStateListener philosopherStateListener;
 	
 	public PhilosopherControllerImpl(Table table) {
 		this.table = table;
@@ -26,7 +28,7 @@ public class PhilosopherControllerImpl implements Philosopher {
 	private HandImpl leftHand = new HandImpl();
 	private HandImpl rightHand = new HandImpl();
 	
-	private class HandImpl implements Hand {
+	private class HandImpl implements Hand, Serializable {
 		private State state;
 		private Chopstick chopstick;
 		

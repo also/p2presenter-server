@@ -2,7 +2,9 @@
 
 package edu.uoregon.cs.p2presenter.philosopher;
 
-public class Chopstick {
+import java.io.Serializable;
+
+public class Chopstick implements Serializable {
 	private Philosopher heldBy;
 	
 	public boolean isHeld() {
