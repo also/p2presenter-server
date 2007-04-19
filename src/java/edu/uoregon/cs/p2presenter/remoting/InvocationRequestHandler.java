@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import edu.uoregon.cs.p2presenter.Connection;
 import edu.uoregon.cs.p2presenter.RequestHandler;
@@ -108,9 +109,17 @@ public class InvocationRequestHandler implements RequestHandler {
 				// TODO unwrap invocation target exception
 				
 				if (invocationListener != null) {
-					Object before = invocationListener.beforeMethodInvocation(target, method, args);
-					result = method.invoke(target, args);
-					invocationListener.afterMethodInvocation(before, result);
+					/* if the method is synchronized, the order in which it is entered is significant */
+					if (Modifier.isSynchronized(method.getModifiers())) {
+						/* make sure that events for target are logged in the order they actually happen */
+						synchronized (target) {
+							result = invokeAndNotify(target, method, args);
+						}
+					}
+					else {
+						/* if the method isn't synchronized, order doesn't matter */
+						result = invokeAndNotify(target, method, args);
+					}
 				}
 				else {
 					result = method.invoke(target, args);
@@ -145,5 +154,13 @@ public class InvocationRequestHandler implements RequestHandler {
 			catch (ObjectStreamException exx) {}*/
 		}
 		return response;
+	}
+	
+	private Object invokeAndNotify(Object target, Method method, Object[] args) throws Exception {
+		Object before = invocationListener.beforeMethodInvocation(target, method, args);
+		Object result = method.invoke(target, args);
+		invocationListener.afterMethodInvocation(before, result);
+		
+		return result;
 	}
 }
