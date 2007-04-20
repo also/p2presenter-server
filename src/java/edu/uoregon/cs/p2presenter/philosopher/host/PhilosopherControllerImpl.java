@@ -4,10 +4,12 @@ package edu.uoregon.cs.p2presenter.philosopher.host;
 
 import java.io.Serializable;
 
+import edu.uoregon.cs.p2presenter.interactivity.Hidden;
 import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
+import edu.uoregon.cs.p2presenter.remoting.Asynchronous;
 
 public class PhilosopherControllerImpl implements Philosopher, Serializable {
 	private Table table;
@@ -101,6 +103,7 @@ public class PhilosopherControllerImpl implements Philosopher, Serializable {
 		if (leftHand.state == Hand.State.WAITING || rightHand.state == Hand.State.WAITING) {
 			return State.WAITING;
 		}
+		// TODO getting some NPEs in here
 		else if (leftHand.state == rightHand.state) {
 			switch (leftHand.state) {
 			case EMPTY:
@@ -129,6 +132,8 @@ public class PhilosopherControllerImpl implements Philosopher, Serializable {
 		}
 	}
 
+	@Hidden
+	@Asynchronous
 	public void addPhilosopherStateListener(PhilosopherStateListener philosopherStateListener) {
 		this.philosopherStateListener = philosopherStateListener;
 	}

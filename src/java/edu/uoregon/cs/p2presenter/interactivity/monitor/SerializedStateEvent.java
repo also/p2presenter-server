@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
+
 /** Serializes the interactivities state for replay.
  * @author rberdeen
  *
  */
-public class SerializedStateEvent implements InteractivityEvent {
+public class SerializedStateEvent<T extends InteractivityModel> implements InteractivityEvent<T> {
 	private byte[] serializedState;
 
-	public SerializedStateEvent(Object state) {
+	public SerializedStateEvent(T state) {
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		try {
@@ -27,13 +29,13 @@ public class SerializedStateEvent implements InteractivityEvent {
 			throw new RuntimeException(ex);
 		}
 	}
-
-	public void replay(InteractivityReplay interactivityReplay) {
+	
+	public T getState() {
 		ByteArrayInputStream bytes = new ByteArrayInputStream(serializedState);
 		
 		try {
 			ObjectInputStream in = new ObjectInputStream(bytes);
-			interactivityReplay.setCurrentState(in.readObject());
+			return (T) in.readObject();
 		}
 		catch (IOException ex) {
 			// TODO exception type
@@ -42,6 +44,15 @@ public class SerializedStateEvent implements InteractivityEvent {
 		catch(ClassNotFoundException ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "State changed (occupies " + serializedState.length + " bytes)";
+	}
+
+	public SerializedStateEvent<T> getCurrentStateEvent() {
+		return this;
 	}
 	
 }

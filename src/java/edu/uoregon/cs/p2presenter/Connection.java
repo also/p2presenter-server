@@ -31,7 +31,7 @@ public interface Connection extends IdGenerator {
 
 	/** Sends a request whose response will be handled by the caller.
 	 * @param request
-	 * @return
+	 * @return a {@link Future} providing access to the response message
 	 * @throws IOException
 	 */
 	public Future<IncomingResponseMessage> sendRequest(
@@ -51,6 +51,9 @@ public interface Connection extends IdGenerator {
 			OutgoingRequestMessage request) throws IOException,
 			InterruptedException;
 
+	/** Sends a response message. The connection will be closed if any exceptions occur.
+	 * @throws IOException if an exception occurrs while sending the message
+	 */
 	public void sendResponse(OutgoingResponseMessage response)
 			throws IOException;
 

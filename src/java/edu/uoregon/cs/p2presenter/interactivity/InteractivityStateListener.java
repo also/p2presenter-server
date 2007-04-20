@@ -4,6 +4,6 @@ package edu.uoregon.cs.p2presenter.interactivity;
  * @author rberdeen
  *
  */
-public interface InteractivityStateListener {
-	public void stateChanged();
+public interface InteractivityStateListener<T extends InteractivityModel> {
+	public void stateChanged(T state);
 }

@@ -156,6 +156,8 @@ public class InvocationRequestHandler implements RequestHandler {
 		return response;
 	}
 	
+	/** Invokes the method on the target, notifying the listener before and after.
+	 */
 	private Object invokeAndNotify(Object target, Method method, Object[] args) throws Exception {
 		Object before = invocationListener.beforeMethodInvocation(target, method, args);
 		Object result = method.invoke(target, args);

@@ -34,8 +34,6 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 	private static final Color WAITING_COLOR = Color.RED;
 	private static final Color ACTIVE_COLOR = Color.GREEN;
 	
-	private int width, height;
-
 	private static final double CENTER = 500;
 	private static final double TABLE_DIAMETER = 736;
 	private static final double TABLE_ORIGIN = 132;
@@ -74,8 +72,8 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 		
 		float minDimension = Math.min(getWidth(), getHeight());
 		
-		width = getWidth();
-		height = getHeight();
+		int width = getWidth();
+		int height = getHeight();
 		
 		g2.clearRect(0, 0, width, height);
 		
@@ -155,7 +153,8 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 		g2.fill(arm);
 	}
 
-	public void stateChanged() {
+	public void stateChanged(Table state) {
+		setModel(state);
 		if (getWidth() > 0 || getHeight() > 0) {
 			calculateSizes();
 			repaint();

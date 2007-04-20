@@ -113,7 +113,7 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 						executorService.execute(handler);
 					}
 					else {
-						throw new Exception("ignored response");
+						// the response was ignored
 					}
 				}
 			}

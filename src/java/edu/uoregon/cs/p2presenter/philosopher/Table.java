@@ -11,7 +11,7 @@ import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.host.PhilosopherControllerImpl;
 
 public class Table implements PhilosopherStateListener, InteractivityModel {
-	private transient InteractivityStateListener listener;
+	private transient InteractivityStateListener<Table> listener;
 	private ArrayList<PhilosopherControllerImpl> philosophers = new ArrayList<PhilosopherControllerImpl>();
 	
 	private List<? extends Philosopher> unmodifiablePhilosophers = Collections.unmodifiableList(philosophers);
@@ -21,7 +21,7 @@ public class Table implements PhilosopherStateListener, InteractivityModel {
 	}
 	
 	public void philosopherStateChanged(Philosopher philosopher, Philosopher.State philosopherState, Philosopher.Hand.State leftHandState, Philosopher.Hand.State rightHandState) {
-		listener.stateChanged();
+		listener.stateChanged(this);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -68,6 +68,6 @@ public class Table implements PhilosopherStateListener, InteractivityModel {
 			firstPhilosopher.reset(firstChopstick, previousChopstick);
 		}
 		
-		listener.stateChanged();
+		listener.stateChanged(this);
 	}
 }
