@@ -4,6 +4,7 @@ package edu.uoregon.cs.p2presenter.server.authentication;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationManager;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
@@ -32,7 +33,7 @@ public class LoginRequestHandler implements RequestHandler {
 		Authentication authentication = authenticationManager.authenticate(token);
 		SecurityContextImpl securityContext = new SecurityContextImpl();
 		securityContext.setAuthentication(authentication);
-		request.setAttribute(SecurityContextIntegrationFilter.SECURITY_CONTEXT_ATTRIBUTE_NAME, securityContext);
+		SecurityContextHolder.setContext(securityContext);
 		return new OutgoingResponseMessage(request);
 	}
 
