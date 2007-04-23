@@ -9,14 +9,22 @@ import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
 import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 
 public class AuthenticationUtils {
-	public static void login(LocalConnection connection, String username, String password) throws IOException, InterruptedException {
+	public static void login(LocalConnection connection, String username, String password) throws IOException {
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/login");
 		request.setContent(username + '\n' + password);
-		connection.sendRequestAndAwaitResponse(request);
+		try {
+			// TODO report the success of the login
+			connection.sendRequestAndAwaitResponse(request);
+		}
+		catch (InterruptedException ex) {}
+		
 	}
 	
-	public void logout(LocalConnection connection) throws IOException, InterruptedException {
+	public void logout(LocalConnection connection) throws IOException {
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/logout");
-		connection.sendRequestAndAwaitResponse(request);
+		try {
+			connection.sendRequestAndAwaitResponse(request);
+		}
+		catch (InterruptedException ex) {}
 	}
 }
