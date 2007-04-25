@@ -12,6 +12,7 @@ import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 import edu.uoregon.cs.presenter.dao.Dao;
 import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
+import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
 /** Handles request from interactivity hosts.
  * @author Ryan Berdeen
@@ -30,11 +31,17 @@ public class InteractivityHostRequestHandler implements RequestHandler, Connecti
 	}
 	
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
+		// AUTHORIZATION
+		// TODO more advanced check
+		if (!AuthorizationUtils.hasRoles("ROLE_INSTRUCTOR")) {
+			return new OutgoingResponseMessage(request, 400);
+		}
+		
 		String action = (String) request.getAttribute("action");
 		Integer id = new Integer(request.getAttribute("interactivityId").toString());
 		
 		InteractivityDefinition definition = dao.getEntity(InteractivityDefinition.class, id);
-		
+
 		if (definition != null) {
 			if (action.equals("get")) {
 				OutgoingResponseMessage response = new OutgoingResponseMessage(request);

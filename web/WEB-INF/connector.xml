@@ -2,14 +2,21 @@
 
 <!-- $Id$ -->
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<bean id="irm" abstract="true" class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
 		<property name="parameterNames" ><list><value>interactivityId</value><value>action</value></list></property>
 	</bean>
 	
 	<bean id="connectionManager" class="edu.uoregon.cs.p2presenter.ConnectionManager">
 		<property name="requestHandlerMapping.uriMappedHandlers"><map>
-			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler"/></entry>
+			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler">
+				<property name="authenticationManager" ref="authenticationManager"/>
+			</bean></entry>
 			<entry key="/logout"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LogoutRequestHandler"/></entry>
 		</map></property>
 		<property name="requestHandlerMapping.matcherMappedHandlers"><map>
@@ -25,6 +32,7 @@
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
+			
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.server.interactivity.InteractivityHostRequestHandler">
@@ -32,21 +40,48 @@
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
+			
+			<!-- person request handler -->
+			<entry><key><bean class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
+				<property name="pattern" value="/entity/person/([^/]+)/(.+)"/>
+				<property name="parameterNames" ><list><value>personId</value><value>action</value></list></property>
+			</bean></key>
+			<bean class="edu.uoregon.cs.presenter.connector.PersonRequestHandler">
+				<property name="dao" ref="dao"/>
+			</bean></entry>
+			
+			<!-- lecture request handler -->
 			<entry><key><bean class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/lecture/(\d+)/(.+)"/>
 				<property name="parameterNames" ><list><value>lectureId</value><value>action</value></list></property>
 			</bean></key>
 			<bean class="edu.uoregon.cs.presenter.connector.LectureRequestHandler">
 				<property name="dao" ref="dao"/>
+				<property name="activeLectureController" ref="activeLectureController"/>
+			</bean></entry>
+			
+			<!-- course request handler -->
+			<entry><key><bean class="edu.uoregon.cs.p2presenter.UriPatternRequestMatcher">
+				<property name="pattern" value="/entity/course/(\d+)/(.+)"/>
+				<property name="parameterNames" ><list><value>courseId</value><value>action</value></list></property>
+			</bean></key>
+			<bean class="edu.uoregon.cs.presenter.connector.CourseRequestHandler">
+				<property name="dao" ref="dao"/>
 			</bean></entry>
 		</map></property>
+		
 		<property name="requestHandlerMapping.uriMappedFilters"><map>
 			<entry key="/**"><bean class="edu.uoregon.cs.p2presenter.server.authentication.SecurityContextIntegrationFilter"/></entry>
 		</map></property>
 	</bean>
 	
-	<bean id="portListener" class="edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener" init-method="init">
+	<bean id="portListener" class="edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener" init-method="init" destroy-method="destroy">
 		<property name="portNumber" value="9000"/>
 		<property name="connectionManager" ref="connectionManager"/>
 	</bean>
+	
+	<aop:config>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.connector.AbstractEntityMultiActionRequestHandler.*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler.*(..))"/>
+	</aop:config>
 </beans>

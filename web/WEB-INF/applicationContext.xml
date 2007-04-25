@@ -148,7 +148,6 @@ xsi:schemaLocation="
 
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.dao.Dao.*(..))"/>
-		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.connector.LectureRequestHandler.*(..))"/>
 	</aop:config>
 	
 	<bean id="activeLectureController" class="edu.uoregon.cs.presenter.controller.ActiveLectureController">

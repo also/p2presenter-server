@@ -102,7 +102,8 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 						executorService.execute(runnable);
 					}
 					else {
-						sendResponse(new OutgoingResponseMessage((RequestMessage) message, 404));
+						RequestMessage request = (RequestMessage) message;
+						sendResponse(new OutgoingResponseMessage(request, 404, "No handler configured for request (URI: " + request.getUri() + ")"));
 					}
 				}
 				else {
