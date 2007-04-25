@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import edu.uoregon.cs.p2presenter.RequestHandler;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
+import org.p2presenter.messaging.handler.RequestHandler;
+import org.p2presenter.messaging.message.IncomingRequestMessage;
+import org.p2presenter.messaging.message.OutgoingResponseMessage;
+
 import edu.uoregon.cs.presenter.dao.Dao;
 
 /** Superclass for request handlers that perform one of many actions for an entity.

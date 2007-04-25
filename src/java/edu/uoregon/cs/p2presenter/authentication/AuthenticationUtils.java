@@ -4,9 +4,10 @@ package edu.uoregon.cs.p2presenter.authentication;
 
 import java.io.IOException;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
-import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
+import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import org.p2presenter.messaging.message.RequestHeaders.RequestType;
+
 
 public class AuthenticationUtils {
 	public static void login(LocalConnection connection, String username, String password) throws IOException {

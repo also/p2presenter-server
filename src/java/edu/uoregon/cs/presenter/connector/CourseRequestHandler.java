@@ -2,11 +2,11 @@
 
 package edu.uoregon.cs.presenter.connector;
 
+import org.p2presenter.messaging.message.IncomingRequestMessage;
+import org.p2presenter.messaging.message.OutgoingResponseMessage;
 import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
 
-import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 import edu.uoregon.cs.presenter.entity.Course;
 import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 

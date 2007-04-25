@@ -9,8 +9,9 @@ import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.RequestMessage;
+import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import org.p2presenter.messaging.message.RequestMessage;
+
 
 public class OutgoingSerializedObjectResponseMessage extends OutgoingResponseMessage {
 	public OutgoingSerializedObjectResponseMessage(RequestMessage inResponseToMessage) {

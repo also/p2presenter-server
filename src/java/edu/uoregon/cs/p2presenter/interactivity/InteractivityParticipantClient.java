@@ -4,13 +4,13 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import java.awt.Container;
 
+import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
+import org.p2presenter.messaging.message.IncomingResponseMessage;
+import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import org.p2presenter.messaging.message.RequestHeaders.RequestType;
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
-import edu.uoregon.cs.p2presenter.UriPatternRequestMatcher;
-import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
 import edu.uoregon.cs.p2presenter.remoting.RemoteObjectReference;

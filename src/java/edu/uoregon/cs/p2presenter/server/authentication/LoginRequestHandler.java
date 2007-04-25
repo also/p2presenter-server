@@ -7,12 +7,12 @@ import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.p2presenter.messaging.handler.RequestHandler;
+import org.p2presenter.messaging.handler.RequestMatcher;
+import org.p2presenter.messaging.message.IncomingRequestHeaders;
+import org.p2presenter.messaging.message.IncomingRequestMessage;
+import org.p2presenter.messaging.message.OutgoingResponseMessage;
 
-import edu.uoregon.cs.p2presenter.RequestHandler;
-import edu.uoregon.cs.p2presenter.RequestMatcher;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestHeaders;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingResponseMessage;
 
 public class LoginRequestHandler implements RequestHandler {
 	public static final RequestMatcher NOT_LOGIN_REQUEST_MATCHER = new RequestMatcher() {

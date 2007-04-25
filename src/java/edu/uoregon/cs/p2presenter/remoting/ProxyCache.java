@@ -7,7 +7,8 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-import edu.uoregon.cs.p2presenter.Connection;
+import org.p2presenter.messaging.Connection;
+
 
 public class ProxyCache {
 	private static final String PROXY_CACHE_ATTRIBUTE_PREFIX = ProxyCache.class.getName() + "proxyCache.";

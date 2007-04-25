@@ -4,7 +4,8 @@ package edu.uoregon.cs.p2presenter.remoting;
 
 import java.lang.reflect.Proxy;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
+import org.p2presenter.messaging.LocalConnection;
+
 
 public class RemoteInvocationConnection {
 	private LocalConnection connection;

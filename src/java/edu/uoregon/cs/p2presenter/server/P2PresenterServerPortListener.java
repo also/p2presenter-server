@@ -3,7 +3,7 @@ package edu.uoregon.cs.p2presenter.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import edu.uoregon.cs.p2presenter.ConnectionManager;
+import org.p2presenter.messaging.ConnectionManager;
 
 public class P2PresenterServerPortListener implements Runnable {
 	private int portNumber;

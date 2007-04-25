@@ -12,11 +12,12 @@ import java.lang.reflect.Method;
 import java.rmi.RemoteException;
 import java.util.concurrent.Future;
 
-import edu.uoregon.cs.p2presenter.Connection;
-import edu.uoregon.cs.p2presenter.message.IncomingResponseMessage;
-import edu.uoregon.cs.p2presenter.message.OutgoingRequestMessage;
-import edu.uoregon.cs.p2presenter.message.ResponseMessage;
-import edu.uoregon.cs.p2presenter.message.RequestHeaders.RequestType;
+import org.p2presenter.messaging.Connection;
+import org.p2presenter.messaging.message.IncomingResponseMessage;
+import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import org.p2presenter.messaging.message.ResponseMessage;
+import org.p2presenter.messaging.message.RequestHeaders.RequestType;
+
 
 class RemoteObjectInvocationHandler implements InvocationHandler {
 	private String remoteVariableName;

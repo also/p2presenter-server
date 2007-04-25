@@ -2,9 +2,10 @@
 
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
-import edu.uoregon.cs.p2presenter.AbstractProxyRequestHandler;
-import edu.uoregon.cs.p2presenter.LocalConnection;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
+import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.messaging.handler.AbstractProxyRequestHandler;
+import org.p2presenter.messaging.message.IncomingRequestMessage;
+
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 
 /** Proxies interactivity messages from participant to host.

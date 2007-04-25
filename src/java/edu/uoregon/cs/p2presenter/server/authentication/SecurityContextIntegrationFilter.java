@@ -4,9 +4,9 @@ package edu.uoregon.cs.p2presenter.server.authentication;
 
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.p2presenter.messaging.handler.Filter;
+import org.p2presenter.messaging.message.IncomingRequestMessage;
 
-import edu.uoregon.cs.p2presenter.Filter;
-import edu.uoregon.cs.p2presenter.message.IncomingRequestMessage;
 
 public class SecurityContextIntegrationFilter implements Filter {
 	public static final String SECURITY_CONTEXT_ATTRIBUTE_NAME = SecurityContextIntegrationFilter.class.getName() + ".securityContext";

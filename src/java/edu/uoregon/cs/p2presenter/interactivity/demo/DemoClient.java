@@ -9,7 +9,8 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import edu.uoregon.cs.p2presenter.LocalConnection;
+import org.p2presenter.messaging.LocalConnection;
+
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityParticipantClient;
 
 public class DemoClient {
