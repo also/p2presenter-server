@@ -13,7 +13,6 @@ import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
-import org.p2presenter.messaging.message.RequestHeaders.RequestType;
 
 
 /** Handles a request by sending it to another connection.
@@ -81,7 +80,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 			targetConnection.setAttribute(PROXIED_CONNECTIONS_ATTRIBUTE_NAME_PREFIX + proxiedConnection.getConnectionId(), null);
 			
 			try {
-				targetConnection.sendRequest(new OutgoingRequestMessage(targetConnection, RequestType.GET, "/connection/proxied/" + proxiedConnection.getConnectionId() + "/closed"));
+				targetConnection.sendRequest(new OutgoingRequestMessage(targetConnection, "/connection/proxied/" + proxiedConnection.getConnectionId() + "/closed"));
 			}
 			catch (IOException ex) {
 				// TODO log

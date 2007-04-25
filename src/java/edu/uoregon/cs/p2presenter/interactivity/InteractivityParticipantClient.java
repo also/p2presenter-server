@@ -8,7 +8,6 @@ import org.p2presenter.messaging.LocalConnection;
 import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
-import org.p2presenter.messaging.message.RequestHeaders.RequestType;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
@@ -24,7 +23,7 @@ public class InteractivityParticipantClient {
 	//  TODO narrow exceptions
 	@SuppressWarnings("unchecked")
 	public InteractivityParticipantClient(LocalConnection connection, int interactivityId) throws Exception {
-		OutgoingRequestMessage getInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/get");
+		OutgoingRequestMessage getInteractivityRequest = new OutgoingRequestMessage(connection, "/interactivity/" + interactivityId + "/get");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(getInteractivityRequest);
 		if (response.getStatus() != 200) {
 			// TODO exception type
@@ -37,7 +36,7 @@ public class InteractivityParticipantClient {
 		
 		Class<?> modelClass = Class.forName(responseObject.get("participantModelInterfaceClassName").toString());
 		
-		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/join");
+		OutgoingRequestMessage joinInteractivityRequest = new OutgoingRequestMessage(connection, "/interactivity/" + interactivityId + "/join");
 		response = connection.sendRequestAndAwaitResponse(joinInteractivityRequest);
 		if (response.getStatus() != 200) {
 			// TODO exception type

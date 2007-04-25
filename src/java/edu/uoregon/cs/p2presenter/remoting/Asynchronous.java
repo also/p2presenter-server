@@ -8,6 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /** Indicates that a method should be invoked asynchronously.
+ * Methods marked as asynchronous should have a void return type.
  * @author rberdeen
  *
  */

@@ -9,7 +9,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.p2presenter.messaging.message.DefaultIdGenerator;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
 

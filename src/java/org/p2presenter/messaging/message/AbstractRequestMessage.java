@@ -9,10 +9,10 @@ import org.p2presenter.messaging.LocalConnection;
  *
  */
 public abstract class AbstractRequestMessage extends AbstractMessage implements RequestMessage {
-	private RequestType requestType;
+	private String requestType;
 	private String uri;
 	
-	public AbstractRequestMessage(RequestType requestType, String uri) {
+	public AbstractRequestMessage(String requestType, String uri) {
 		this.requestType = requestType;
 		this.uri = uri;
 	}
@@ -27,11 +27,11 @@ public abstract class AbstractRequestMessage extends AbstractMessage implements 
 		return true;
 	}
 	
-	public final RequestType getRequestType() {
+	public final String getRequestType() {
 		return requestType;
 	}
 	
-	protected void setRequestType(RequestType requestType) {
+	protected void setRequestType(String requestType) {
 		this.requestType = requestType;
 	}
 	
@@ -49,6 +49,6 @@ public abstract class AbstractRequestMessage extends AbstractMessage implements 
 	
 	@Override
 	protected final String getStartLine() {
-		return requestType.name() + ' ' + uri + ' ' + LocalConnection.PROTOCOL_VERSION;
+		return requestType + ' ' + uri + ' ' + LocalConnection.PROTOCOL_VERSION;
 	}
 }

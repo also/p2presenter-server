@@ -1,9 +1,7 @@
 /* $Id$ */
 
-package org.p2presenter.messaging.message;
+package org.p2presenter.messaging;
 
-import org.p2presenter.messaging.IdGenerator;
-import org.p2presenter.messaging.LocalConnection;
 
 public class DefaultIdGenerator implements IdGenerator {
 	private static int generatorNumber = 1;

@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import org.p2presenter.messaging.handler.DefaultRequestHandlerMapping;
-import org.p2presenter.messaging.message.DefaultIdGenerator;
 
 
 public class ConnectionManager implements ConnectionListener, IdGenerator {

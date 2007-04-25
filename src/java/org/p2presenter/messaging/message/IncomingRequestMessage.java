@@ -13,7 +13,7 @@ public class IncomingRequestMessage extends AbstractRequestMessage implements In
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
 	private LocalConnection localConnection;
 	
-	protected IncomingRequestMessage(LocalConnection localConnection, RequestType requestType, String uri) {
+	protected IncomingRequestMessage(LocalConnection localConnection, String requestType, String uri) {
 		super(requestType, uri);
 		this.localConnection = localConnection;
 	}

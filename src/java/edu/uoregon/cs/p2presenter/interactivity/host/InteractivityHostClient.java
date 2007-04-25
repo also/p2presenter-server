@@ -6,7 +6,6 @@ import org.p2presenter.messaging.LocalConnection;
 import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
-import org.p2presenter.messaging.message.RequestHeaders.RequestType;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
@@ -22,7 +21,7 @@ public class InteractivityHostClient {
 		this.connection = connection;
 		this.interactivityId = interactivityId;
 		
-		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin/get");
+		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, "/interactivity/" + interactivityId + "/admin/get");
 		IncomingResponseMessage response = connection.sendRequestAndAwaitResponse(request);
 		if (response.getStatus() == 200) {
 			JsonObject responseObject = JsonObject.valueOf(response.getContentAsString());
@@ -48,7 +47,7 @@ public class InteractivityHostClient {
 	}
 	
 	public void begin() throws Exception {
-		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, RequestType.GET, "/interactivity/" + interactivityId + "/admin/begin");
+		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, "/interactivity/" + interactivityId + "/admin/begin");
 		connection.sendRequestAndAwaitResponse(request);
 		// TODO make sure request was successful
 	}

@@ -5,12 +5,17 @@ package org.p2presenter.messaging.message;
 import org.p2presenter.messaging.IdGenerator;
 
 public class OutgoingRequestMessage extends AbstractRequestMessage implements OutgoingMessage {
-
+	private static final String DEFAULT_REQUEST_TYPE = "GET";
+	
 	public OutgoingRequestMessage(IdGenerator messageIdSource) {
-		this(messageIdSource, RequestType.GET, "*");
+		this(messageIdSource, "*");
 	}
 	
-	public OutgoingRequestMessage(IdGenerator idSource, RequestType requestType, String url) {
+	public OutgoingRequestMessage(IdGenerator idSource, String url) {
+		this(idSource, DEFAULT_REQUEST_TYPE, url);
+	}
+	
+	public OutgoingRequestMessage(IdGenerator idSource, String requestType, String url) {
 		super(requestType, url);
 		setHeader(MESSAGE_ID, idSource.generateId());
 	}
@@ -21,7 +26,7 @@ public class OutgoingRequestMessage extends AbstractRequestMessage implements Ou
 	}
 	
 	@Override
-	public final void setRequestType(RequestType requestType) {
+	public final void setRequestType(String requestType) {
 		super.setRequestType(requestType);
 	}
 	

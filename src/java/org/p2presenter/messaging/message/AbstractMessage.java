@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.p2presenter.messaging.LocalConnection;
-import org.p2presenter.messaging.message.RequestHeaders.RequestType;
 
 
 /** Superclass for message classes.
@@ -203,7 +202,7 @@ public abstract class AbstractMessage implements Message {
 		/* otherwise the message is a request */
 		else {
 			int indexOfUrl  = line.indexOf(' ') + 1;
-			result = new IncomingRequestMessage(connection, RequestType.valueOf(line.substring(0, indexOfUrl - 1)), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
+			result = new IncomingRequestMessage(connection, line.substring(0, indexOfUrl - 1), line.substring(indexOfUrl, line.indexOf(' ', indexOfUrl + 1)));
 		}
 		
 		/* read the headers. the headers are separated from what follows by a blank line */

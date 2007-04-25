@@ -7,16 +7,17 @@ package org.p2presenter.messaging.message;
  *
  */
 public interface RequestHeaders extends Headers {
-	public enum RequestType {
-		GET,
-		EVALUATE;
+	@Deprecated
+	public interface RequestType {
+		public static String GET = "GET";
+		public static String EVALUATE = "EVALUATE";
 	}
 	
 	public static final String MESSAGE_ID = "Message-Id";
 	
-	/** Return the type of request, if one of the standard types.
+	/** Return the type of request.
 	 */
-	public RequestType getRequestType();
+	public String getRequestType();
 	
 	/** Return the requested URI.
 	 */
