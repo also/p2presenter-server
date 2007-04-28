@@ -8,10 +8,10 @@ import org.acegisecurity.userdetails.User;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.p2presenter.server.model.Person;
 import org.springframework.dao.DataAccessException;
 
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Person;
 
 public class DaoUserDetailsService implements UserDetailsService {
 	private Dao dao;

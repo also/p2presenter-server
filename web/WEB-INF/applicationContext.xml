@@ -115,22 +115,22 @@ xsi:schemaLocation="
 		<!-- <property name="dataSource"><jee:jndi-lookup jndi-name="java:/comp/env/jdbc/database"/></property> -->
 		
 		<property name="annotatedClasses"><list>
-			<value>edu.uoregon.cs.presenter.entity.Course</value>
-			<value>edu.uoregon.cs.presenter.entity.InteractivityDefinition</value>
-			<value>edu.uoregon.cs.presenter.entity.Lecture</value>
-			<value>edu.uoregon.cs.presenter.entity.LectureSession</value>
-			<value>edu.uoregon.cs.presenter.entity.Person</value>
-			<value>edu.uoregon.cs.presenter.entity.Slide</value>
-			<value>edu.uoregon.cs.presenter.entity.SlideSession</value>
-			<value>edu.uoregon.cs.presenter.entity.Whiteboard</value>
+			<value>org.p2presenter.server.model.Course</value>
+			<value>org.p2presenter.server.model.InteractivityDefinition</value>
+			<value>org.p2presenter.server.model.Lecture</value>
+			<value>org.p2presenter.server.model.LectureSession</value>
+			<value>org.p2presenter.server.model.Person</value>
+			<value>org.p2presenter.server.model.Slide</value>
+			<value>org.p2presenter.server.model.SlideSession</value>
+			<value>org.p2presenter.server.model.Whiteboard</value>
 			
-	        <value>edu.uoregon.cs.presenter.entity.FreeformSubmission</value>
-	        <value>edu.uoregon.cs.presenter.entity.FreeformSubmissionDefinition</value>
-			<value>edu.uoregon.cs.presenter.entity.MultipleChoiceAnswer</value>
-	        <value>edu.uoregon.cs.presenter.entity.MultipleChoiceQuestion</value>
-	        <value>edu.uoregon.cs.presenter.entity.Submission</value>
-	        <value>edu.uoregon.cs.presenter.entity.SubmissionDefinition</value>
-	        <value>edu.uoregon.cs.presenter.entity.SubmissionSession</value>
+	        <value>org.p2presenter.server.model.FreeformSubmission</value>
+	        <value>org.p2presenter.server.model.FreeformSubmissionDefinition</value>
+			<value>org.p2presenter.server.model.MultipleChoiceAnswer</value>
+	        <value>org.p2presenter.server.model.MultipleChoiceQuestion</value>
+	        <value>org.p2presenter.server.model.Submission</value>
+	        <value>org.p2presenter.server.model.SubmissionDefinition</value>
+	        <value>org.p2presenter.server.model.SubmissionSession</value>
 		</list></property>
 	</bean>
 	

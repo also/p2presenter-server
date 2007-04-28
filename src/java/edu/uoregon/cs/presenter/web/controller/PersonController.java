@@ -9,12 +9,12 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Person;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Person;
 
 public class PersonController extends AbstractPresenterController {
 	private ActiveLectureController activeLectureController;

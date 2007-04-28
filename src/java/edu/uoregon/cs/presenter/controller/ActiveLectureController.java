@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.LectureSession;
+import org.p2presenter.server.model.SubmissionSession;
+
 import edu.uoregon.cs.presenter.PresenterException;
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.LectureSession;
-import edu.uoregon.cs.presenter.entity.SubmissionSession;
 
 public class ActiveLectureController {
 	private Dao dao;

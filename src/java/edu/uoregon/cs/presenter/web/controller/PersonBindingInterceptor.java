@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.UserDetails;
+import org.p2presenter.server.model.Person;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Person;
 
 /** Binds the logged in person to the request.
  * @author rberdeen

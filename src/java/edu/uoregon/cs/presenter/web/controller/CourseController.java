@@ -5,10 +5,10 @@ package edu.uoregon.cs.presenter.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.p2presenter.server.model.Course;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.uoregon.cs.presenter.entity.Course;
 
 public class CourseController extends AbstractPresenterController {
 

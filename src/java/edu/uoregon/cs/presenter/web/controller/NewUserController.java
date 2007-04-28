@@ -4,11 +4,11 @@ package edu.uoregon.cs.presenter.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.p2presenter.server.model.Person;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Person;
 
 public class NewUserController extends SimpleFormController {
 	private Dao dao;

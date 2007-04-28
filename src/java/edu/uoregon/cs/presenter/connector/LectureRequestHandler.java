@@ -4,14 +4,14 @@ package edu.uoregon.cs.presenter.connector;
 
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.LectureSession;
+import org.p2presenter.server.model.Person;
 import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
 
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.LectureSession;
-import edu.uoregon.cs.presenter.entity.Person;
 import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
 public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandler<Lecture> {
@@ -46,13 +46,15 @@ public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandl
 	protected OutgoingResponseMessage afterEntityLoaded(IncomingRequestMessage request, Lecture lecture) {
 		// AUTHORIZATION
 		// only the creator of a lecture is allowed to access it here
-		Person creator = lecture.getCreator();
+		// FIXME disabled because lectures created by UP don't have creator set
+		return null;
+		/*Person creator = lecture.getCreator();
 		if (!creator.getUsername().equals(AuthorizationUtils.getCurrentUsername())) {
 			return new OutgoingResponseMessage(request, 400);
 		}
 		else {
 			return null;
-		}
+		}*/
 	}
 
 	public OutgoingResponseMessage get(IncomingRequestMessage request, Lecture lecture) throws Exception {

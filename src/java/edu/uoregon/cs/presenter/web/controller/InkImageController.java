@@ -6,9 +6,9 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.p2presenter.server.model.SlideSession;
 import org.springframework.web.bind.ServletRequestUtils;
 
-import edu.uoregon.cs.presenter.entity.SlideSession;
 
 public class InkImageController extends AbstractImageController {
 

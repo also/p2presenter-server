@@ -4,8 +4,9 @@ package edu.uoregon.cs.presenter.web.controller.submission;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.uoregon.cs.presenter.entity.FreeformSubmission;
-import edu.uoregon.cs.presenter.entity.SubmissionDefinition;
+import org.p2presenter.server.model.FreeformSubmission;
+import org.p2presenter.server.model.SubmissionDefinition;
+
 
 public class AcceptFreeformSubmissionController extends AbstractAcceptSubmissionController<FreeformSubmission> {
 	public AcceptFreeformSubmissionController() {

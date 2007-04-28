@@ -7,17 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.InteractivityDefinition;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Whiteboard;
 import org.ry1.json.JsonObject;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Whiteboard;
 
 public class LectureSessionController extends AbstractPresenterController {
 	private Log logger = LogFactory.getLog(LectureSessionController.class);

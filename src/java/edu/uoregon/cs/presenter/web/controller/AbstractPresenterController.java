@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.p2presenter.server.model.Person;
 import org.ry1.springframework.web.context.request.FlashMap;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Person;
 
 public abstract class AbstractPresenterController extends AbstractController {
 	protected Log logger = LogFactory.getLog(getClass());

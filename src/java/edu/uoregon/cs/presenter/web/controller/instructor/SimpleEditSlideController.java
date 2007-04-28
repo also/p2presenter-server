@@ -4,11 +4,11 @@ package edu.uoregon.cs.presenter.web.controller.instructor;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.p2presenter.server.model.InteractivityDefinition;
+import org.p2presenter.server.model.Slide;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 
-import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
-import edu.uoregon.cs.presenter.entity.Slide;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormController;
 
 public class SimpleEditSlideController extends AbstractPresenterSimpleFormController {

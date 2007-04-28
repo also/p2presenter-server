@@ -4,9 +4,10 @@ package edu.uoregon.cs.presenter.controller;
 
 import java.io.File;
 
-import edu.uoregon.cs.presenter.entity.Slide;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Whiteboard;
+import org.p2presenter.server.model.Slide;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Whiteboard;
+
 
 public class FileController {
 	private File baseDirectory = new File(System.getProperty("user.home"), ".p2presenter/files");

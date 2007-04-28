@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.presenter.entity;
+package org.p2presenter.server.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;

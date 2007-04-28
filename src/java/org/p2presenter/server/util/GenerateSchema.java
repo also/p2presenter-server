@@ -1,4 +1,4 @@
-package edu.uoregon.cs.presenter;
+package org.p2presenter.server.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6,8 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.p2presenter.server.model.Person;
 
-import edu.uoregon.cs.presenter.entity.Person;
 
 public class GenerateSchema {
 

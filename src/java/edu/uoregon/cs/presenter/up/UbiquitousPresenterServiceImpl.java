@@ -14,22 +14,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.xfire.transport.http.XFireServletController;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.FreeformSubmission;
+import org.p2presenter.server.model.FreeformSubmissionDefinition;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.LectureSession;
+import org.p2presenter.server.model.Person;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Submission;
+import org.p2presenter.server.model.SubmissionDefinition;
+import org.p2presenter.server.model.SubmissionSession;
 import org.springframework.util.StringUtils;
 
 import edu.uoregon.cs.presenter.PresenterException;
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.FreeformSubmission;
-import edu.uoregon.cs.presenter.entity.FreeformSubmissionDefinition;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.LectureSession;
-import edu.uoregon.cs.presenter.entity.Person;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Submission;
-import edu.uoregon.cs.presenter.entity.SubmissionDefinition;
-import edu.uoregon.cs.presenter.entity.SubmissionSession;
 
 public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterService {
 	private Log logger = LogFactory.getLog(UbiquitousPresenterServiceImpl.class);

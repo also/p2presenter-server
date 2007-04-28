@@ -60,6 +60,16 @@ xsi:schemaLocation="
 				<property name="activeLectureController" ref="activeLectureController"/>
 			</bean></entry>
 			
+			<!-- lecture session request handler -->
+			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+				<property name="pattern" value="/entity/activeLecture/(\d+)/(.+)"/>
+				<property name="parameterNames" ><list><value>lectureSessionId</value><value>action</value></list></property>
+			</bean></key>
+			<bean class="edu.uoregon.cs.presenter.connector.ActiveLectureRequestHandler">
+				<property name="dao" ref="dao"/>
+				<property name="activeLectureController" ref="activeLectureController"/>
+			</bean></entry>
+			
 			<!-- course request handler -->
 			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/course/(\d+)/(.+)"/>

@@ -1,12 +1,13 @@
 package edu.uoregon.cs.presenter.controller;
 
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.LectureSession;
+import org.p2presenter.server.model.Slide;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Whiteboard;
+
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.LectureSession;
-import edu.uoregon.cs.presenter.entity.Slide;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Whiteboard;
 
 public class ActiveLecture {
 	private Dao dao;

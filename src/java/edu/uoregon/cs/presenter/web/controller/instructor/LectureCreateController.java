@@ -4,11 +4,11 @@ package edu.uoregon.cs.presenter.web.controller.instructor;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.ServletRequestUtils;
 
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormController;
 

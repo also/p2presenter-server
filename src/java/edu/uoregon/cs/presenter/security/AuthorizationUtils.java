@@ -10,9 +10,9 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.UserDetails;
+import org.p2presenter.server.model.Person;
 
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Person;
 
 /** Utilities for authorization.
  * @author Ryan Berdeen

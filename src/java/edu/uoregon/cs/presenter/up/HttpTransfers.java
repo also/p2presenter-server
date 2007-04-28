@@ -12,17 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.Slide;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Whiteboard;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.FileController;
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
-import edu.uoregon.cs.presenter.entity.Slide;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Whiteboard;
 
 public class HttpTransfers extends AbstractController {
 	private Log logger = LogFactory.getLog(HttpTransfers.class);

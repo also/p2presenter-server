@@ -5,8 +5,9 @@ package edu.uoregon.cs.presenter.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
+
 
 public interface Dao {
 	

@@ -12,21 +12,21 @@
         <property name="hibernate.connection.password">presenter</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         
-        <mapping class="edu.uoregon.cs.presenter.entity.Slide"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.InteractivityDefinition"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Course"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Lecture"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.LectureSession"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.SlideSession"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Person"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Whiteboard"/>
+        <mapping class="org.p2presenter.server.model.Slide"/>
+        <mapping class="org.p2presenter.server.model.InteractivityDefinition"/>
+        <mapping class="org.p2presenter.server.model.Course"/>
+        <mapping class="org.p2presenter.server.model.Lecture"/>
+        <mapping class="org.p2presenter.server.model.LectureSession"/>
+        <mapping class="org.p2presenter.server.model.SlideSession"/>
+        <mapping class="org.p2presenter.server.model.Person"/>
+        <mapping class="org.p2presenter.server.model.Whiteboard"/>
         
-        <mapping class="edu.uoregon.cs.presenter.entity.FreeformSubmissionDefinition"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.FreeformSubmission"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.MultipleChoiceAnswer"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.MultipleChoiceQuestion"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.Submission"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.SubmissionDefinition"/>
-        <mapping class="edu.uoregon.cs.presenter.entity.SubmissionSession"/>
+        <mapping class="org.p2presenter.server.model.FreeformSubmissionDefinition"/>
+        <mapping class="org.p2presenter.server.model.FreeformSubmission"/>
+        <mapping class="org.p2presenter.server.model.MultipleChoiceAnswer"/>
+        <mapping class="org.p2presenter.server.model.MultipleChoiceQuestion"/>
+        <mapping class="org.p2presenter.server.model.Submission"/>
+        <mapping class="org.p2presenter.server.model.SubmissionDefinition"/>
+        <mapping class="org.p2presenter.server.model.SubmissionSession"/>
     </session-factory>
 </hibernate-configuration>

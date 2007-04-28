@@ -1,6 +1,6 @@
 /* $Id:SlideSession.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
 
-package edu.uoregon.cs.presenter.entity;
+package org.p2presenter.server.model;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

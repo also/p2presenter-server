@@ -3,8 +3,8 @@
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.server.model.InteractivityDefinition;
 
-import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 
 /** Stores information about an active interactivity, such as the connection of the host.
  * @author Ryan Berdeen

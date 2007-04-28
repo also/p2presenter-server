@@ -29,7 +29,8 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 	public AbstractEntityMultiActionRequestHandler(Class<T> entityClass) {
 		this.entityClass = entityClass;
 		parameterTypes = new Class[] {IncomingRequestMessage.class, entityClass};
-		idAttributeName = entityClass.getSimpleName().toLowerCase() + "Id";
+		idAttributeName = entityClass.getSimpleName();
+		idAttributeName = Character.toLowerCase(idAttributeName.charAt(0)) + idAttributeName.substring(1) +"Id";
 	}
 
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {

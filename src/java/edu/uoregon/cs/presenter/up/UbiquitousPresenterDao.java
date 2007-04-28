@@ -2,13 +2,13 @@
 
 package edu.uoregon.cs.presenter.up;
 
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
 import org.springframework.util.StringUtils;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
 
 public class UbiquitousPresenterDao {
 	private Dao dao;

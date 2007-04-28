@@ -4,8 +4,9 @@ package edu.uoregon.cs.presenter.web.controller.instructor;
 
 import javax.servlet.http.HttpServletRequest;
 
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Person;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Person;
+
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormController;
 

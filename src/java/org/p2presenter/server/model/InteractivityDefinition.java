@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.presenter.entity;
+package org.p2presenter.server.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

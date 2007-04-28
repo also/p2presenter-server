@@ -13,11 +13,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.p2presenter.server.model.Course;
+import org.p2presenter.server.model.Lecture;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import edu.uoregon.cs.presenter.entity.Course;
-import edu.uoregon.cs.presenter.entity.Lecture;
 
 public class DaoImpl extends HibernateDaoSupport implements Dao {
 	private static final DetachedCriteria SUBJECTS_CRITERA = DetachedCriteria.forClass(Course.class).setProjection(Projections.distinct(Projections.property("subject"))).addOrder(Order.asc("subject"));

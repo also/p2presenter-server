@@ -5,14 +5,14 @@ package edu.uoregon.cs.presenter.web.controller.submission;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.p2presenter.server.model.Person;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Submission;
+import org.p2presenter.server.model.SubmissionDefinition;
+import org.p2presenter.server.model.SubmissionSession;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.uoregon.cs.presenter.entity.Person;
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Submission;
-import edu.uoregon.cs.presenter.entity.SubmissionDefinition;
-import edu.uoregon.cs.presenter.entity.SubmissionSession;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 
 /** Base class for controllers that accept submissions.

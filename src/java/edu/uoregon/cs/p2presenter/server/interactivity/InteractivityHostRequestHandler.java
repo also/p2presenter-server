@@ -7,11 +7,11 @@ import org.p2presenter.messaging.ConnectionListener;
 import org.p2presenter.messaging.handler.RequestHandler;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import org.p2presenter.server.model.InteractivityDefinition;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 import edu.uoregon.cs.presenter.dao.Dao;
-import edu.uoregon.cs.presenter.entity.InteractivityDefinition;
 import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
 /** Handles request from interactivity hosts.

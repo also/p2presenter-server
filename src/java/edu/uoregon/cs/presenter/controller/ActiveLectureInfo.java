@@ -2,8 +2,8 @@
 
 package edu.uoregon.cs.presenter.controller;
 
-import edu.uoregon.cs.presenter.entity.SlideSession;
-import edu.uoregon.cs.presenter.entity.Whiteboard;
+import org.p2presenter.server.model.SlideSession;
+import org.p2presenter.server.model.Whiteboard;
 
 
 /** Stores information about an active LectureSession.

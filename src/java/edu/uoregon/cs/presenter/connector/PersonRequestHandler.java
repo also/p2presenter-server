@@ -6,10 +6,10 @@ import java.io.Serializable;
 
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import org.p2presenter.server.model.Person;
 import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
 
-import edu.uoregon.cs.presenter.entity.Person;
 import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
 public class PersonRequestHandler extends AbstractEntityMultiActionRequestHandler<Person> {

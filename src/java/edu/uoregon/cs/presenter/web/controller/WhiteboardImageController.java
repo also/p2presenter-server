@@ -6,9 +6,9 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.p2presenter.server.model.Whiteboard;
 import org.springframework.web.bind.ServletRequestUtils;
 
-import edu.uoregon.cs.presenter.entity.Whiteboard;
 
 public class WhiteboardImageController extends AbstractImageController {
 
