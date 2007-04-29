@@ -6,11 +6,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ChildSpecification {
+	private String defaultText;
+	
 	private HashSet<NodeDefinition> allowedNodeDefinitions = new HashSet<NodeDefinition>();
 	private boolean list;
 	private boolean optional;
 	
 	private Class requiredReturnType;
+	
+	/** Returns the default text.
+	 */
+	public String getDefaultText() {
+		return defaultText;
+	}
+	
+	/** Sets the default text.
+	 * This text is shown when the child has not been added to the node.
+	 */
+	public void setDefaultText(String defaultText) {
+		this.defaultText = defaultText;
+	}
 	
 	public ChildSpecification(boolean list) {
 		this.list = list;
