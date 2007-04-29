@@ -7,10 +7,10 @@ import org.p2presenter.messaging.ConnectionListener;
 import org.p2presenter.messaging.handler.RequestHandler;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import org.p2presenter.remoting.ProxyCache;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
-import edu.uoregon.cs.p2presenter.remoting.ProxyCache;
 
 public class JoinInteractivityRequestHandler implements RequestHandler {
 	private InteractivityController interactivityController;

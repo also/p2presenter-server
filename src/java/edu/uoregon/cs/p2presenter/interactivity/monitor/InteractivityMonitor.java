@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.p2presenter.remoting.InvocationListener;
+
 import edu.uoregon.cs.p2presenter.interactivity.Hidden;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
-import edu.uoregon.cs.p2presenter.remoting.InvocationListener;
 
 /** Records events from interactivities.
  * @author rberdeen

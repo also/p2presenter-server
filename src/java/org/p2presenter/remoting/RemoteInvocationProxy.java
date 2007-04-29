@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.p2presenter.remoting;
+package org.p2presenter.remoting;
 
 public interface RemoteInvocationProxy {
 	public RemoteObjectReference getRemoteObjectReference();

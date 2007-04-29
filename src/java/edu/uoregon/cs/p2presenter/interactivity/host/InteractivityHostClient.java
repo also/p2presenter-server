@@ -6,10 +6,10 @@ import org.p2presenter.messaging.LocalConnection;
 import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import org.p2presenter.remoting.InvocationRequestHandler;
 import org.ry1.json.JsonObject;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
-import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class InteractivityHostClient {
 	private InteractivityController<?> controller;

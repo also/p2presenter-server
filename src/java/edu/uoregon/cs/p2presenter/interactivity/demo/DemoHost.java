@@ -10,9 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.remoting.InvocationRequestHandler;
 
 import edu.uoregon.cs.p2presenter.interactivity.host.InteractivityHostClient;
-import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
 
 public class DemoHost {
 

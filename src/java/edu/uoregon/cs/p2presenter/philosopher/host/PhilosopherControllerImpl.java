@@ -4,12 +4,13 @@ package edu.uoregon.cs.p2presenter.philosopher.host;
 
 import java.io.Serializable;
 
+import org.p2presenter.remoting.Asynchronous;
+
 import edu.uoregon.cs.p2presenter.interactivity.Hidden;
 import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
 import edu.uoregon.cs.p2presenter.philosopher.Philosopher;
 import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
 import edu.uoregon.cs.p2presenter.philosopher.Table;
-import edu.uoregon.cs.p2presenter.remoting.Asynchronous;
 
 public class PhilosopherControllerImpl implements Philosopher, Serializable {
 	private Table table;

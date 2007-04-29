@@ -8,11 +8,11 @@ import org.p2presenter.messaging.LocalConnection;
 import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import org.p2presenter.remoting.InvocationRequestHandler;
+import org.p2presenter.remoting.RemoteInvocationConnection;
+import org.p2presenter.remoting.RemoteObjectReference;
 import org.ry1.json.JsonObject;
 
-import edu.uoregon.cs.p2presenter.remoting.InvocationRequestHandler;
-import edu.uoregon.cs.p2presenter.remoting.RemoteInvocationConnection;
-import edu.uoregon.cs.p2presenter.remoting.RemoteObjectReference;
 
 public class InteractivityParticipantClient {
 	private RemoteInvocationConnection remoteInvocationConnection;
