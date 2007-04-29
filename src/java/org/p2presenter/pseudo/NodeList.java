@@ -1,6 +1,6 @@
 /* $Id$ */
 
-package edu.uoregon.cs.presenter.pseudo;
+package org.p2presenter.pseudo;
 
 public class NodeList {
 
