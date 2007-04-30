@@ -58,16 +58,16 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 	
 	private Table table;
 	
+	private int previousPhilosopherCount = -1;
+	
 	public PhilosopherVisualization() {
 		setDoubleBuffered(true);
+		
+		tableShape = new Ellipse2D.Double(TABLE_ORIGIN, TABLE_ORIGIN, TABLE_DIAMETER, TABLE_DIAMETER);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		if (tableShape == null) {
-			calculateSizes();
-		}
-		
 		Graphics2D g2 = (Graphics2D) g;
 		
 		float minDimension = Math.min(getWidth(), getHeight());
@@ -117,7 +117,6 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 			g2.setPaint(HEAD_COLOR);
 			g2.fill(head);
 			
-			
 			if (!philosopher.getLeftHand().getChopstick().isHeld()) {
 				g2.rotate(halfPhilosopherInterval, CENTER, CENTER);
 				
@@ -154,16 +153,17 @@ public class PhilosopherVisualization extends JComponent implements Interactivit
 	}
 
 	public void stateChanged(Table state) {
-		setModel(state);
-		if (getWidth() > 0 || getHeight() > 0) {
+		this.table = state;
+		if (table.getPhilosopherCount() != previousPhilosopherCount) {
+			previousPhilosopherCount = table.getPhilosopherCount();
 			calculateSizes();
+		}
+		if (getWidth() > 0 && getHeight() > 0) {
 			repaint();
 		}
 	}
 	
 	private void calculateSizes() {
-		tableShape = new Ellipse2D.Double(TABLE_ORIGIN, TABLE_ORIGIN, TABLE_DIAMETER, TABLE_DIAMETER);
-		
 		double plateDiameter = min(TABLE_DIAMETER / 4, TABLE_DIAMETER * 1.5 / table.getPhilosophers().size());
 		double plateInset = plateDiameter / 4;
 		

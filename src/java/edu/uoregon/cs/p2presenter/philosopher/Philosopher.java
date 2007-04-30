@@ -4,9 +4,6 @@ package edu.uoregon.cs.p2presenter.philosopher;
 
 import org.p2presenter.remoting.Asynchronous;
 
-import edu.uoregon.cs.p2presenter.interactivity.Hidden;
-import edu.uoregon.cs.p2presenter.philosopher.PhilosopherStateListener;
-
 public interface Philosopher {
 	public interface Hand {
 		public enum State { HOLDING, WAITING, EMPTY }

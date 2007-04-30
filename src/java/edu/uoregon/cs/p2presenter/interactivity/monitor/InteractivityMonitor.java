@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.p2presenter.remoting.InvocationListener;
 
-import edu.uoregon.cs.p2presenter.interactivity.Hidden;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;
 
