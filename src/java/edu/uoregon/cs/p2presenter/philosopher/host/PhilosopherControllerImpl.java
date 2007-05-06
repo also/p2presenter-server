@@ -32,7 +32,7 @@ public class PhilosopherControllerImpl implements Philosopher, Serializable {
 	private HandImpl rightHand = new HandImpl();
 	
 	private class HandImpl implements Hand, Serializable {
-		private State state;
+		private State state = State.EMPTY;
 		private Chopstick chopstick;
 		
 		public State getState() {
@@ -104,7 +104,6 @@ public class PhilosopherControllerImpl implements Philosopher, Serializable {
 		if (leftHand.state == Hand.State.WAITING || rightHand.state == Hand.State.WAITING) {
 			return State.WAITING;
 		}
-		// TODO getting some NPEs in here
 		else if (leftHand.state == rightHand.state) {
 			switch (leftHand.state) {
 			case EMPTY:
