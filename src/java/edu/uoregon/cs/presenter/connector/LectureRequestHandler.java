@@ -25,7 +25,7 @@ public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandl
 		LECTURE_PROPERTIES
 			.includeValues("id", "title")
 			.forListOfBeans("slides")
-				.includeValues("id", "title", "body")
+				.includeValues("id", "index", "title", "body")
 				.forBean("interactivityDefinition")
 					.includeValue("id");
 		
