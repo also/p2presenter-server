@@ -38,12 +38,11 @@ public class ActiveLectureRequestHandler extends AbstractEntityMultiActionReques
 		return new OutgoingResponseMessage(request, new JsonObject(lectureSession, LECTURE_SESSION_PROPERTIES).toString());
 	}
 	
-	public OutgoingResponseMessage begin(IncomingRequestMessage request, LectureSession lectureSession) {
+	public OutgoingResponseMessage end(IncomingRequestMessage request, LectureSession lectureSession) {
 		ActiveLecture activeLecture = activeLectureController.getActiveLecture(lectureSession.getId());
 		activeLectureController.endActiveLecture(activeLecture);
 		
-		// TODO confirmation message
-		return null;
+		return new OutgoingResponseMessage(request, new JsonObject(lectureSession, LECTURE_SESSION_PROPERTIES).toString());
 	}
 
 }
