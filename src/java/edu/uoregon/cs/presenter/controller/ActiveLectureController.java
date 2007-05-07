@@ -24,14 +24,14 @@ public class ActiveLectureController {
 		this.dao = dao;
 	}
 	
-	public ActiveLecture getActiveLecture(int lectureSessionId) {
+	public ActiveLecture getActiveLectureForSessionId(int lectureSessionId) {
 		ActiveLectureInfo activeLectureInfo = activeLecturesInfo.get(lectureSessionId);
 		
 		return activeLectureInfo != null ? new ActiveLecture(dao, activeLectureInfo) : null;
 	}
 	
 	public ActiveLecture getActiveLecture(LectureSession lectureSession) {
-		return getActiveLecture(lectureSession.getId());
+		return getActiveLectureForSessionId(lectureSession.getId());
 	}
 	
 	/** Returns the active ActiveLectures for all Lectures in a Course.
@@ -48,13 +48,13 @@ public class ActiveLectureController {
 		return result;
 	}
 	
-	public ActiveLecture getActiveLecture(Course course, Lecture lecture) {
-		return getActiveLecture(course.getId(), lecture.getId());
+	public ActiveLecture getActiveLecture(Lecture lecture) {
+		return getActiveLectureForSessionId(lecture.getId());
 	}
 	
-	public ActiveLecture getActiveLecture(int courseId, int lectureId) {
+	public ActiveLecture getActiveLecture(int lectureId) {
 		for (ActiveLectureInfo activeLectureInfo : activeLecturesInfo.values()) {
-			if (activeLectureInfo.getCourseId() == courseId && activeLectureInfo.getLectureId() == lectureId) {
+			if (activeLectureInfo.getLectureId() == lectureId) {
 				return new ActiveLecture(dao, activeLectureInfo);
 			}
 		}
@@ -62,17 +62,17 @@ public class ActiveLectureController {
 		return null;
 	}
 	
-	/** Creates and activates a LectureSession for a Lecture in a Course.
+	/** Creates and activates a LectureSession for a Lecture.
 	 * @param course the course in which the Lecture is being presented
 	 * @param lecture the lecture being presented
 	 * @return the LectureSession created
 	 */
-	public LectureSession newLectureSession(Course course, Lecture lecture) {
-		if (getActiveLecture(course, lecture) != null) {
+	public LectureSession newLectureSession(Lecture lecture) {
+		if (getActiveLecture(lecture) != null) {
 			throw new PresenterException("Lecture already active for course");
 		}
 		
-		LectureSession lectureSession = new LectureSession(course, lecture);
+		LectureSession lectureSession = new LectureSession(lecture);
 		
 		dao.save(lectureSession);
 		lecture.getLectureSessions().add(lectureSession);
@@ -86,7 +86,8 @@ public class ActiveLectureController {
 	 * @param lectureSession
 	 */
 	public void reactivateLectureSession(LectureSession lectureSession) {
-		ActiveLectureInfo activeLecture = new ActiveLectureInfo(lectureSession.getId(), lectureSession.getCourse().getId(), lectureSession.getLecture().getId());
+		Lecture lecture = lectureSession.getLecture();
+		ActiveLectureInfo activeLecture = new ActiveLectureInfo(lectureSession.getId(), lecture.getCourse().getId(), lecture.getId());
 		activeLecturesInfo.put(lectureSession.getId(), activeLecture);
 	}
 	

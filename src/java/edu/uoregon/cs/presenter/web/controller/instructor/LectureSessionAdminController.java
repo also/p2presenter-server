@@ -26,11 +26,11 @@ public class LectureSessionAdminController extends AbstractPresenterController {
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
 		ActiveLecture activeLecture;
 		if (courseId != null && lectureId != null) {
-			activeLecture = activeLectureController.getActiveLecture(courseId, lectureId);
+			activeLecture = activeLectureController.getActiveLecture(lectureId);
 		}
 		else {
 			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "lectureSessionId");
-			activeLecture = activeLectureController.getActiveLecture(lectureSessionId);
+			activeLecture = activeLectureController.getActiveLectureForSessionId(lectureSessionId);
 		}
 		
 		// TODO should require post

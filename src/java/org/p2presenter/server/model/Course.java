@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -65,7 +66,7 @@ public class Course {
 		this.instructor = instructor;
 	}
 	
-	@ManyToMany(mappedBy = "courses")
+	@OneToMany(mappedBy = "course")
 	@OrderBy("title") // TODO order by something else
 	public Set<Lecture> getLectures() {
 		return lectures;

@@ -59,7 +59,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	public void allowSubmissions(String classroom, String lecture, int slideTypeIndex, int slideNum) {
 		SlideType slideType = SlideType.values()[slideTypeIndex];
 		if (slideType == SlideType.SLIDE) {
-			ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+			ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 			
 			if (activeLecture != null) {
 				LectureSession lectureSession = activeLecture.getLectureSession();
@@ -97,7 +97,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	}
 
 	public void allowSubmissionsOnAll(String classroom, String lecture) {
-		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		
 		if (activeLecture != null) {
 			for (SlideSession slideSession : activeLecture.getLectureSession().getSlideSessions().values()) {
@@ -126,7 +126,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		
 		SlideType slideType = SlideType.values()[slideTypeIndex];
 		
-		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		if (activeLecture != null) {
 			if (slideType == SlideType.SLIDE) {
 				if (activeLecture.getLectureSession().getLecture().getSlides().size() > currentSlideNumber) {
@@ -154,7 +154,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	}
 
 	public void endLecture(String classroom, String lecture) {
-		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		
 		/* if the lecture session is actually active */
 		if (activeLecture != null) {
@@ -169,7 +169,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	}
 
 	public boolean endSubmissions(String classroom, String lecture) {
-		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		
 		if (activeLecture != null) {
 			for (SlideSession slideSession : activeLecture.getLectureSession().getSlideSessions().values()) {
@@ -219,7 +219,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	public String getSubmissionsKludge(String classroom, String lecture) {
 		StringBuilder result = new StringBuilder();
 		
-		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lecture);
+		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		if (activeLecture != null) {
 			/* TODO make sure this is the right way to get the request. I couldn't
 			 * be bothered to read through the documentation, but I stumbled on this. */
@@ -295,11 +295,8 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	}
 
 	public void startLecture(String courseString, String lectureString) {
-		Course course = ubiquitousPresenterDao.getCourse(courseString);
-		
 		Lecture lecture = ubiquitousPresenterDao.getLecture(lectureString);
-		
-		activeLectureController.newLectureSession(course, lecture);	
+		activeLectureController.newLectureSession(lecture);	
 	}
 
 	public boolean startLectureCreation(String courseString, String newLectureName) {
@@ -312,7 +309,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		Course course = ubiquitousPresenterDao.getCourse(courseString);
 		Lecture lecture = new Lecture();
 		lecture.setTitle(newLectureName);
-		lecture.getCourses().add(course);
+		lecture.setCourse(course);
 		course.getLectures().add(lecture);
 		
 		dao.save(lecture);

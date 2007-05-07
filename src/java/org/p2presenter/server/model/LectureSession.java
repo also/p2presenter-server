@@ -30,7 +30,6 @@ import org.hibernate.validator.NotNull;
 public class LectureSession {
 	private Integer id;
 	
-	private Course course;
 	private Lecture lecture;
 	
 	private Map<Slide, SlideSession> slideSessions = new HashMap<Slide, SlideSession>();
@@ -43,9 +42,8 @@ public class LectureSession {
 		timestamp = new Date();
 	}
 	
-	public LectureSession(Course course, Lecture lecture) {
+	public LectureSession(Lecture lecture) {
 		this();
-		this.course = course;
 		this.lecture = lecture;
 	}
 
@@ -69,18 +67,6 @@ public class LectureSession {
 	
 	public void setWhiteboards(List<Whiteboard> whiteboards) {
 		this.whiteboards = whiteboards;
-	}
-
-	/** Returns the course in which this lecture was given.
-	 */
-	@ManyToOne
-	@NotNull
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
 	}
 	
 	@Id

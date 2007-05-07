@@ -32,7 +32,7 @@ public class Lecture {
 	private Person creator;
 	private String title;
 
-	private Set<Course> courses = new HashSet<Course>();
+	private Course course;
 	private List<Slide> slides = new ArrayList<Slide>();
 	
 	private Set<LectureSession> lectureSessions;
@@ -58,14 +58,13 @@ public class Lecture {
 	
 	/** Returns the Courses this Lecture is a part of.
 	 */
-	@ManyToMany
-	@OrderBy("subject, number, crn")
-	public Set<Course> getCourses() {
-		return courses;
+	@ManyToOne
+	public Course getCourse() {
+		return course;
 	}
 	
-	public void setCourses(Set<Course> courses) {
-		this.courses = courses;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 	
 	/** Returns the LectureSessions in which this Lecture was presented.

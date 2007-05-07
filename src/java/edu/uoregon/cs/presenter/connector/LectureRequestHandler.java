@@ -4,15 +4,12 @@ package edu.uoregon.cs.presenter.connector;
 
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
-import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Lecture;
 import org.p2presenter.server.model.LectureSession;
-import org.p2presenter.server.model.Person;
 import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
 
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
 public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandler<Lecture> {
 	private ActiveLectureController activeLectureController;
@@ -62,9 +59,7 @@ public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandl
 	}
 	
 	public OutgoingResponseMessage begin(IncomingRequestMessage request, Lecture lecture) {
-		// TODO this is a hack, assuming a lecture will only be in one course
-		Course course = lecture.getCourses().iterator().next();
-		LectureSession lectureSession = activeLectureController.newLectureSession(course, lecture);
+		LectureSession lectureSession = activeLectureController.newLectureSession(lecture);
 		return new OutgoingResponseMessage(request, new JsonObject(lectureSession, LECTURE_SESSION_PROPERTIES).toString());
 	}
 

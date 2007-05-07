@@ -25,7 +25,7 @@ public class LectureController extends AbstractPresenterController {
 		Lecture lecture = getDao().getEntity(Lecture.class, ServletRequestUtils.getRequiredIntParameter(request, "lectureId"));
 		ModelAndView result = new ModelAndView(getViewName(), "lecture", lecture);
 		result.addObject("course", course);
-		result.addObject("activeLecture", activeLectureController.getActiveLecture(course, lecture));
+		result.addObject("activeLecture", activeLectureController.getActiveLecture(lecture));
 		return result;
 	}
 

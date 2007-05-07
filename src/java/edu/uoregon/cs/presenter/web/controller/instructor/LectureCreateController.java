@@ -20,7 +20,7 @@ public class LectureCreateController extends AbstractPresenterSimpleFormControll
 		Lecture lecture = new Lecture();
 		
 		int courseId = ServletRequestUtils.getRequiredIntParameter(request, "courseId");
-		lecture.getCourses().add(getDao().loadEntity(Course.class, courseId));
+		lecture.setCourse(getDao().loadEntity(Course.class, courseId));
 		
 		lecture.setCreator(AbstractPresenterController.getPerson(request));
 		

@@ -73,7 +73,7 @@ public class HttpTransfers extends AbstractController {
 		}
 		else if ("slide".equals(type)) {
 			SlideType slideType = SlideType.values()[Integer.parseInt(request.getHeader("X-Slidetype"))];
-			ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(classroom, lectureString);
+			ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lectureString);
 
 			if (activeLecture != null) {
 				if (slideType == SlideType.SLIDE) {

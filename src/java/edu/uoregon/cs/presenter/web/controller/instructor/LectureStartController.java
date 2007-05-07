@@ -31,7 +31,7 @@ public class LectureStartController extends AbstractPresenterController {
 		Course course = getDao().getEntity(Course.class, courseId);
 		Lecture lecture = getDao().getEntity(Lecture.class, lectureId);
 		
-		LectureSession lectureSession = activeLectureController.newLectureSession(course, lecture);
+		LectureSession lectureSession = activeLectureController.newLectureSession(lecture);
 		
 		flashMessage("lectureSession.created", new Object[] {lectureSession, course, lecture}, "lecture session {0} created");
 		return new ModelAndView("redirect:/instructor/control/" + lectureSession.getId());

@@ -62,7 +62,7 @@ public class UbiquitousPresenterDao {
 		return new Integer(string.substring(string.lastIndexOf('(') + 1, string.length() - 1));
 	}
 	
-	public ActiveLecture getActiveLecture(String classroomString, String lectureString) {
-		return activeLectureController.getActiveLecture(getId(classroomString), getId(lectureString));
+	public ActiveLecture getActiveLecture(String lectureString) {
+		return activeLectureController.getActiveLecture(getId(lectureString));
 	}
 }

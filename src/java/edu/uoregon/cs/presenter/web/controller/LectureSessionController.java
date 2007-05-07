@@ -35,7 +35,7 @@ public class LectureSessionController extends AbstractPresenterController {
 		if (courseId != null && lectureId != null) {
 			Course course = getDao().loadEntity(Course.class, courseId);
 			Lecture lecture = getDao().loadEntity(Lecture.class, lectureId);
-			activeLecture = activeLectureController.getActiveLecture(courseId, lectureId);
+			activeLecture = activeLectureController.getActiveLecture(lectureId);
 			if (activeLecture == null) {
 				flashMessage("lecture.session.inactive", new Object[] {lecture, course}, "lecture {0} is not active in course {1}");
 				return new ModelAndView("redirect:/courses/" + courseId + "/lectures/" + lectureId + '/');
@@ -43,7 +43,7 @@ public class LectureSessionController extends AbstractPresenterController {
 		}
 		else {
 			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "lectureSessionId");
-			activeLecture = activeLectureController.getActiveLecture(lectureSessionId);
+			activeLecture = activeLectureController.getActiveLectureForSessionId(lectureSessionId);
 		}
 		SlideSession slideSession;
 		Whiteboard whiteboard;

@@ -33,13 +33,13 @@ public class ActiveLectureRequestHandler extends AbstractEntityMultiActionReques
 	
 	public OutgoingResponseMessage setCurrentSlideIndex(IncomingRequestMessage request, LectureSession lectureSession) {
 		Integer index = new Integer(request.getContentAsString());
-		activeLectureController.getActiveLecture(lectureSession.getId()).setCurrentSlideIndex(index);
+		activeLectureController.getActiveLectureForSessionId(lectureSession.getId()).setCurrentSlideIndex(index);
 		
 		return new OutgoingResponseMessage(request, new JsonObject(lectureSession, LECTURE_SESSION_PROPERTIES).toString());
 	}
 	
 	public OutgoingResponseMessage end(IncomingRequestMessage request, LectureSession lectureSession) {
-		ActiveLecture activeLecture = activeLectureController.getActiveLecture(lectureSession.getId());
+		ActiveLecture activeLecture = activeLectureController.getActiveLectureForSessionId(lectureSession.getId());
 		activeLectureController.endActiveLecture(activeLecture);
 		
 		return new OutgoingResponseMessage(request, new JsonObject(lectureSession, LECTURE_SESSION_PROPERTIES).toString());
