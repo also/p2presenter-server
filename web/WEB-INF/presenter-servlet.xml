@@ -16,8 +16,8 @@
 			<entry key="/courses/*{courseId}" value="courseController"/>
 			<entry key="/courses/*{courseId}/enroll" value="enrollCourseController"/>
 			<entry key="/courses/*{courseId}/drop" value="dropCourseController"/>
-			<entry key="/courses/*{courseId}/lectures/*{lectureId}" value="lectureController"/>
-			<entry key="/courses/*{courseId}/lectures/*{lectureId}/watch" value="lectureSessionController"/>
+			<entry key="/lectures/*{lectureId}" value="lectureController"/>
+			<entry key="/lectures/*{lectureId}/watch" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}/submit/freeform" value="acceptFreeformSubmissionController"/>
 			<entry key="/slides/*{slideId}.png" value="slideImageController"/>
@@ -26,13 +26,13 @@
 			<entry key="/instructor/courses/create" value="createCourseController"/>
 			<entry key="/instructor/courses/*{courseId}/" value="instructorCourseDetailsController"/>
 			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/create" value="lectureCreateController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/slides/create" value="simpleNewSlideController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/start" value="lectureStartController"/>
-			<entry key="/instructor/courses/*{courseId}/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
-			<entry key="/instructor/control/*{lectureSessionId}" value="lectureSessionAdminController"/>
+			<entry key="/instructor/courses/*{courseId}/createLecture" value="lectureCreateController"/>
+			<entry key="/instructor/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
+			<entry key="/instructor/lectures/*{lectureId}/slides/create" value="simpleNewSlideController"/>
+			<entry key="/instructor/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
+			<entry key="/instructor/lectures/*{lectureId}/start" value="lectureStartController"/>
+			<entry key="/instructor/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
+			<entry key="/instructor/lectureSessions/*{lectureSessionId}/control" value="lectureSessionAdminController"/>
 			<entry key="/admin/" value-ref="adminDashboardController"/>
 			<entry key="/admin/addRole" value-ref="simpleAddRoleController"/>
 			<entry key="/admin/removeRole" value-ref="simpleRemoveRoleController"/>

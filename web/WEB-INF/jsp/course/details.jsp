@@ -19,7 +19,7 @@
 
 <ul>
 <c:forEach items="${course.lectures}" var="lecture">
-<li><a href="<c:url value="/courses/${course.id}/lectures/${lecture.id}"/>">${lecture.title}</a></li>
+<li><a href="<c:url value="/lectures/${lecture.id}"/>">${lecture.title}</a></li>
 </c:forEach>
 </ul>
 </c:if>

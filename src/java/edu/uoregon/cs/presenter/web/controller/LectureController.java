@@ -5,7 +5,6 @@ package edu.uoregon.cs.presenter.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Lecture;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,10 +20,8 @@ public class LectureController extends AbstractPresenterController {
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Course course = getDao().getEntity(Course.class, ServletRequestUtils.getRequiredIntParameter(request, "courseId"));
 		Lecture lecture = getDao().getEntity(Lecture.class, ServletRequestUtils.getRequiredIntParameter(request, "lectureId"));
 		ModelAndView result = new ModelAndView(getViewName(), "lecture", lecture);
-		result.addObject("course", course);
 		result.addObject("activeLecture", activeLectureController.getActiveLecture(lecture));
 		return result;
 	}

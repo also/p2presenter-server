@@ -3,7 +3,7 @@
 <c:set var="pageTitle">${activeLecture.lecture}</c:set>
 <c:set var="subtitle"><fmt:formatDate value="${activeLecture.lectureSession.timestamp}"/></c:set>
 <c:set var="body">
-<p>&larr; <a href="<c:url value="/courses/${activeLecture.course.id}/lectures/${activeLecture.lecture.id}"/>">Back to lecture</a></p>
+<p>&larr; <a href="<c:url value="/lectures/${activeLecture.lecture.id}"/>">Back to lecture</a></p>
 <div style="position: relative" id="slideDisplayContainer"></div>
 <script type="text/javascript">
 var controllerUrl = '<c:url value="/watch/${activeLecture.lectureSession.id}"/>';

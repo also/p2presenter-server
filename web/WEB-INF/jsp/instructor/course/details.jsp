@@ -13,10 +13,10 @@
 <c:if test="${!empty course.lectures}">
 <ul>
 <c:forEach items="${course.lectures}" var="lecture">
-<li><a href="<c:url value="/instructor/courses/${course.id}/lectures/${lecture.id}/"/>">${lecture.title}</a></li>
+<li><a href="<c:url value="/instructor/lectures/${lecture.id}/"/>">${lecture.title}</a></li>
 </c:forEach>
 </ul>
 </c:if>
-<p><a href="<c:url value="/instructor/courses/${course.id}/lectures/create"/>">Create</a> a new lecture.</p>
+<p><a href="<c:url value="/instructor/courses/${course.id}/createLecture"/>">Create</a> a new lecture.</p>
 </c:set>
 <%@ include file="/WEB-INF/jsp/template/default.jsp" %>
