@@ -239,9 +239,9 @@ public abstract class AbstractMessage implements Message {
 				throw new MessageParsingException("Invalid Content-Length: " + contentLengthHeader);
 			}
 			
-			if (in.read(content) != content.length) {
-				// FIXME pretty sure this is wrong
-				throw new MessageParsingException("Content unavailable");
+			int readLength = in.read(content);
+			while (readLength < content.length) {
+				readLength += in.read(content, readLength, content.length - readLength);
 			}
 			
 			result.setContent(content);
