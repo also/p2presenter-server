@@ -58,6 +58,7 @@ xsi:schemaLocation="
 			<bean class="edu.uoregon.cs.presenter.connector.LectureRequestHandler">
 				<property name="dao" ref="dao"/>
 				<property name="activeLectureController" ref="activeLectureController"/>
+				<property name="fileController" ref="fileController"/>
 			</bean></entry>
 			
 			<!-- slide request handler -->

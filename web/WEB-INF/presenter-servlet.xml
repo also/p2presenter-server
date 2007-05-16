@@ -3,6 +3,9 @@
 <!-- $Id$ -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</bean>
+	
 	<bean id="handlerMapping" class="org.ry1.springframework.web.servlet.handler.RequestMatcherHandlerMapping">
 		<property name="urlMap"><map>
 			<entry key="/" value="homeController"/>
@@ -16,8 +19,8 @@
 			<entry key="/courses/*{courseId}" value="courseController"/>
 			<entry key="/courses/*{courseId}/enroll" value="enrollCourseController"/>
 			<entry key="/courses/*{courseId}/drop" value="dropCourseController"/>
-			<entry key="/lectures/*{lectureId}" value="lectureController"/>
-			<entry key="/lectures/*{lectureId}/watch" value="lectureSessionController"/>
+			<entry key="/courses/*{courseId}/lectures/*{lectureId}" value="lectureController"/>
+			<entry key="/courses/*{courseId}/lectures/*{lectureId}/watch" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}" value="lectureSessionController"/>
 			<entry key="/watch/*{lectureSessionId}/submit/freeform" value="acceptFreeformSubmissionController"/>
 			<entry key="/slides/*{slideId}.png" value="slideImageController"/>
@@ -28,7 +31,7 @@
 			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
 			<entry key="/instructor/courses/*{courseId}/createLecture" value="lectureCreateController"/>
 			<entry key="/instructor/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
-			<entry key="/instructor/lectures/*{lectureId}/slides/create" value="simpleNewSlideController"/>
+			<entry key="/instructor/lectures/*{lectureId}/slides/create" value="newSlideController"/>
 			<entry key="/instructor/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
 			<entry key="/instructor/lectures/*{lectureId}/start" value="lectureStartController"/>
 			<entry key="/instructor/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
@@ -140,8 +143,9 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
-	<bean id="simpleNewSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleNewSlideController" parent="abstractPresenterController">
-		<property name="viewName" value="redirect:/courses"/>
+	<bean id="newSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.NewSlideController" parent="abstractPresenterController">
+		<property name="fileController" ref="fileController"/>
+		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
 	<bean id="simpleEditSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleEditSlideController" parent="abstractPresenterController">

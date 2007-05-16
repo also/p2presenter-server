@@ -79,6 +79,10 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 		this.dao = dao;
 	}
 	
+	public Dao getDao() {
+		return dao;
+	}
+	
 	/** Called before the entity has been loaded. Subclasses can override to perform initial authorization checks.
 	 * If the response is not <code>null</code>, no further action is taken by the request handler.
 	 */
