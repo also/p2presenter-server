@@ -66,7 +66,7 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 		return (Lecture) getHibernateTemplate().execute(new HibernateCallback() {
 		
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createQuery("from Lecture l where title=:title and :course in elements(l.courses)")
+				return session.createQuery("from Lecture l where title=:title and course=:course)")
 						.setString("title", title)
 						.setEntity("course", course)
 						.setMaxResults(1)
