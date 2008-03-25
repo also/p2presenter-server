@@ -1,3 +1,5 @@
+/* $Id$ */
+
 package org.p2presenter.server.util;
 
 import org.hibernate.Session;
