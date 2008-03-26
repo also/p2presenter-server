@@ -30,6 +30,7 @@ public class SerializedStateEvent<T extends InteractivityModel> implements Inter
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T getState() {
 		ByteArrayInputStream bytes = new ByteArrayInputStream(serializedState);
 		

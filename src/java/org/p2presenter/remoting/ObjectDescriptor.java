@@ -7,9 +7,9 @@ import java.io.Serializable;
 public class ObjectDescriptor extends RemoteObjectReference implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Class[] proxiedClasses;
+	private Class<?>[] proxiedClasses;
 	
-	public ObjectDescriptor(Class[] proxiedClasses, int id) {
+	public ObjectDescriptor(Class<?>[] proxiedClasses, int id) {
 		super(id);
 		this.proxiedClasses = proxiedClasses;
 	}

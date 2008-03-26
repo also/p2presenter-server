@@ -65,7 +65,7 @@ class RemoteObjectInvocationHandler implements InvocationHandler {
 	
 	private Object invoke(OutgoingRequestMessage request, Method method, Object[] args) throws Throwable {
 		request.setHeader(InvocationRequestHandler.METHOD_NAME_HEADER_NAME, method.getName());
-		Class[] parameterTypes = method.getParameterTypes();
+		Class<?>[] parameterTypes = method.getParameterTypes();
 		StringBuilder parameterTypesStringBuidler = new StringBuilder();
 		if (parameterTypes.length > 0) {
 			parameterTypesStringBuidler.append(parameterTypes[0].getName());

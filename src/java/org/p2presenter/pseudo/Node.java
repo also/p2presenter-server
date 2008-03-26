@@ -7,7 +7,7 @@ import java.util.HashMap;
 public abstract class Node<T> {
 	private Node<?>[] children;
 	
-	private static final HashMap<Class, Class> PRIMITIVE_TYPE_MAP = new HashMap<Class, Class>();
+	private static final HashMap<Class<?>, Class<?>> PRIMITIVE_TYPE_MAP = new HashMap<Class<?>, Class<?>>();
 	static {
 		PRIMITIVE_TYPE_MAP.put(Byte.TYPE, Byte.class);
 		PRIMITIVE_TYPE_MAP.put(Short.TYPE, Short.class);

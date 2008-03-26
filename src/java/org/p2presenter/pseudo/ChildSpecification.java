@@ -12,7 +12,7 @@ public class ChildSpecification {
 	private boolean list;
 	private boolean optional;
 	
-	private Class requiredReturnType;
+	private Class<?> requiredReturnType;
 	
 	/** Returns the default text.
 	 */
@@ -31,7 +31,7 @@ public class ChildSpecification {
 		this.list = list;
 	}
 	
-	public ChildSpecification(Class requiredReturnType) {
+	public ChildSpecification(Class<?> requiredReturnType) {
 		this.requiredReturnType = requiredReturnType;
 	}
 	
@@ -59,11 +59,11 @@ public class ChildSpecification {
 		this.optional = optional;
 	}
 
-	public Class getRequiredReturnType() {
+	public Class<?> getRequiredReturnType() {
 		return requiredReturnType;
 	}
 	
-	public void setRequiredReturnType(Class requiredReturnType) {
+	public void setRequiredReturnType(Class<?> requiredReturnType) {
 		this.requiredReturnType = requiredReturnType;
 	}
 

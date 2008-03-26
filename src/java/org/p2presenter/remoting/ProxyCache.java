@@ -35,7 +35,7 @@ public class ProxyCache {
 			ObjectDescriptor objectDescriptor = objectDescriptors.get(toProxy);
 		
 			if (objectDescriptor == null) {
-				Class[] interfaces = toProxy.getClass().getInterfaces();
+				Class<?>[] interfaces = toProxy.getClass().getInterfaces();
 				objectDescriptor = new ObjectDescriptor(interfaces, proxyNumber++);
 				objectDescriptors.put(toProxy, objectDescriptor);
 				localObjects.put(objectDescriptor.getId(), toProxy);
@@ -53,7 +53,7 @@ public class ProxyCache {
 				proxy = remoteProxyReference.get();
 			}
 			if (proxy == null) {
-				Class[] interfaceClasses = new Class[objectDescriptor.getProxiedClasses().length + 1];
+				Class<?>[] interfaceClasses = new Class[objectDescriptor.getProxiedClasses().length + 1];
 				System.arraycopy(objectDescriptor.getProxiedClasses(), 0, interfaceClasses, 1, objectDescriptor.getProxiedClasses().length);
 				interfaceClasses[0] = RemoteInvocationProxy.class;
 				proxy = (RemoteInvocationProxy) Proxy.newProxyInstance(interfaceClasses[0].getClassLoader(), interfaceClasses, new RemoteObjectInvocationHandler(connection, uri, bidirectional, new RemoteObjectReference(objectDescriptor)));
@@ -68,7 +68,7 @@ public class ProxyCache {
 		return (ProxyCache) connection.getAttribute(PROXY_CACHE_ATTRIBUTE_PREFIX  + uri, new CreateProxyCacheCallable(uri));
 	}
 	
-	public static class CreateProxyCacheCallable implements Callable {
+	public static class CreateProxyCacheCallable implements Callable<Object> {
 		private String uri;
 		
 		public CreateProxyCacheCallable(String uri) {

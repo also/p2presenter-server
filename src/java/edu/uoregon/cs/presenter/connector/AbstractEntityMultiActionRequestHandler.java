@@ -22,7 +22,7 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 	private Class<T> entityClass;
 	private String idAttributeName;
 	private String actionAttributeName = "action";
-	private Class[] parameterTypes;
+	private Class<?>[] parameterTypes;
 	
 	private Dao dao;
 

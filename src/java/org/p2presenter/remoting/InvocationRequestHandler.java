@@ -127,7 +127,7 @@ public class InvocationRequestHandler implements RequestHandler {
 				}
 				
 				if (result != null) {
-					Class returnType = method.getReturnType();
+					Class<?> returnType = method.getReturnType();
 					// TODO probably shouldn't serialize enums
 					// TODO serialize wrapper types when method doesn't return primitive
 					if (returnType == String.class || returnType.isPrimitive() || Enum.class.isAssignableFrom(returnType)) {
