@@ -3,7 +3,7 @@
 package edu.uoregon.cs.p2presenter.interactivity.host;
 
 import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.ConnectionListener;
+import org.p2presenter.messaging.ConnectionLifecycleListener;
 import org.p2presenter.messaging.handler.RequestHandler;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
@@ -23,7 +23,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 		Object model = interactivityController.onConnect();
-		request.getConnection().addConnectionListener(new InteractivityConnectionListener(model));
+		request.getConnection().addConnectionLifecycleListener(new InteractivityConnectionListener(model));
 		
 		ProxyCache proxyCache = ProxyCache.getProxyCache(request.getConnection(), proxyCacheUri);
 		
@@ -40,7 +40,7 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 	/** Notifies the interactivity host when a participant disconnects.
 	 * @param <T> the model type
 	 */
-	private class InteractivityConnectionListener implements ConnectionListener {
+	private class InteractivityConnectionListener implements ConnectionLifecycleListener {
 		private Object model;
 		
 		private InteractivityConnectionListener(Object model) {
