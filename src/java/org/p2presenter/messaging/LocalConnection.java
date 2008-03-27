@@ -31,6 +31,9 @@ import org.p2presenter.messaging.message.OutgoingResponseMessage;
 import org.p2presenter.messaging.message.RequestMessage;
 
 
+/** A local (not proxied) connection.
+ *
+ */
 public class LocalConnection extends AbstractConnection implements Closeable, Runnable {
 	public static final String PROTOCOL = "P2PR";
 	public static final String VERSION = "0.1";
@@ -44,6 +47,7 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 
 	private DefaultRequestHandlerMapping requestHandlerMapping = new DefaultRequestHandlerMapping();
 	
+	/** Used to execute request and response handlers. */
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 	
 	private HashMap<String, ResponseHandlerFutureTask<?>> responseHandlers = new HashMap<String, ResponseHandlerFutureTask<?>>();
@@ -88,7 +92,7 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 					// TODO the connection was closed
 					throw new RuntimeException("Connection closed", ex);
 				}
-				onRecieve();
+				onRecieve(message);
 				
 				// a null message should indicate some kind of failure
 				if (message == null) {
@@ -161,7 +165,7 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 		outLock.lock();
 		try {
 			message.write(out);
-			onSend();
+			onSend(message);
 		}
 		finally {
 			outLock.unlock();
@@ -292,6 +296,10 @@ public class LocalConnection extends AbstractConnection implements Closeable, Ru
 		}
 	}
 	
+	/** Handles the specified request with the specified handler when run.
+	 * @author Ryan Berdeen
+	 *
+	 */
 	private class RequestHandlerRunnable implements Runnable {
 		private RequestHandler requestHandler;
 		private IncomingRequestMessage request;

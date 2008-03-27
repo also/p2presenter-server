@@ -11,6 +11,11 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.p2presenter.server.model.Person;
 
 
+/** Utility class to import the schema into the database.
+ * Creates an administrator user with username 'admin' and password 'admin'.
+ * @author Ryan Berdeen
+ *
+ */
 public class GenerateSchema {
 
 	/**

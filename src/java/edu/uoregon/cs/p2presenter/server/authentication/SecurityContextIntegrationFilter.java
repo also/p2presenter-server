@@ -4,10 +4,15 @@ package edu.uoregon.cs.p2presenter.server.authentication;
 
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.p2presenter.messaging.Connection;
 import org.p2presenter.messaging.handler.Filter;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 
-
+/** Synchronizes the security context of the {@link Connection} with the {@link SecurityContextHolder} for the scope of the request.
+ * <p>At the beginning of the request, the security context holder is given the security context from the connection. After the request has been handled, if the the security context has been replaced, the connection is updated.</p> 
+ * @author Ryan Berdeen
+ *
+ */
 public class SecurityContextIntegrationFilter implements Filter {
 	public static final String SECURITY_CONTEXT_ATTRIBUTE_NAME = SecurityContextIntegrationFilter.class.getName() + ".securityContext";
 	

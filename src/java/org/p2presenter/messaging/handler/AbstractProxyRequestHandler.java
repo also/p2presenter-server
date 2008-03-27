@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.ConnectionListener;
+import org.p2presenter.messaging.ConnectionLifecycleListener;
 import org.p2presenter.messaging.LocalConnection;
 import org.p2presenter.messaging.ProxiedConnection;
 import org.p2presenter.messaging.ResponseHandler;
@@ -64,12 +64,12 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 		}
 		
 		public LocalConnection call() throws Exception {
-			proxiedConnection.addConnectionListener(new ProxiedConnectionClosedListener(targetConnection, proxiedConnection));
+			proxiedConnection.addConnectionLifecycleListener(new ProxiedConnectionClosedListener(targetConnection, proxiedConnection));
 			return proxiedConnection;
 		}
 	}
 	
-	private static class ProxiedConnectionClosedListener implements ConnectionListener {
+	private static class ProxiedConnectionClosedListener implements ConnectionLifecycleListener {
 		private LocalConnection targetConnection;
 		private LocalConnection proxiedConnection;
 		

@@ -3,7 +3,7 @@
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.ConnectionListener;
+import org.p2presenter.messaging.ConnectionLifecycleListener;
 import org.p2presenter.messaging.handler.RequestHandler;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.OutgoingResponseMessage;
@@ -18,7 +18,7 @@ import edu.uoregon.cs.presenter.security.AuthorizationUtils;
  * @author Ryan Berdeen
  *
  */
-public class InteractivityHostRequestHandler implements RequestHandler, ConnectionListener {
+public class InteractivityHostRequestHandler implements RequestHandler, ConnectionLifecycleListener {
 	private Dao dao;
 	private ActiveInteractivityController activeInteractivityController;
 	

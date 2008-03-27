@@ -14,8 +14,11 @@ import org.p2presenter.messaging.message.OutgoingResponseMessage;
 public interface Connection extends IdGenerator {
 	public String getConnectionId();
 
-	public void addConnectionListener(ConnectionListener connectionListener);
-
+	/** Adds a listener to be notified of connection lifecycle events.
+	 */
+	public void addConnectionLifecycleListener(ConnectionLifecycleListener connectionLifecycleListener);
+	// TODO needs removeConnectionLifecycleListener
+	
 	public void setAttribute(String key, Object value);
 
 	public Object getAttribute(String key);
@@ -25,8 +28,12 @@ public interface Connection extends IdGenerator {
 	 */
 	public Object getAttribute(String key, Callable<?> defaultValueCallable);
 
+	/** Returns the time the last message was received, in milliseconds.
+	 */
 	public long getLastMessageRecievedTime();
 
+	/** Returns the time the last message was sent, in milliseconds.
+	 */
 	public long getLastMessageSentTime();
 
 	/** Sends a request whose response will be handled by the caller.

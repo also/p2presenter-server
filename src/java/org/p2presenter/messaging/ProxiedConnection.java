@@ -23,6 +23,7 @@ public class ProxiedConnection extends AbstractConnection {
 	public ProxiedConnection(LocalConnection localConnection, String targetConnectionId) {
 		super(targetConnectionId);
 		this.localConnection = localConnection;
+		// TODO this mapping is never removed
 		localConnection.getRequestHandlerMapping().mapHandler("/connection/proxied/" + targetConnectionId + "/closed", new ProxiedConnectionClosedRequestHandler());
 	}
 	
@@ -37,13 +38,13 @@ public class ProxiedConnection extends AbstractConnection {
 
 	public <V> Future<V> sendRequest(OutgoingRequestMessage request, ResponseHandler<V> responseHandler) throws IOException {
 		setHeaders(request);
-		onSend();
+		onSend(request);
 		return localConnection.sendRequest(request, responseHandler);
 	}
 
 	public void sendResponse(OutgoingResponseMessage response) throws IOException {
 		setHeaders(response);
-		onSend();
+		onSend(response);
 		localConnection.sendResponse(response);
 	}
 	
@@ -52,14 +53,19 @@ public class ProxiedConnection extends AbstractConnection {
 	}
 	
 	public static ProxiedConnection getProxiedConnection(LocalConnection localConnection, String proxiedConnectionId) {
-		return (ProxiedConnection) localConnection.getAttribute(PROXIED_CONNECTION_ATTRIBUTE_NAME_PREFIX + proxiedConnectionId, new NewProxiedConnectionCallable(localConnection, proxiedConnectionId));
+		return (ProxiedConnection) localConnection.getAttribute(PROXIED_CONNECTION_ATTRIBUTE_NAME_PREFIX + proxiedConnectionId, new CreateProxiedConnectionCallable(localConnection, proxiedConnectionId));
 	}
 	
-	private static class NewProxiedConnectionCallable implements Callable<ProxiedConnection> {
+	/** Creates a new {@link ProxiedConnection} with the specified local {@link Connection} and target connection id.
+	 * 
+	 * @author Ryan Berdeen
+	 *
+	 */
+	private static class CreateProxiedConnectionCallable implements Callable<ProxiedConnection> {
 		private LocalConnection localConnection;
 		private String targetConnectionId;
 		
-		public NewProxiedConnectionCallable(LocalConnection localConnection, String targetConnectionId) {
+		public CreateProxiedConnectionCallable(LocalConnection localConnection, String targetConnectionId) {
 			this.localConnection = localConnection;
 			this.targetConnectionId = targetConnectionId;
 		}
@@ -69,6 +75,10 @@ public class ProxiedConnection extends AbstractConnection {
 		}
 	}
 	
+	/**
+	 * @author Ryan Berdeen
+	 *
+	 */
 	private class ProxiedConnectionClosedRequestHandler implements RequestHandler {
 		public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 			onClose();

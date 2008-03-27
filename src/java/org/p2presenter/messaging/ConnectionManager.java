@@ -9,7 +9,7 @@ import java.util.HashMap;
 import org.p2presenter.messaging.handler.DefaultRequestHandlerMapping;
 
 
-public class ConnectionManager implements ConnectionListener, IdGenerator {
+public class ConnectionManager implements ConnectionLifecycleListener, IdGenerator {
 	private HashMap<String, LocalConnection> connections = new HashMap<String, LocalConnection>();
 	private IdGenerator idSource = DefaultIdGenerator.newUniqueIdGenerator("GLOBAL");
 	
@@ -30,7 +30,7 @@ public class ConnectionManager implements ConnectionListener, IdGenerator {
 		synchronized (connections) {
 			connection = new LocalConnection(socket, idSource.generateId());
 		}
-		connection.addConnectionListener(this);
+		connection.addConnectionLifecycleListener(this);
 		connection.getRequestHandlerMapping().setParent(requestHandlerMapping);
 		connections.put(connection.getConnectionId(), connection);
 		connectionCreatedInternal(connection);

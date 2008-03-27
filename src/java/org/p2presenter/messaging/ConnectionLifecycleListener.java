@@ -2,6 +2,6 @@
 
 package org.p2presenter.messaging;
 
-public interface ConnectionListener {
+public interface ConnectionLifecycleListener {
 	public void connectionClosed(Connection connection);
 }

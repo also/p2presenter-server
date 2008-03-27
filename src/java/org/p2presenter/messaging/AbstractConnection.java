@@ -9,7 +9,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.p2presenter.messaging.message.IncomingMessage;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
+import org.p2presenter.messaging.message.OutgoingMessage;
 import org.p2presenter.messaging.message.OutgoingRequestMessage;
 
 
@@ -21,7 +23,7 @@ public abstract class AbstractConnection implements Connection {
 
 	private HashMap<String, Object> attributes = new HashMap<String, Object>();
 	
-	private ArrayList<ConnectionListener> connectionListeners = new ArrayList<ConnectionListener>();
+	private ArrayList<ConnectionLifecycleListener> connectionLifecycleListeners = new ArrayList<ConnectionLifecycleListener>();
 	
 	private IdGenerator idSource = new DefaultIdGenerator();
 	
@@ -41,11 +43,11 @@ public abstract class AbstractConnection implements Connection {
 		return connectionId;
 	}
 	
-	protected void onSend() {
+	protected void onSend(OutgoingMessage message) {
 		lastMessageSentTime = System.currentTimeMillis();
 	}
 	
-	protected void onRecieve() {
+	protected void onRecieve(IncomingMessage message) {
 		lastMessageRecievedTime = System.currentTimeMillis();
 	}
 	
@@ -57,8 +59,8 @@ public abstract class AbstractConnection implements Connection {
 		return lastMessageSentTime;
 	}
 	
-	public void addConnectionListener(ConnectionListener connectionListener) {
-		this.connectionListeners.add(connectionListener);
+	public void addConnectionLifecycleListener(ConnectionLifecycleListener connectionLifecycleListener) {
+		this.connectionLifecycleListeners.add(connectionLifecycleListener);
 	}
 	
 	public void setAttribute(String key, Object value) {
@@ -121,8 +123,8 @@ public abstract class AbstractConnection implements Connection {
 	}
 	
 	public void onClose() {
-		for (ConnectionListener connectionListener : connectionListeners) {
-			connectionListener.connectionClosed(this);
+		for (ConnectionLifecycleListener connectionLifecycleListener : connectionLifecycleListeners) {
+			connectionLifecycleListener.connectionClosed(this);
 		}
 	}
 
