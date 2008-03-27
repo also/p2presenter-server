@@ -19,7 +19,7 @@ public class IncomingRequestMessage extends AbstractRequestMessage implements In
 	}
 	
 	public final Connection getConnection() {
-		String proxiedConnectionId = getHeader("Proxied-Connection-Id");
+		String proxiedConnectionId = getHeader(ProxiedConnection.PROXIED_CONNECTION_ID_HEADER_NAME);
 		if (proxiedConnectionId != null) {
 			return ProxiedConnection.getProxiedConnection(localConnection, proxiedConnectionId);
 		}

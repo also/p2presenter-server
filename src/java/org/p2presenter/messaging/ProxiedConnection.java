@@ -14,6 +14,9 @@ import org.p2presenter.messaging.message.OutgoingResponseMessage;
 
 
 public class ProxiedConnection extends AbstractConnection {
+	public static final String TARGET_CONNECTION_ID_HEADER_NAME = "Target-Connection-Id";
+	public static final String PROXIED_CONNECTION_ID_HEADER_NAME = "Proxied-Connection-Id";
+	
 	private static final String PROXIED_CONNECTION_ATTRIBUTE_NAME_PREFIX = ProxiedConnection.class.getName() + ".proxied_connection.";
 	private LocalConnection localConnection;
 	
@@ -45,7 +48,7 @@ public class ProxiedConnection extends AbstractConnection {
 	}
 	
 	private void setHeaders(OutgoingMessage message) {
-		message.setHeader("Target-Connection-Id", getConnectionId().toString());
+		message.setHeader(TARGET_CONNECTION_ID_HEADER_NAME, getConnectionId().toString());
 	}
 	
 	public static ProxiedConnection getProxiedConnection(LocalConnection localConnection, String proxiedConnectionId) {

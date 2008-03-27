@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import org.p2presenter.messaging.Connection;
 import org.p2presenter.messaging.ConnectionListener;
 import org.p2presenter.messaging.LocalConnection;
+import org.p2presenter.messaging.ProxiedConnection;
 import org.p2presenter.messaging.ResponseHandler;
 import org.p2presenter.messaging.message.IncomingRequestMessage;
 import org.p2presenter.messaging.message.IncomingResponseMessage;
@@ -20,6 +21,7 @@ import org.p2presenter.messaging.message.OutgoingResponseMessage;
  *
  */
 public abstract class AbstractProxyRequestHandler implements RequestHandler {
+
 	private static final String PROXIED_CONNECTIONS_ATTRIBUTE_NAME_PREFIX = AbstractProxyRequestHandler.class.getName() + ".proxiedConnections."; 
 	
 	protected abstract LocalConnection getTargetConnection(IncomingRequestMessage request);
@@ -27,7 +29,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage incomingRequest) throws IOException {
 		LocalConnection targetConnection;
 		
-		String targetConnectionId = incomingRequest.getHeader("Target-Connection-Id");
+		String targetConnectionId = incomingRequest.getHeader(ProxiedConnection.TARGET_CONNECTION_ID_HEADER_NAME);
 		String proxiedConnectionId = null;
 		if (targetConnectionId != null) {
 			targetConnection = (LocalConnection) incomingRequest.getLocalConnection().getAttribute(PROXIED_CONNECTIONS_ATTRIBUTE_NAME_PREFIX + targetConnectionId);
@@ -47,7 +49,7 @@ public abstract class AbstractProxyRequestHandler implements RequestHandler {
 	public static void sendProxiedRequest(LocalConnection target, IncomingRequestMessage incomingRequest, String proxiedConnectionId) throws IOException {
 		OutgoingRequestMessage outgoingRequest = new OutgoingRequestMessage(target, incomingRequest);
 		if (proxiedConnectionId != null) {
-			outgoingRequest.setHeader("Proxied-Connection-Id", proxiedConnectionId);
+			outgoingRequest.setHeader(ProxiedConnection.PROXIED_CONNECTION_ID_HEADER_NAME, proxiedConnectionId);
 		}
 		target.sendRequest(outgoingRequest, new ProxyResponseHandler(incomingRequest));
 	}
