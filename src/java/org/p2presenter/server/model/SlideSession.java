@@ -20,9 +20,7 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table
-public class SlideSession {
-	private Integer id;
-	
+public class SlideSession extends AbstractSimpleEntity {
 	private LectureSession lectureSession;
 	
 	private Slide slide;
@@ -32,16 +30,6 @@ public class SlideSession {
 	private Set<SubmissionSession<?>> submissionSessions = new LinkedHashSet<SubmissionSession<?>>();
 	
 	private Set<Submission<?>> submissions = new LinkedHashSet<Submission<?>>();
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
 	public int getInkCount() {
 		return inkCount;

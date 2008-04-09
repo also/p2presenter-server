@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="pageTitle">${activeLecture.lecture}</c:set>
-<c:set var="subtitle"><fmt:formatDate value="${activeLecture.lectureSession.timestamp}"/></c:set>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="${activeLecture.lecture}"/>
+<v:set name="subtitle"><fmt:formatDate value="${activeLecture.lectureSession.timestamp}"/></v:set>
 <p>&larr; <a href="<c:url value="/lectures/${activeLecture.lecture.id}"/>">Back to lecture</a></p>
 <div style="position: relative" id="slideDisplayContainer"></div>
 <script type="text/javascript">
@@ -26,6 +26,3 @@ updateSlide = function() {
 updateSlide();
 
 </script>
-
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

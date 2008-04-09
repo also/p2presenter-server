@@ -3,14 +3,11 @@
 package org.p2presenter.server.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 import org.hibernate.validator.NotNull;
 
 @Entity
-public class InteractivityDefinition {
-	private Integer id;
+public class InteractivityDefinition extends AbstractSimpleEntity {
 	private String hostControllerClassName;
 	private String participantViewClassName;
 	private String participantModelInterfaceClassName;
@@ -21,16 +18,6 @@ public class InteractivityDefinition {
 		this.hostControllerClassName = hostControllerClassName;
 		this.participantViewClassName = participantViewClassName;
 		this.participantModelInterfaceClassName = participantModelInterfaceClassName;
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	@NotNull

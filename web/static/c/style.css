@@ -5,7 +5,7 @@
 body {
 	background-color: #eee;
 	
-	font-family: "trebuchet ms";
+	font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana,sans-serif;
     /* font size for internet explorer */
     font-size: x-small;
     
@@ -14,17 +14,21 @@ body {
     voice-family: inherit;
     font-size: small;
     
-    margin-top: 0;
-    padding-top: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #page {
-	width: 800px;
-	margin: 0 auto;
+	/*width: 800px;
+	margin: 0 auto;*/
 }
 
 #header {
-	
+	position: relative;
+	border-top: 2.3em solid #464646;
+	border-bottom: 1px solid #C6D9E9;
+	background-color: #E4F2FD;
+	height: 8em;
 }
 
 #siteTitle {
@@ -32,12 +36,13 @@ body {
 	margin-right: 30px;
 	float: left;
 	font-size: 2.5em;
-	font-weight: bold;
+	font-weight: normal;
+	font-family: Georgia,"Times New Roman",Times,serif
 }
 
 #siteTitle a {
 	text-decoration: none;
-	color: #074c7d;
+	color: #555555;
 }
 
 #siteTitle sup {
@@ -45,15 +50,41 @@ body {
 	color: #777;	
 }
 
-#userNav {
-	float: right;
-	background-color: #074c7d;
+#dashboardNav, #userNav {
+	position: absolute;
+	top: -2em;
 	padding: 4px;
 	font-size: .8em;
+	margin: 0 .5em;
 }
 
-#userNav, #userNav a {
-	color: white;
+#dashboardNav {
+	left: 0;
+}
+
+#dashboardNav a {
+	text-decoration: none;
+	color: #999;
+	padding: .5em;
+}
+
+#dashboardNav a.current {
+	background-color: #E4F2FD;
+	-webkit-border-top-left-radius: .5em;
+	-moz-border-radius-topleft: .5em;
+	-moz-border-radius-topright: .5em;
+	-webkit-border-top-right-radius: .5em;
+	color: #555555;
+	
+}
+
+#userNav {
+	right: 0;
+	color: #999999;
+}
+
+#userNav a {
+	color: #CCCCCC;
 }
 
 #nav, #secondaryNav {
@@ -64,21 +95,27 @@ body {
 }
 
 #nav {
-	float: left;
+	margin-left: 1em;
+	font-size: 1.2em;
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 
 #secondaryNav {
-	float: right;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin-right: 1em;
 }
 
 #nav li, #secondaryNav li {
 	float: left;
 	padding: 3px;
-	background: #1C7553;
 }
 
 #nav li {
-	margin: 0 2px 0 0;
+	margin: 0 1em 0 0;
 }
 
 #secondaryNav li {
@@ -87,19 +124,14 @@ body {
 
 #nav li a, #secondaryNav li a {
 	text-decoration: none;
-	color: #fff;
+	color: #2583AD;
 }
 
 h1 {
-	border: 1px solid #CED9D4;
-	border-top: 4px solid #1C7553;
-	border-bottom: none;
+	border-bottom: 1px solid #DADADA;
 	margin-top: 1em;
 	margin-bottom: 0;
-	padding-left: .5em;
-	background-color: white;
-	clear: left;
-	color: #a21f36;
+	color: #666;
 }
 
 h1 .subtitle {
@@ -113,6 +145,7 @@ h1 .subtitle {
 	padding: .5em;
 	color: #fff;
 	font-weight: bold;
+	list-style-type: none;
 }
 
 #body {
@@ -124,6 +157,10 @@ h1 .subtitle {
 	background-color: white;
 	
 	color: #333;
+}
+
+#body a {
+	color: #2583ad;
 }
 
 #footer {
@@ -192,7 +229,7 @@ td, th {
 
 thead th {
 	text-align: left;
-	background-color: #074c7d;
+	background-color: #464646;
 	color: #fff;
 }
 
@@ -249,3 +286,20 @@ div.formContainer div.controlset label,
 div.formContainer div.controlset input { display: inline; float: none; }
 div.formContainer div.controlset div { margin-left: 170px; }
 div.formContainer div.buttonRow { margin-left: 180px; }
+
+.actions input, .actions a, .buttonRow input, .button {
+	background-color: #E5E5E5;
+	border: 1px solid #80B5D0;
+	color: #224466;
+	
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	padding: .2em .5em;
+	text-decoration: none;
+	font-size: 1em;
+	line-height: 1.5em;
+	margin: .2em;
+	display: inline-block;
+	
+	cursor: pointer;
+}

@@ -20,9 +20,7 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Table
-public class Slide {
-	private Integer id;
-	
+public class Slide extends AbstractSimpleEntity {
 	private int index;
 	
 	private Lecture lecture;
@@ -40,16 +38,6 @@ public class Slide {
 	
 	public Slide(int index) {
 		this.index = index;
-	}
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	@Column(name = "idx")

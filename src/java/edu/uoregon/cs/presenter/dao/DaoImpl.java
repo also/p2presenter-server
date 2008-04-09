@@ -6,21 +6,24 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import static org.hibernate.criterion.Order.*;
+import static org.hibernate.criterion.Projections.*;
+import static org.hibernate.criterion.Restrictions.*;
 import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Lecture;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-
 public class DaoImpl extends HibernateDaoSupport implements Dao {
-	private static final DetachedCriteria SUBJECTS_CRITERA = DetachedCriteria.forClass(Course.class).setProjection(Projections.distinct(Projections.property("subject"))).addOrder(Order.asc("subject"));
+	private static final DetachedCriteria SUBJECTS_CRITERA = DetachedCriteria.forClass(Course.class)
+		.setProjection(
+			distinct(property("subject")))
+		.addOrder(asc("subject"));
 	
 	public DaoImpl() {}
 
@@ -51,7 +54,9 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 		
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createCriteria(Course.class).add(Restrictions.eq("subject", subject)).addOrder(Order.asc("number")).list();
+				return session.createCriteria(Course.class)
+					.add(eq("subject", subject))
+					.addOrder(asc("number")).list();
 			}
 		
 		});
@@ -71,6 +76,18 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 						.setEntity("course", course)
 						.setMaxResults(1)
 						.uniqueResult();
+			}
+		});
+	}
+	
+	public Course getCourseByCrn(final Integer crn) {
+		return (Course) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Criteria criteria = session.createCriteria(Course.class);
+				criteria
+					.add(eq("crn", crn));
+				
+				return criteria.uniqueResult();
 			}
 		});
 	}

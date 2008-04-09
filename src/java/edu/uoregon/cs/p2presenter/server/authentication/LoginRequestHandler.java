@@ -42,13 +42,18 @@ public class LoginRequestHandler implements RequestHandler {
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 		String[] usernamePassword = request.getContentAsString().split("(\r|\n|\r\n)");
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(usernamePassword[0], usernamePassword[1]);
-		Authentication authentication = authenticationManager.authenticate(token);
 		
-		SecurityContextImpl securityContext = new SecurityContextImpl();
-		securityContext.setAuthentication(authentication);
-		SecurityContextHolder.setContext(securityContext);
-		
-		return new OutgoingResponseMessage(request);
+		try {
+			Authentication authentication = authenticationManager.authenticate(token);
+			
+			SecurityContextImpl securityContext = new SecurityContextImpl();
+			securityContext.setAuthentication(authentication);
+			SecurityContextHolder.setContext(securityContext);
+			return new OutgoingResponseMessage(request);
+		}
+		catch (Exception ex) {
+			return new OutgoingResponseMessage(request, 401, ex.getMessage());
+		}
 	}
 
 }

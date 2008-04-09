@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<c:set var="pageTitle" value="Sign Up"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="Sign Up"/>
 <c:if test="${param.initial}"><p>Welcome to Presenter! Since this is your first time here, you'll need to enter your information below.</p></c:if>
 <div class="formContainer">
 
@@ -40,8 +40,7 @@
      <form:input path="lastName" cssErrorClass="error"/></div>
 
 </fieldset>
-<div class="buttonRow"><input type="submit" value="Sign Up"/> or <a href="<c:url value="/"/>">Cancel</a></div>
+<div class="buttonRow"><input type="submit" value="Sign Up"/> or <a href="<c:url value="/"/>" class="button">Cancel</a></div>
 </form:form>
 </div>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>
+

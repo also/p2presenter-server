@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.validator.NotNull;
 
 @Entity
-public class Whiteboard {
-	private Integer id;
+public class Whiteboard extends AbstractSimpleEntity {
 	private LectureSession lectureSession;
 	private int index;
 	
@@ -22,16 +21,6 @@ public class Whiteboard {
 	
 	public Whiteboard(int index) {
 		this.index = index;
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	@ManyToOne

@@ -40,4 +40,6 @@ public interface Dao {
 	 */
 	public List<Course> getCoursesInSubject(String subject);
 
+	public Course getCourseByCrn(Integer crn);
+
 }

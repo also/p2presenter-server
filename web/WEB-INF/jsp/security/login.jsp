@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageTitle" value="Log In"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="Log In"/>
 <form action="<c:url value="/enter/process"/>" method="post">
 <c:if test="${param.loginAttempted=='true'}">Could not log in</c:if>
 <table><tbody>
@@ -9,5 +9,3 @@
 </tbody></table>
 <p><input type="submit" value="Log In"/></p>
 </form>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

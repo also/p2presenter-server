@@ -2,8 +2,6 @@
 
 package org.p2presenter.server.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.NotNull;
@@ -12,22 +10,10 @@ import org.hibernate.validator.NotNull;
  * @author Ryan Berdeen
  *
  */
-public class InteractivitySession {
-	private Integer id;
-	
+public class InteractivitySession extends AbstractSimpleEntity  {
 	private InteractivityDefinition interactivityDefinition;
 	
 	private SlideSession slideSession;
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
 	@ManyToOne
 	@NotNull

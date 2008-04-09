@@ -2,46 +2,73 @@
 
 <!-- $Id$ -->
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:r="http://ry1.org/schema/routes"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://ry1.org/schema/routes http://ry1.org/schema/routes-1.0.xsd">
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
 	
-	<bean id="handlerMapping" class="org.ry1.springframework.web.servlet.handler.RequestMatcherHandlerMapping">
-		<property name="urlMap"><map>
-			<entry key="/" value="homeController"/>
-			<entry key="/welcome" value="newUserController"/>
-			<entry key="/enter" value="loginFormController"/>
-			<entry key="/profile" value="profileController"/>
-			<entry key="/subjects/" value="subjectListController"/>
-			<entry key="/subjects/*{subject}" value="subjectCourseListController"/>
-			<entry key="/course-list" value="subjectCourseListController"/>
-			<entry key="/courses" value="courseListController"/>
-			<entry key="/courses/*{courseId}" value="courseController"/>
-			<entry key="/courses/*{courseId}/enroll" value="enrollCourseController"/>
-			<entry key="/courses/*{courseId}/drop" value="dropCourseController"/>
-			<entry key="/courses/*{courseId}/lectures/*{lectureId}" value="lectureController"/>
-			<entry key="/courses/*{courseId}/lectures/*{lectureId}/watch" value="lectureSessionController"/>
-			<entry key="/watch/*{lectureSessionId}" value="lectureSessionController"/>
-			<entry key="/watch/*{lectureSessionId}/submit/freeform" value="acceptFreeformSubmissionController"/>
-			<entry key="/slides/*{slideId}.png" value="slideImageController"/>
-			<entry key="/ink/slides/*{slideSessionId}/*{inkIndex}.png" value="inkImageController"/>
-			<entry key="/ink/whiteboards/*{whiteboardId}/*{inkIndex}.png" value="whiteboardImageController"/>
-			<entry key="/instructor/courses/create" value="createCourseController"/>
-			<entry key="/instructor/courses/*{courseId}/" value="instructorCourseDetailsController"/>
-			<entry key="/instructor/courses/*{courseId}/roster" value="instructorCourseRosterController"/>
-			<entry key="/instructor/courses/*{courseId}/createLecture" value="lectureCreateController"/>
-			<entry key="/instructor/lectures/*{lectureId}/" value="instructorLectureDetailsController"/>
-			<entry key="/instructor/lectures/*{lectureId}/slides/create" value="newSlideController"/>
-			<entry key="/instructor/lectures/*{lectureId}/slides/*{slideId}" value="simpleEditSlideController"/>
-			<entry key="/instructor/lectures/*{lectureId}/start" value="lectureStartController"/>
-			<entry key="/instructor/lectures/*{lectureId}/control" value="lectureSessionAdminController"/>
-			<entry key="/instructor/lectureSessions/*{lectureSessionId}/control" value="lectureSessionAdminController"/>
-			<entry key="/admin/" value-ref="adminDashboardController"/>
-			<entry key="/admin/addRole" value-ref="simpleAddRoleController"/>
-			<entry key="/admin/removeRole" value-ref="simpleRemoveRoleController"/>
-			<entry key="/ubiquitous/lib/soap_server.php" value="upSoapServerController"/>
-			<entry key="/ubiquitous/lib/http_transfers.php" value="upHttpTransfersController"/>
-		</map></property>
+	<bean id="handlerMapping" class="org.ry1.springframework.web.routes.RouteHandlerMapping">
+		<property name="routes">
+			<list>
+				<r:connect
+					r:pattern="/"
+					r:name="home"
+					controller="home"/>
+				
+				<r:connect
+					r:pattern="/dashboard"
+					r:name="dashboard"
+					controller="dashboard"
+					action="index"/>
+				
+				<r:connect controller="newUser">/welcome</r:connect>
+				<r:connect controller="loginForm">/enter</r:connect>
+				<r:connect
+					r:pattern="/exit"
+					r:name="logOut"/>
+				
+				<r:connect r:name="editProfile" controller="profile">/profile</r:connect>
+				
+				<r:connect controller="studentSubject" action="index">/student/subjects/</r:connect>
+				<r:connect controller="studentSubject" action="show">/student/subjects/:subject</r:connect>
+				<r:connect controller="studentCourse" action="index">/student/courses/:action</r:connect>
+				<r:connect controller="studentCourse" action="show">/student/courses/:id/:action</r:connect>
+				
+				<r:connect controller="lecture">/lectures/:lectureId</r:connect>
+				<r:connect controller="lectureSession">/lectures/:lectureId/watch</r:connect>
+				<r:connect controller="lectureSession">/watch/:lectureSessionId</r:connect>
+				<r:connect controller="acceptFreeformSubmission">/watch/:lectureSessionId/submit/freeform</r:connect>
+				<r:connect controller="slideImage">/slides/:slideId.png</r:connect>
+				<r:connect controller="inkImage">/ink/slides/:slideSessionId/:inkIndex.png</r:connect>
+				<r:connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</r:connect>
+				<r:connect controller="createCourse">/instructor/courses/create</r:connect>
+				
+				<r:connect controller="instructorCourse" action="index">/instructor/courses/:action</r:connect>
+				<r:connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</r:connect>
+				
+				<r:connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</r:connect>
+				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</r:connect>
+				<r:connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</r:connect>
+				<r:connect controller="simpleEditSlide">/instructor/lectures/:lectureId/slides/:slideId</r:connect>
+				
+				<r:connect controller="instructorLectureSession" action="show">/instructor/lectureSession/:id/:action</r:connect>
+				
+				<r:connect controller="adminDashboard">/admin/</r:connect>
+				<r:connect controller="simpleAddRole">/admin/addRole</r:connect>
+				<r:connect controller="simpleRemoveRole">/admin/removeRole</r:connect>
+			</list>
+		</property>
+		<!-- <property name="urlMap"><map>
+			<entry key="/participate" value="homeController"/>
+			
+			<r:connect controller="upSoapServer">/ubiquitous/lib/soap_server.php</r:connect>
+			<r:connect controller="upHttpTransfers">/ubiquitous/lib/http_transfers.php</r:connect>
+		</map></property>-->
 		
 		<property name="interceptors"><list>
 			<bean class="org.ry1.springframework.web.context.request.FlashModelBindingInterceptor">
@@ -86,46 +113,23 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
-	<bean id="courseListController" class="edu.uoregon.cs.presenter.web.controller.PersonController" parent="abstractPresenterController">
+	<bean id="dashboardController" class="org.p2presenter.web.DashboardController" parent="abstractPresenterController">
 		<property name="activeLectureController" ref="activeLectureController"/>
-		<property name="viewName" value="person/default"/>
 	</bean>
 	
-	<bean id="subjectListController" class="edu.uoregon.cs.presenter.web.controller.SubjectListController" parent="abstractPresenterController">
-		<property name="viewName" value="course/subjectList"/>
+	<bean id="studentCourseController" class="org.p2presenter.web.student.StudentCourseController" parent="abstractPresenterController">
+		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
 	
-	<bean id="subjectCourseListController" class="edu.uoregon.cs.presenter.web.controller.SubjectCourseListController" parent="abstractPresenterController">
-		<property name="viewName" value="course/courseList"/>
+	<bean id="studentSubjectController" class="org.p2presenter.web.student.StudentSubjectController" parent="abstractPresenterController">
+	
 	</bean>
 	
-	<bean id="enrollCourseController" class="edu.uoregon.cs.presenter.web.controller.student.EnrollCourseController" parent="abstractPresenterController">
-		<property name="viewName" value="course/enroll"/>
+	<bean id="instructorCourseController" class="org.p2presenter.web.instructor.InstructorCourseController" parent="abstractPresenterController">
 	</bean>
 	
-	<bean id="dropCourseController" class="edu.uoregon.cs.presenter.web.controller.student.DropCourseController" parent="abstractPresenterController">
-		<property name="viewName" value="course/drop"/>
-	</bean>
-	
-	<bean id="courseController" class="edu.uoregon.cs.presenter.web.controller.CourseController" parent="abstractPresenterController">
-		<property name="viewName" value="course/details"/>
-	</bean>
-	
-	<bean id="instructorCourseDetailsController" class="edu.uoregon.cs.presenter.web.controller.CourseController" parent="abstractPresenterController">
-		<property name="viewName" value="instructor/course/details"/>
-	</bean>
-	
-	<bean id="instructorCourseRosterController" class="edu.uoregon.cs.presenter.web.controller.CourseController" parent="abstractPresenterController">
-		<property name="viewName" value="instructor/course/roster"/>
-	</bean>
-	
-	<bean id="instructorLectureDetailsController" class="edu.uoregon.cs.presenter.web.controller.LectureController" parent="abstractPresenterController">
+	<bean id="instructorLectureController" class="org.p2presenter.web.instructor.InstructorLectureController" parent="abstractPresenterController">
 		<property name="viewName" value="instructor/lecture/details"/>
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="lectureController" class="edu.uoregon.cs.presenter.web.controller.LectureController" parent="abstractPresenterController">
-		<property name="viewName" value="lecture/details"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
 	
@@ -153,13 +157,7 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
-	<bean id="lectureStartController" class="edu.uoregon.cs.presenter.web.controller.instructor.LectureStartController" parent="abstractPresenterController">
-		<property name="viewName" value="lecture/sessionAdmin"/>
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="lectureSessionAdminController" class="edu.uoregon.cs.presenter.web.controller.instructor.LectureSessionAdminController" parent="abstractPresenterController">
-		<property name="viewName" value="instructor/lecture/simpleControl"/>
+	<bean id="instructorLectureSessionController" class="org.p2presenter.web.instructor.InstructorLectureSessionController" parent="abstractPresenterController">
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
 	
@@ -215,9 +213,13 @@
 		<property name="servletName" value="default"/>
 	</bean>
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"/>
 		<property name="suffix" value=".jsp"/>
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	</bean> -->
+	
+	<bean id="viewResolver" class="org.ry1.springframework.web.view.SimpleViewResolver">
+		<property name="defaultTemplate" value="template/default"/>
 	</bean>
 </beans>

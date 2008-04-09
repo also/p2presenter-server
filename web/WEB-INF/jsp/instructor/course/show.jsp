@@ -1,9 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageTitle" value="${course.title}"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<v:set name="pageTitle" value="${course.title}"/>
 <div class="box floatRight">
 <h2>${course.subject} ${course.number}</h2>
-<p><a href="<c:url value="/instructor/courses/${course.id}/roster"/>">Course Roster</a></p>
+<p><r:a action="roster" id="${course.id}">Course Roster</r:a></p>
 </div>
 <h2>Lectures</h2>
 
@@ -18,5 +19,3 @@
 </ul>
 </c:if>
 <p><a href="<c:url value="/instructor/courses/${course.id}/createLecture"/>">Create</a> a new lecture.</p>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

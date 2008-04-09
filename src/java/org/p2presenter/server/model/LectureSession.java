@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -27,9 +25,7 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table
-public class LectureSession {
-	private Integer id;
-	
+public class LectureSession extends AbstractSimpleEntity {
 	private Lecture lecture;
 	
 	private Map<Slide, SlideSession> slideSessions = new HashMap<Slide, SlideSession>();
@@ -67,16 +63,6 @@ public class LectureSession {
 	
 	public void setWhiteboards(List<Whiteboard> whiteboards) {
 		this.whiteboards = whiteboards;
-	}
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	/** Returns the lecture given.

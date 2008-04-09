@@ -17,8 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.validator.NotNull;
 
 @Entity
-public class SubmissionSession<T extends Submission> {
-	private Integer id;
+public class SubmissionSession<T extends Submission> extends AbstractSimpleEntity {
 	private SubmissionDefinition<T> submissionDefinition;
 	private SlideSession slideSession;
 	private Set<T> submissions;
@@ -46,15 +45,6 @@ public class SubmissionSession<T extends Submission> {
 	}
 	public void setEnded(Date ended) {
 		this.ended = ended;
-	}
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	@ManyToOne

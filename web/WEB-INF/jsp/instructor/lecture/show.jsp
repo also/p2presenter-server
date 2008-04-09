@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="pageTitle" value="${lecture}"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="${lecture}"/>
 <p>&larr; <a href="<c:url value="/instructor/courses/${course.id}"/>">Back to course</a></p>
-<c:if test="${!empty activeLecture}"><p>This lecture is active. <a href="<c:url value="/instructor/control/${activeLecture.lectureSessionId}"/>">Control</a> the active lecture.</p></c:if>
+<c:if test="${!empty activeLecture}"><p>This lecture is active. <r:a controller="instructorLectureSession" id="${activeLecture.lectureSessionId}">Control</r:a> the active lecture.</p></c:if>
 
-<c:if test="${empty activeLecture}"><p><a href="start">Begin</a> presenting this lecture.</p></c:if>
+<c:if test="${empty activeLecture}"><p><r:a action="start" id="${lecture.id}">Begin</r:a> presenting this lecture.</p></c:if>
 
 <c:if test="${!empty lecture.lectureSessions}">
 <h2>Sessions</h2>
@@ -34,5 +35,3 @@
 </c:forEach>
 </c:if>
 </c:if>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

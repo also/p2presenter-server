@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var="pageTitle" value="Edit Slide"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="Edit Slide"/>
 <form:form>
 <img src="<c:url value="/slides/${command.id}.png"/>" width="200" style="float: right"/>
 <table>
@@ -14,5 +14,3 @@
 </table>
 <p><input type="submit" value="Save"/> or <a href="<c:url value="/courses/${course.id}/"/>">Cancel</a></p>
 </form:form>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

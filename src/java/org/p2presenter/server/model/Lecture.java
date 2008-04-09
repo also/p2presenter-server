@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -25,8 +23,7 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table
-public class Lecture {
-	private Integer id;
+public class Lecture extends AbstractSimpleEntity {
 	private Person creator;
 	private String title;
 
@@ -34,16 +31,6 @@ public class Lecture {
 	private List<Slide> slides = new ArrayList<Slide>();
 	
 	private Set<LectureSession> lectureSessions;
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
 	@ManyToOne
 	public Person getCreator() {

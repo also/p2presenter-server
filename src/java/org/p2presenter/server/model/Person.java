@@ -22,7 +22,7 @@ import org.hibernate.validator.Length;
  */
 @Entity
 @Table
-public class Person {
+public class Person implements org.p2presenter.server.model.Entity {
 	private String username;
 	private String password;
 	private String firstName;

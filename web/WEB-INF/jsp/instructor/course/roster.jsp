@@ -1,13 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageTitle" value="Roster"/>
-<c:set var="subtitle" value="${course.title}"/>
-<c:set var="body">
-<p>&larr; <a href="<c:url value="/instructor/courses/${course.id}/"/>">Back to course</a></p>
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<v:set name="pageTitle" value="Roster"/>
+<v:set name="subtitle" value="${course.title}"/>
+<p>&larr; <r:a action="show" id="${course.id}">Back to course</r:a></p>
 <table>
 <thead><tr><th scope="col">Last Name</th><th scope="col">First Name</th></tr></thead>
 <tbody>
 <c:forEach items="${course.students}" var="student"><tr><td>${student.lastName}</td><td>${student.firstName}</td></tr></c:forEach>
 </tbody>
 </table>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

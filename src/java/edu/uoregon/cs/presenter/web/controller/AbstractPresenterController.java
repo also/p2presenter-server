@@ -13,15 +13,22 @@ import org.p2presenter.server.model.Person;
 import org.ry1.springframework.web.context.request.FlashMap;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver;
 
 import edu.uoregon.cs.presenter.dao.Dao;
 
-public abstract class AbstractPresenterController extends AbstractController {
+public abstract class AbstractPresenterController extends MultiActionController {
 	protected Log logger = LogFactory.getLog(getClass());
 	private Dao dao;
 	private String viewName;
 	private FlashMap flashMap;
+	
+	private static final ParameterMethodNameResolver METHOD_NAME_RESOLVER = new ParameterMethodNameResolver();
+	
+	public AbstractPresenterController() {
+		setMethodNameResolver(METHOD_NAME_RESOLVER);
+	}
 	
 	public void setDao(Dao dao) {
 		this.dao = dao;

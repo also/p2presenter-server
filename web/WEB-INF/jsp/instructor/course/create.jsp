@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var="pageTitle" value="Create a Course"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="Create a Course"/>
 <div class="formContainer">
 <form:form>
 <fieldset>
@@ -21,5 +21,3 @@
 <div class="buttonRow"><input type="submit" value="Create"/> or <a href="<c:url value="/courses"/>">Cancel</a></div>
 </form:form>
 </div>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>

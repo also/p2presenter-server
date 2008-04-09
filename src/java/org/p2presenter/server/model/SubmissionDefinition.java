@@ -4,16 +4,13 @@ package org.p2presenter.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class SubmissionDefinition<T extends Submission> {
-	private Integer id;
+public abstract class SubmissionDefinition<T extends Submission> extends AbstractSimpleEntity {
 	private Slide slide;
 	private int index;
 	private String title;
@@ -24,16 +21,6 @@ public abstract class SubmissionDefinition<T extends Submission> {
 		this.slide = slide;
 		this.index = slide.getSubmissionDefinitions().size();
 		slide.getSubmissionDefinitions().add(this);
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	@ManyToOne

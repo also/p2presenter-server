@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -26,8 +24,7 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table
-public class Course {
-	private Integer id;
+public class Course extends AbstractSimpleEntity {
 	
 	private Integer crn;
 	
@@ -39,16 +36,6 @@ public class Course {
 	private Set<Person> students;
 	
 	private Set<Lecture> lectures = new LinkedHashSet<Lecture>();
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	
 	public Integer getCrn() {
 		return crn;

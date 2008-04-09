@@ -17,8 +17,7 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Submission<T extends SubmissionDefinition> {
-	private Integer id;
+public abstract class Submission<T extends SubmissionDefinition> extends AbstractSimpleEntity {
 	private SubmissionSession<?> submissionSession;
 	private SlideSession slideSession;
 	private Person student;
@@ -26,16 +25,6 @@ public abstract class Submission<T extends SubmissionDefinition> {
 	
 	public Submission() {
 		timestamp = new Date();
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	/** Returns the student that submitted 

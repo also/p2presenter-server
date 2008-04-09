@@ -28,7 +28,7 @@ xsi:schemaLocation="
 	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationFailureUrl" value="/enter?loginAttempted=true"/>
-		<property name="defaultTargetUrl" value="/courses"/>
+		<property name="defaultTargetUrl" value="/dashboard"/>
 		<property name="filterProcessesUrl" value="/enter/process"/>
 	</bean>
 	

@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var="pageTitle" value="Simple Admin Dashboard"/>
-<c:set var="body">
+<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<v:set name="pageTitle" value="Simple Admin Dashboard"/>
 <c:set var="roles"><tr><th scope="row"><label for="role">Role: </label></th>
     <td><select name="role"><option value="student">student</option><option value="instructor">instructor</option><option value="admin">admin</option></select></td></tr></c:set>
 <form action="<c:url value="/admin/addRole"/>">
@@ -29,5 +29,4 @@ ${roles}
 <p><input type="submit" value="Remove"/></p>
 </div>
 </form>
-</c:set>
-<%@ include file="/WEB-INF/jsp/template/default.jsp" %>
+

@@ -1,35 +1,40 @@
-/* $Id$ */
-
-package edu.uoregon.cs.presenter.web.controller.instructor;
+package org.p2presenter.web.instructor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.p2presenter.server.model.LectureSession;
+import org.p2presenter.web.common.AbstractEntityController;
+import org.p2presenter.web.common.EntityController;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 
-public class LectureSessionAdminController extends AbstractPresenterController {
+@EntityController(entityClass = LectureSession.class)
+public class InstructorLectureSessionController extends AbstractEntityController {
 	private ActiveLectureController activeLectureController;
 	
 	public void setActiveLectureController(ActiveLectureController activeLectureController) {
 		this.activeLectureController = activeLectureController;
 	}
 	
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return new ModelAndView("instructor/lectureSession/show", "lectureSession", getEntity(request));
+	}
+	
+	public ModelAndView control(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO this was copied verbatim from LectureSessionController
 		Integer courseId = ServletRequestUtils.getIntParameter(request, "courseId");
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
+		
 		ActiveLecture activeLecture;
 		if (courseId != null && lectureId != null) {
 			activeLecture = activeLectureController.getActiveLecture(lectureId);
 		}
 		else {
-			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "lectureSessionId");
+			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "id");
 			activeLecture = activeLectureController.getActiveLectureForSessionId(lectureSessionId);
 		}
 		
@@ -39,7 +44,7 @@ public class LectureSessionAdminController extends AbstractPresenterController {
 			activeLecture.setCurrentSlideIndex(newCurrentSlideIndex);
 		}
 		
-		return new ModelAndView(getViewName(), "activeLecture", activeLecture);
+		return new ModelAndView("instructor/lectureSession/control", "activeLecture", activeLecture);
 	}
 
 }
