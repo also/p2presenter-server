@@ -22,7 +22,7 @@ ${view.head}
 		${person}: 
 		<r:a r:name="editProfile">Edit Profile</r:a>
 		<authz:authorize ifAllGranted="ROLE_ADMIN">
-			&bull; <a href="<c:url value="/admin"/>"><strong>ADMIN</strong></a>
+			&bull; <r:a controller="adminDashboard"><strong>ADMIN</strong></r:a>
 		</authz:authorize> &bull;
 		<r:a r:name="logOut">Log Out</r:a>
 	</div>
