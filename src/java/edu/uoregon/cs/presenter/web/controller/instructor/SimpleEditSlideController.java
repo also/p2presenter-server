@@ -14,7 +14,7 @@ import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormContro
 public class SimpleEditSlideController extends AbstractPresenterSimpleFormController {
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		Slide slide = getDao().getEntity(Slide.class, ServletRequestUtils.getRequiredIntParameter(request, "slideId"));
+		Slide slide = getDao().getEntity(Slide.class, ServletRequestUtils.getRequiredIntParameter(request, "id"));
 		if (slide.getInteractivityDefinition() == null) {
 			slide.setInteractivityDefinition(new InteractivityDefinition());
 		}

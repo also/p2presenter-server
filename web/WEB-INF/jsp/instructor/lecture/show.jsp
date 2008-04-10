@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
 <%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+
 <v:set name="pageTitle" value="${lecture}"/>
-<p>&larr; <a href="<c:url value="/instructor/courses/${course.id}"/>">Back to course</a></p>
+
+<p>&larr; <r:a controller="instructorCourse" id="${lecture.course.id}">Back to course</r:a></p>
 <c:if test="${!empty activeLecture}"><p>This lecture is active. <r:a controller="instructorLectureSession" id="${activeLecture.lectureSessionId}">Control</r:a> the active lecture.</p></c:if>
 
 <c:if test="${empty activeLecture}"><p><r:a action="start" id="${lecture.id}">Begin</r:a> presenting this lecture.</p></c:if>
@@ -31,7 +33,7 @@
 </c:if>
 <c:if test="${param.showSlides}">
 <c:forEach items="${lecture.slides}" var="slide">
-<div class="slide"><c:url value="/slides/${slide.id}.png" var="slideUrl"/><a href="<c:url value="/instructor/courses/${course.id}/lectures/${lecture.id}/slides/${slide.id}"/>"><img src="${slideUrl}" alt="Slide" width="200"/></a></div>
+<div class="slide"><c:url value="/slides/${slide.id}.png" var="slideUrl"/><r:a controller="simpleEditSlide" id="${slide.id}"><img src="${slideUrl}" alt="Slide" width="200"/></r:a></div>
 </c:forEach>
 </c:if>
 </c:if>

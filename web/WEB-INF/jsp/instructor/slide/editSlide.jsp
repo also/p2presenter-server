@@ -1,7 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+
 <v:set name="pageTitle" value="Edit Slide"/>
+
 <form:form>
 <img src="<c:url value="/slides/${command.id}.png"/>" width="200" style="float: right"/>
 <table>
@@ -12,5 +15,5 @@
 <tr><th scope="col"><form:label path="interactivityDefinition.participantModelInterfaceClassName">Student Model Interface Name: </form:label></th><td><form:input path="interactivityDefinition.participantModelInterfaceClassName"/></td></tr>
 </tbody>
 </table>
-<p><input type="submit" value="Save"/> or <a href="<c:url value="/courses/${course.id}/"/>">Cancel</a></p>
+<p class="actions"><input type="submit" value="Save"/> or <r:a controller="instructorLecture" id="${command.lecture.id}">Cancel</r:a></p>
 </form:form>

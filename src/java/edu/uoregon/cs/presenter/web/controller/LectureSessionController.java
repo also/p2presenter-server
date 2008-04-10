@@ -13,6 +13,7 @@ import org.p2presenter.server.model.Lecture;
 import org.p2presenter.server.model.SlideSession;
 import org.p2presenter.server.model.Whiteboard;
 import org.ry1.json.JsonObject;
+import org.ry1.springframework.web.routes.RouteRedirectView;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,16 +30,14 @@ public class LectureSessionController extends AbstractPresenterController {
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Integer courseId = ServletRequestUtils.getIntParameter(request, "courseId");
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
 		ActiveLecture activeLecture;
-		if (courseId != null && lectureId != null) {
-			Course course = getDao().loadEntity(Course.class, courseId);
+		if (lectureId != null) {
 			Lecture lecture = getDao().loadEntity(Lecture.class, lectureId);
 			activeLecture = activeLectureController.getActiveLecture(lectureId);
 			if (activeLecture == null) {
-				flashMessage("lecture.session.inactive", new Object[] {lecture, course}, "lecture {0} is not active in course {1}");
-				return new ModelAndView("redirect:/courses/" + courseId + "/lectures/" + lectureId + '/');
+				flashMessage("lecture.session.inactive", new Object[] {lecture}, "lecture {0} is not active in course");
+				return new ModelAndView(new RouteRedirectView("controller", "studentLecture", "id", lecture.getId()));
 			}
 		}
 		else {

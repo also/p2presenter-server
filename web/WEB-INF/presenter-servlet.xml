@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- $Id$ -->
 
@@ -48,13 +48,13 @@
 				<r:connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</r:connect>
 				<r:connect controller="createCourse">/instructor/courses/create</r:connect>
 				
+				<r:connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</r:connect>
 				<r:connect controller="instructorCourse" action="index">/instructor/courses/:action</r:connect>
 				<r:connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</r:connect>
 				
-				<r:connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</r:connect>
 				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</r:connect>
 				<r:connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</r:connect>
-				<r:connect controller="simpleEditSlide">/instructor/lectures/:lectureId/slides/:slideId</r:connect>
+				<r:connect controller="simpleEditSlide">/instructor/slides/:id/edit</r:connect>
 				
 				<r:connect controller="instructorLectureSession" action="show">/instructor/lectureSession/:id/:action</r:connect>
 				
@@ -80,6 +80,11 @@
 		</list></property>
 	</bean>
 	
+	<import resource="classpath:spring/controllers/shared.xml"/>
+	<import resource="classpath:spring/controllers/student.xml"/>
+	<import resource="classpath:spring/controllers/instructor.xml"/>
+	<import resource="classpath:spring/controllers/admin.xml"/>
+	
 	<!-- the static controller is mapped without the interceptors -->
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="urlMap"><map>
@@ -92,105 +97,6 @@
 	<bean id="abstractPresenterController" abstract="true">
 		<property name="dao" ref="dao"/>
 		<property name="flashMap" ref="flashMap"/>
-	</bean>
-	
-	<bean id="homeController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-		<property name="viewName" value="home"/>
-	</bean>
-	
-	<bean id="newUserController" class="edu.uoregon.cs.presenter.web.controller.NewUserController">
-		<property name="dao" ref="dao"/>
-		<property name="formView" value="security/newUser"/>
-		<property name="successView" value="redirect:/"/>
-	</bean>
-	
-	<bean id="loginFormController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-		<property name="viewName" value="security/login"/>
-	</bean>
-	
-	<bean id="profileController" class="edu.uoregon.cs.presenter.web.controller.ProfileEditorController" parent="abstractPresenterController">
-		<property name="formView" value="profile/edit"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-	
-	<bean id="dashboardController" class="org.p2presenter.web.DashboardController" parent="abstractPresenterController">
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="studentCourseController" class="org.p2presenter.web.student.StudentCourseController" parent="abstractPresenterController">
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="studentSubjectController" class="org.p2presenter.web.student.StudentSubjectController" parent="abstractPresenterController">
-	
-	</bean>
-	
-	<bean id="instructorCourseController" class="org.p2presenter.web.instructor.InstructorCourseController" parent="abstractPresenterController">
-	</bean>
-	
-	<bean id="instructorLectureController" class="org.p2presenter.web.instructor.InstructorLectureController" parent="abstractPresenterController">
-		<property name="viewName" value="instructor/lecture/details"/>
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="lectureSessionController" class="edu.uoregon.cs.presenter.web.controller.LectureSessionController" parent="abstractPresenterController">
-		<property name="viewName" value="lecture/active"/>
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="acceptFreeformSubmissionController" class="edu.uoregon.cs.presenter.web.controller.submission.AcceptFreeformSubmissionController">
-		<property name="dao" ref="dao"/>
-	</bean>
-	
-	<bean id="lectureCreateController" class="edu.uoregon.cs.presenter.web.controller.instructor.LectureCreateController" parent="abstractPresenterController">
-		<property name="formView" value="instructor/lecture/create"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-	
-	<bean id="newSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.NewSlideController" parent="abstractPresenterController">
-		<property name="fileController" ref="fileController"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-	
-	<bean id="simpleEditSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.SimpleEditSlideController" parent="abstractPresenterController">
-		<property name="formView" value="instructor/lecture/editSlide"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-	
-	<bean id="instructorLectureSessionController" class="org.p2presenter.web.instructor.InstructorLectureSessionController" parent="abstractPresenterController">
-		<property name="activeLectureController" ref="activeLectureController"/>
-	</bean>
-	
-	<bean id="slideImageController" class="edu.uoregon.cs.presenter.web.controller.SlideImageController">
-		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
-	</bean>
-	
-	<bean id="inkImageController" class="edu.uoregon.cs.presenter.web.controller.InkImageController">
-		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
-	</bean>
-	
-	<bean id="whiteboardImageController" class="edu.uoregon.cs.presenter.web.controller.WhiteboardImageController">
-		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
-	</bean>
-	
-	<bean id="createCourseController" class="edu.uoregon.cs.presenter.web.controller.instructor.CourseCreationController" parent="abstractPresenterController">
-		<property name="formView" value="instructor/course/create"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-	
-	<bean id="adminDashboardController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-		<property name="viewName" value="admin/default"/>
-	</bean>
-	
-	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractPresenterController">
-		<property name="viewName" value="redirect:/admin/"/>
-	</bean>
-	
-	<bean id="simpleRemoveRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleRemoveRollController" parent="abstractPresenterController">
-		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
 	
 	<bean id="upSoapServerController" class="org.codehaus.xfire.spring.remoting.XFireExporter">
