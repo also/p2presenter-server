@@ -14,11 +14,11 @@ import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
 
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
-import edu.uoregon.cs.presenter.controller.FileController;
+import edu.uoregon.cs.presenter.controller.FileManager;
 
 public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandler<Lecture> {
 	private ActiveLectureController activeLectureController;
-	private FileController fileController;
+	private FileManager fileManager;
 	
 	public static final PropertyList LECTURE_PROPERTIES;
 	private static final PropertyList LECTURE_SESSION_PROPERTIES;
@@ -45,8 +45,8 @@ public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandl
 		this.activeLectureController = activeLectureController;
 	}
 	
-	public void setFileController(FileController fileController) {
-		this.fileController = fileController;
+	public void setFileManager(FileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 	
 	@Override
@@ -82,7 +82,7 @@ public class LectureRequestHandler extends AbstractEntityMultiActionRequestHandl
 		getDao().save(slide);
 		
 		// TODO stream in the slide
-		FileOutputStream out = new FileOutputStream(fileController.getImageFile(slide));
+		FileOutputStream out = new FileOutputStream(fileManager.getImageFile(slide));
 		out.write(request.getContent());
 
 		out.close();

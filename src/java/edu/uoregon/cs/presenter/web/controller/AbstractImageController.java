@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-import edu.uoregon.cs.presenter.controller.FileController;
+import edu.uoregon.cs.presenter.controller.FileManager;
 import edu.uoregon.cs.presenter.dao.Dao;
 
 public abstract class AbstractImageController extends AbstractController {
 	private static final int BUFFER_SIZE = 1024;
 	private Dao dao;
-	private FileController fileController;
+	private FileManager fileManager;
 	
 	public void setDao(Dao dao) {
 		this.dao = dao;
@@ -28,12 +28,12 @@ public abstract class AbstractImageController extends AbstractController {
 		return dao;
 	}
 	
-	public void setFileController(FileController fileController) {
-		this.fileController = fileController;
+	public void setFileManager(FileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 	
-	protected FileController getFileController() {
-		return fileController;
+	protected FileManager getFileManager() {
+		return fileManager;
 	}
 	
 	@Override

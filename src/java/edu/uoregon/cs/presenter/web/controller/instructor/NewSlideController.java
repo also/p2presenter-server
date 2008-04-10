@@ -9,14 +9,14 @@ import org.p2presenter.server.model.Slide;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import edu.uoregon.cs.presenter.controller.FileController;
+import edu.uoregon.cs.presenter.controller.FileManager;
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormController;
 
 public class NewSlideController extends AbstractPresenterSimpleFormController {
-	FileController fileController;
+	FileManager fileManager;
 	
-	public void setFileController(FileController fileController) {
-		this.fileController = fileController;
+	public void setFileManager(FileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class NewSlideController extends AbstractPresenterSimpleFormController {
 		
 		MultipartFile slideImage = slideFormBackingObject.getSlideImage();
 		if (slideImage != null) {
-			slideImage.transferTo(fileController.getImageFile(slide));
+			slideImage.transferTo(fileManager.getImageFile(slide));
 		}
 		// TODO should indicate in slide that there is no image
 	}

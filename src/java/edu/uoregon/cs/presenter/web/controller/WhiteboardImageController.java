@@ -14,7 +14,7 @@ public class WhiteboardImageController extends AbstractImageController {
 
 	@Override
 	protected File getImageFile(HttpServletRequest request) throws Exception {
-		return getFileController().getImageFile(getDao().loadEntity(Whiteboard.class, ServletRequestUtils.getRequiredIntParameter(request, "whiteboardId")));
+		return getFileManager().getImageFile(getDao().loadEntity(Whiteboard.class, ServletRequestUtils.getRequiredIntParameter(request, "whiteboardId")));
 	}
 
 }

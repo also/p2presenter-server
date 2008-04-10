@@ -26,7 +26,7 @@
 	</bean>
 	
 	<bean id="newSlideController" class="edu.uoregon.cs.presenter.web.controller.instructor.NewSlideController" parent="abstractPresenterController">
-		<property name="fileController" ref="fileController"/>
+		<property name="fileManager" ref="fileManager"/>
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	

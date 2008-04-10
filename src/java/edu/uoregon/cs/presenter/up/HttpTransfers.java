@@ -21,13 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
-import edu.uoregon.cs.presenter.controller.FileController;
+import edu.uoregon.cs.presenter.controller.FileManager;
 import edu.uoregon.cs.presenter.dao.Dao;
 
 public class HttpTransfers extends AbstractController {
 	private Log logger = LogFactory.getLog(HttpTransfers.class);
 	private Dao dao;
-	private FileController fileController;
+	private FileManager fileManager;
 	
 	private UbiquitousPresenterDao ubiquitousPresenterDao;
 	
@@ -39,8 +39,8 @@ public class HttpTransfers extends AbstractController {
 		this.ubiquitousPresenterDao = ubiquitousPresenterDao;
 	}
 	
-	public void setFileController(FileController fileController) {
-		this.fileController = fileController;
+	public void setFileManager(FileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class HttpTransfers extends AbstractController {
 				slide.setLecture(lecture);
 				slides.add(slide);
 				dao.save(slide);
-				File file = fileController.getImageFile(slide);
+				File file = fileManager.getImageFile(slide);
 				saveFile(request, file);
 			}
 			else {
@@ -80,7 +80,7 @@ public class HttpTransfers extends AbstractController {
 					SlideSession slideSession = activeLecture.getCurrentSlideSession();
 					if (slideSession != null) {
 						int inkCount = activeLecture.slideInkAdded();
-						File file = fileController.getImageFile(slideSession, inkCount - 1);
+						File file = fileManager.getImageFile(slideSession, inkCount - 1);
 						saveFile(request, file);
 						
 						// TODO should be debug
@@ -94,7 +94,7 @@ public class HttpTransfers extends AbstractController {
 				else if (slideType == SlideType.WHITEBOARD) {
 					Whiteboard whiteboard = activeLecture.getCurrentWhiteboard();
 					int inkCount = activeLecture.whiteboardInkAdded();
-					File file = fileController.getImageFile(whiteboard, inkCount - 1);
+					File file = fileManager.getImageFile(whiteboard, inkCount - 1);
 					saveFile(request, file);
 					
 					// TODO should be debug

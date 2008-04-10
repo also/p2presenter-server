@@ -14,7 +14,7 @@ public class InkImageController extends AbstractImageController {
 
 	@Override
 	protected File getImageFile(HttpServletRequest request) throws Exception {
-		return getFileController().getImageFile(getDao().getEntity(SlideSession.class, ServletRequestUtils.getRequiredIntParameter(request, "slideSessionId")), ServletRequestUtils.getRequiredIntParameter(request, "inkIndex"));
+		return getFileManager().getImageFile(getDao().getEntity(SlideSession.class, ServletRequestUtils.getRequiredIntParameter(request, "slideSessionId")), ServletRequestUtils.getRequiredIntParameter(request, "inkIndex"));
 	}
 
 }

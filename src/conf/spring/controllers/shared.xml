@@ -32,16 +32,16 @@
 	
 	<bean id="slideImageController" class="edu.uoregon.cs.presenter.web.controller.SlideImageController">
 		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
+		<property name="fileManager" ref="fileManager"/>
 	</bean>
 	
 	<bean id="inkImageController" class="edu.uoregon.cs.presenter.web.controller.InkImageController">
 		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
+		<property name="fileManager" ref="fileManager"/>
 	</bean>
 	
 	<bean id="whiteboardImageController" class="edu.uoregon.cs.presenter.web.controller.WhiteboardImageController">
 		<property name="dao" ref="dao"/>
-		<property name="fileController" ref="fileController"/>
+		<property name="fileManager" ref="fileManager"/>
 	</bean>
 </beans>

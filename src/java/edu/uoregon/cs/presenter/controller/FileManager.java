@@ -1,4 +1,4 @@
-/* $Id:FileController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
+/* $Id:FileManager.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
 
 package edu.uoregon.cs.presenter.controller;
 
@@ -9,8 +9,8 @@ import org.p2presenter.server.model.SlideSession;
 import org.p2presenter.server.model.Whiteboard;
 
 
-public class FileController {
-	private File baseDirectory = new File(System.getProperty("user.home"), ".p2presenter/files");
+public class FileManager {
+	private File baseDirectory = new File("/var/p2presenter");
 	
 	public void setBaseDirectory(File baseDirectory) {
 		this.baseDirectory = baseDirectory;
