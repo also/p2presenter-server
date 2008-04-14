@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
 <v:set name="pageTitle" value="${lecture}"/>
 <p>&larr; <a href="<c:url value="/courses/${lecture.course.id}"/>">Back to course</a></p>
 <c:if test="${!empty activeLecture}"><p>This lecture is active. <a href="<c:url value="/lectures/${lecture.id}/watch"/>">Watch</a> the active lecture.</p></c:if>

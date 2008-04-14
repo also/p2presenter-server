@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib uri="http://ry1.org/tags/views" prefix="v" %>
+<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
 <v:set name="pageTitle" value="Simple Admin Dashboard"/>
 <c:set var="roles"><tr><th scope="row"><label for="role">Role: </label></th>
     <td><select name="role"><option value="student">student</option><option value="instructor">instructor</option><option value="admin">admin</option></select></td></tr></c:set>

@@ -112,7 +112,7 @@
 	<bean id="upHttpTransfersController" class="edu.uoregon.cs.presenter.up.HttpTransfers">
 		<property name="dao" ref="dao"/>
 		<property name="ubiquitousPresenterDao" ref="ubiquitousPresenterDao"/>
-		<property name="fileController" ref="fileController"/>
+		<property name="fileManager" ref="fileManager"/>
 	</bean>
 	
 	<bean id="staticController" class="org.springframework.web.servlet.mvc.ServletForwardingController">
@@ -125,7 +125,7 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 	</bean> -->
 	
-	<bean id="viewResolver" class="org.ry1.springframework.web.view.SimpleViewResolver">
+	<bean id="viewResolver" class="org.ry1.veneer.VeneerViewResolver">
 		<property name="defaultTemplate" value="template/default"/>
 	</bean>
 </beans>

@@ -58,7 +58,7 @@ xsi:schemaLocation="
 			<bean class="edu.uoregon.cs.presenter.connector.LectureRequestHandler">
 				<property name="dao" ref="dao"/>
 				<property name="activeLectureController" ref="activeLectureController"/>
-				<property name="fileController" ref="fileController"/>
+				<property name="fileManager" ref="fileManager"/>
 			</bean></entry>
 			
 			<!-- slide request handler -->
@@ -68,7 +68,7 @@ xsi:schemaLocation="
 			</bean></key>
 			<bean class="edu.uoregon.cs.presenter.connector.SlideRequestHandler">
 				<property name="dao" ref="dao"/>
-				<property name="fileController" ref="fileController"/>
+				<property name="fileManager" ref="fileManager"/>
 			</bean></entry>
 			
 			<!-- lecture session request handler -->

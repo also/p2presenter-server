@@ -163,7 +163,7 @@ xsi:schemaLocation="
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
 	
-	<bean id="fileController" class="edu.uoregon.cs.presenter.controller.FileController">
+	<bean id="fileManager" class="edu.uoregon.cs.presenter.controller.FileManager">
 	
 	</bean>
 
