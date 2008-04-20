@@ -12,64 +12,10 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
 	
+	<import resource="classpath:spring/routes.xml"/>
+	
 	<bean id="handlerMapping" class="org.ry1.springframework.web.routes.RouteHandlerMapping">
-		<property name="routes">
-			<list>
-				<r:connect
-					r:pattern="/"
-					r:name="home"
-					controller="home"/>
-				
-				<r:connect
-					r:pattern="/dashboard"
-					r:name="dashboard"
-					controller="dashboard"
-					action="index"/>
-				
-				<r:connect controller="newUser">/welcome</r:connect>
-				<r:connect controller="loginForm">/enter</r:connect>
-				<r:connect
-					r:pattern="/exit"
-					r:name="logOut"/>
-				
-				<r:connect r:name="editProfile" controller="profile">/profile</r:connect>
-				
-				<r:connect controller="studentSubject" action="index">/student/subjects/</r:connect>
-				<r:connect controller="studentSubject" action="show">/student/subjects/:subject</r:connect>
-				<r:connect controller="studentCourse" action="index">/student/courses/:action</r:connect>
-				<r:connect controller="studentCourse" action="show">/student/courses/:id/:action</r:connect>
-				
-				<r:connect controller="lecture">/lectures/:lectureId</r:connect>
-				<r:connect controller="lectureSession">/lectures/:lectureId/watch</r:connect>
-				<r:connect controller="lectureSession">/watch/:lectureSessionId</r:connect>
-				<r:connect controller="acceptFreeformSubmission">/watch/:lectureSessionId/submit/freeform</r:connect>
-				<r:connect
-					r:name="slideImage"
-					controller="slideImage">/slides/:id.png</r:connect>
-				<r:connect
-					r:name="slideThumbnailImage" 
-					controller="slideImage"
-					type="thumbnail">/slides/previews/:id.png</r:connect>
-				<r:connect controller="inkImage">/ink/slides/:slideSessionId/:inkIndex.png</r:connect>
-				<r:connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</r:connect>
-				<r:connect controller="createCourse">/instructor/courses/create</r:connect>
-				
-				<r:connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</r:connect>
-				<r:connect controller="instructorCourse" action="index">/instructor/courses/:action</r:connect>
-				<r:connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</r:connect>
-				
-				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</r:connect>
-				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id.:format</r:connect>
-				<r:connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</r:connect>
-				<r:connect controller="simpleEditSlide">/instructor/slides/:id/edit</r:connect>
-				
-				<r:connect controller="instructorLectureSession" action="show">/instructor/lectureSession/:id/:action</r:connect>
-				
-				<r:connect controller="adminDashboard">/admin/</r:connect>
-				<r:connect controller="simpleAddRole">/admin/addRole</r:connect>
-				<r:connect controller="simpleRemoveRole">/admin/removeRole</r:connect>
-			</list>
-		</property>
+		<property name="routes" ref="routes"/>
 		<!-- <property name="urlMap"><map>
 			<entry key="/participate" value="homeController"/>
 			

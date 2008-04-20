@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<beans:beans 
+	xmlns="http://ry1.org/schema/routes"
+	xmlns:r="http://ry1.org/schema/routes"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+		http://ry1.org/schema/routes http://ry1.org/schema/routes-1.0.xsd">
+	
+	<util:list id="routes">
+		<connect
+			r:pattern="/"
+			r:name="home"
+			controller="home"/>
+		
+		<connect
+			r:pattern="/dashboard"
+			r:name="dashboard"
+			controller="dashboard"
+			action="index"/>
+		
+		<connect controller="newUser">/welcome</connect>
+		<connect controller="loginForm">/enter</connect>
+		<connect
+			r:pattern="/exit"
+			r:name="logOut"/>
+		
+		<connect r:name="editProfile" controller="profile">/profile</connect>
+		
+		<connect controller="studentSubject" action="index">/student/subjects/</connect>
+		<connect controller="studentSubject" action="show">/student/subjects/:subject</connect>
+		<connect controller="studentCourse" action="index">/student/courses/:action</connect>
+		<connect controller="studentCourse" action="show">/student/courses/:id/:action</connect>
+		
+		<connect controller="lecture">/lectures/:lectureId</connect>
+		<connect controller="lectureSession">/lectures/:lectureId/watch</connect>
+		<connect controller="lectureSession">/watch/:lectureSessionId</connect>
+		<connect controller="acceptFreeformSubmission">/watch/:lectureSessionId/submit/freeform</connect>
+		<connect
+			r:name="slideImage"
+			controller="slideImage">/slides/:id.png</connect>
+		<connect
+			r:name="slideThumbnailImage" 
+			controller="slideImage"
+			type="thumbnail">/slides/previews/:id.png</connect>
+		<connect controller="inkImage">/ink/slides/:slideSessionId/:inkIndex.png</connect>
+		<connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</connect>
+		<connect controller="createCourse">/instructor/courses/create</connect>
+		
+		<connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</connect>
+		<connect controller="instructorCourse" action="index">/instructor/courses/:action</connect>
+		<connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</connect>
+		
+		<connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</connect>
+		<connect controller="instructorLecture" action="show">/instructor/lectures/:id.:format</connect>
+		<connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</connect>
+		<connect controller="simpleEditSlide">/instructor/slides/:id/edit</connect>
+		
+		<connect controller="instructorLectureSession" action="show">/instructor/lectureSession/:id/:action</connect>
+		
+		<connect controller="adminDashboard">/admin/</connect>
+		<connect controller="simpleAddRole">/admin/addRole</connect>
+		<connect controller="simpleRemoveRole">/admin/removeRole</connect>
+	</util:list>
+</beans:beans>
