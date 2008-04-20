@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.xfire.transport.http.XFireServletController;
 import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.FreeformSubmission;
 import org.p2presenter.server.model.FreeformSubmissionDefinition;
@@ -223,6 +222,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		if (activeLecture != null) {
 			/* TODO make sure this is the right way to get the request. I couldn't
 			 * be bothered to read through the documentation, but I stumbled on this. */
+			/* FIXME disabled because of removed xfire dependency
 			HttpServletRequest request = XFireServletController.getRequest();
 			int port = request.getServerPort();
 			String urlPrefix = request.getScheme() + "://" + request.getServerName() + (port != 80 ? ":" + port : "") + request.getContextPath();
@@ -245,6 +245,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 					}
 				}
 			}
+			*/
 		}
 		logger.info(result);
 		return result.toString();

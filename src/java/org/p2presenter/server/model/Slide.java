@@ -108,8 +108,7 @@ public class Slide extends AbstractSimpleEntity {
 		return interactivityDefinition;
 	}
 	
-	public void setInteractivityDefinition(
-			InteractivityDefinition interactivityDefinition) {
+	public void setInteractivityDefinition(InteractivityDefinition interactivityDefinition) {
 		this.interactivityDefinition = interactivityDefinition;
 	}
 }

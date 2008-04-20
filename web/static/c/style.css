@@ -18,17 +18,49 @@ body {
     padding: 0;
 }
 
+body.fullpage {
+	background-color: #ffffff;
+}
+
+body.fullpage #toolbar {
+	background-color: #464646;
+	height: 2.3em;
+	color: #999999;
+	line-height: 2.5em;
+	padding: 0 1em;
+	font-size: .8em;
+}
+
+body.fullpage #toolbar a {
+	text-decoration: none;
+	color: #999;;
+}
+
+body.fullpage #belowToolbar {
+	position: absolute;
+	top: 2.3em;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
 #page {
 	/*width: 800px;
 	margin: 0 auto;*/
 }
-
-#header {
+#header,
+#minimalHeader {
 	position: relative;
 	border-top: 2.3em solid #464646;
 	border-bottom: 1px solid #C6D9E9;
 	background-color: #E4F2FD;
+}
+
+#header {
 	height: 8em;
+}
+
+#minimalHeader {
 }
 
 #siteTitle {
@@ -129,7 +161,7 @@ body {
 
 h1 {
 	border-bottom: 1px solid #DADADA;
-	margin-top: 1em;
+	margin-top: 0em;
 	margin-bottom: 0;
 	color: #666;
 }
@@ -149,6 +181,7 @@ h1 .subtitle {
 }
 
 #body {
+	position: relative;
 	padding: 20px;
 	
     border: 1px solid #CED9D4;
@@ -287,7 +320,10 @@ div.formContainer div.controlset input { display: inline; float: none; }
 div.formContainer div.controlset div { margin-left: 170px; }
 div.formContainer div.buttonRow { margin-left: 180px; }
 
-.actions input, .actions a, .buttonRow input, .button {
+.actions input,
+.actions a,
+.buttonRow input,
+.button {
 	background-color: #E5E5E5;
 	border: 1px solid #80B5D0;
 	color: #224466;

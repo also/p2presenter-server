@@ -2,11 +2,11 @@
 
 package edu.uoregon.cs.p2presenter.server.authentication;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.context.SecurityContextImpl;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.Authentication;
+import org.springframework.security.AuthenticationManager;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.context.SecurityContextImpl;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 import org.p2presenter.messaging.handler.RequestHandler;
 import org.p2presenter.messaging.handler.RequestMatcher;
 import org.p2presenter.messaging.message.IncomingRequestHeaders;

@@ -43,7 +43,13 @@
 				<r:connect controller="lectureSession">/lectures/:lectureId/watch</r:connect>
 				<r:connect controller="lectureSession">/watch/:lectureSessionId</r:connect>
 				<r:connect controller="acceptFreeformSubmission">/watch/:lectureSessionId/submit/freeform</r:connect>
-				<r:connect controller="slideImage">/slides/:slideId.png</r:connect>
+				<r:connect
+					r:name="slideImage"
+					controller="slideImage">/slides/:id.png</r:connect>
+				<r:connect
+					r:name="slideThumbnailImage" 
+					controller="slideImage"
+					type="thumbnail">/slides/previews/:id.png</r:connect>
 				<r:connect controller="inkImage">/ink/slides/:slideSessionId/:inkIndex.png</r:connect>
 				<r:connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</r:connect>
 				<r:connect controller="createCourse">/instructor/courses/create</r:connect>
@@ -53,6 +59,7 @@
 				<r:connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</r:connect>
 				
 				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</r:connect>
+				<r:connect controller="instructorLecture" action="show">/instructor/lectures/:id.:format</r:connect>
 				<r:connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</r:connect>
 				<r:connect controller="simpleEditSlide">/instructor/slides/:id/edit</r:connect>
 				
@@ -84,6 +91,7 @@
 	<import resource="classpath:spring/controllers/student.xml"/>
 	<import resource="classpath:spring/controllers/instructor.xml"/>
 	<import resource="classpath:spring/controllers/admin.xml"/>
+	<import resource="classpath:spring/views/json.xml"/>
 	
 	<!-- the static controller is mapped without the interceptors -->
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -99,7 +107,7 @@
 		<property name="flashMap" ref="flashMap"/>
 	</bean>
 	
-	<bean id="upSoapServerController" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+	<!-- <bean id="upSoapServerController" class="org.codehaus.xfire.spring.remoting.XFireExporter">
 		<property name="serviceFactory" ref="xfire.serviceFactory"/>
 		<property name="xfire" ref="xfire"/>
 		<property name="serviceBean" ref="ubiquitousPresenterService"/>
@@ -113,7 +121,7 @@
 		<property name="dao" ref="dao"/>
 		<property name="ubiquitousPresenterDao" ref="ubiquitousPresenterDao"/>
 		<property name="fileManager" ref="fileManager"/>
-	</bean>
+	</bean> -->
 	
 	<bean id="staticController" class="org.springframework.web.servlet.mvc.ServletForwardingController">
 		<property name="servletName" value="default"/>
@@ -125,7 +133,12 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 	</bean> -->
 	
-	<bean id="viewResolver" class="org.ry1.veneer.VeneerViewResolver">
+	<bean id="jsonViewResolver" class="org.ry1.json.view.JsonViewResolver">
+		<property name="order" value="1"/>
+	</bean>
+	
+	<bean id="veneerviewResolver" class="org.ry1.veneer.VeneerViewResolver">
 		<property name="defaultTemplate" value="template/default"/>
+		<property name="order" value="2"/>
 	</bean>
 </beans>

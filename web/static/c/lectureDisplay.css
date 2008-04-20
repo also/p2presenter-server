@@ -1,0 +1,46 @@
+.lectureDisplay {
+	position: absolute;
+	
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0
+}
+
+.lectureDisplay .slideList {
+	height: 100%;
+	overflow: auto;
+}
+
+.lectureDisplay .slideList img {
+	border: 1px solid #aaa;
+}
+
+.lectureDisplay .slideDisplay {
+	height: 100%;
+	overflow: auto;
+	text-align: center;
+	background: #e4f2fd;
+}
+
+.lectureDisplay .slideDisplay img {
+	width: 98%;
+	max-width: 640px;
+	background: #ffffff;
+	border: 1px solid #aaa;
+	margin: 1em 0;
+	-webkit-box-shadow: 0 0 20px #888;
+	-moz-box-shadow: 0 0 20px #888;
+}
+
+.lectureDisplay .slideDetails {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.lectureDisplay h2 {
+	margin-top: 0;
+}

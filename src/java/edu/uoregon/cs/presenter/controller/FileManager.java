@@ -8,7 +8,6 @@ import org.p2presenter.server.model.Slide;
 import org.p2presenter.server.model.SlideSession;
 import org.p2presenter.server.model.Whiteboard;
 
-
 public class FileManager {
 	private File baseDirectory = new File("/var/p2presenter");
 	
@@ -20,8 +19,18 @@ public class FileManager {
 		return baseDirectory;
 	}
 	
+	@Deprecated
 	public File getImageFile(Slide slide) {
-		return new File(baseDirectory, "slide-" + slide.getId() + ".png");
+		return getFile("slide", slide.getId());
+	}
+	
+	public File getFile(String prefix, int number) {
+		int dir = number / 1024;
+		
+		File directory = new File(baseDirectory, prefix + '/' + dir);
+		directory.mkdirs();
+		
+		return new File(directory, String.valueOf(number));
 	}
 	
 	public File getImageFile(Whiteboard whiteboard) {

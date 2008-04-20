@@ -11,8 +11,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.p2presenter.server.model.Person;
 import org.ry1.springframework.web.context.request.FlashMap;
+import org.ry1.springframework.web.util.AnnotatedServletRequestDataBinder;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver;
 
@@ -74,5 +76,11 @@ public abstract class AbstractPresenterController extends MultiActionController 
 	
 	public static Person getPerson(HttpServletRequest request) {
 		return (Person) request.getAttribute("person");
+	}
+	
+	public BindingResult bind(HttpServletRequest request, Object target, String name, String context) {
+		AnnotatedServletRequestDataBinder binder = new AnnotatedServletRequestDataBinder(target, name, context);
+		binder.bind(request);
+		return binder.getBindingResult();
 	}
 }

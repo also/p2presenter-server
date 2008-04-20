@@ -14,7 +14,13 @@ public class SlideImageController extends AbstractImageController {
 
 	@Override
 	protected File getImageFile(HttpServletRequest request) throws Exception {
-		return getFileManager().getImageFile(getDao().loadEntity(Slide.class, ServletRequestUtils.getRequiredIntParameter(request, "slideId")));
+		int id = ServletRequestUtils.getRequiredIntParameter(request, "id");
+		if ("thumbnail".equals(request.getParameter("type"))) {
+			return getFileManager().getFile("slideThumbnail", id);
+		}
+		else {
+			return getFileManager().getImageFile(getDao().loadEntity(Slide.class, id));
+		}
 	}
 
 }

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.p2presenter.server.model.LectureSession;
 import org.p2presenter.web.common.AbstractEntityController;
 import org.p2presenter.web.common.EntityController;
+import org.ry1.springframework.web.routes.RouteRedirectView;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,6 +37,12 @@ public class InstructorLectureSessionController extends AbstractEntityController
 		else {
 			int lectureSessionId = ServletRequestUtils.getRequiredIntParameter(request, "id");
 			activeLecture = activeLectureController.getActiveLectureForSessionId(lectureSessionId);
+		}
+		
+		if (activeLecture == null) {
+			flashMessage("lectureSession.ended", null, "the lecture session has ended");
+			LectureSession lectureSession = getEntity(request);
+			return new ModelAndView(new RouteRedirectView("controller", "instructorLecture", "id", lectureSession.getLecture().getId()));
 		}
 		
 		// TODO should require post

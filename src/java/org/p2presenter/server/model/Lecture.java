@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+import org.ry1.springframework.web.util.Bindable;
 
 /** A collection of slides.
  * A lecture may be a part of multiple courses, and may be presented multiple times in each.
@@ -84,6 +85,7 @@ public class Lecture extends AbstractSimpleEntity {
 		return title;
 	}
 
+	@Bindable
 	public void setTitle(String title) {
 		this.title = title;
 	}

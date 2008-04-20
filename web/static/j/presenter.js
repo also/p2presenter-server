@@ -68,7 +68,7 @@ SlideDisplay.prototype = {
 				if (state.currentInteractivityDefinitionId) {
 					try {
 					this.hideOverlay();
-					this.showInteractivity(Builder.node('applet', {code: 'edu.uoregon.cs.p2presenter.interactivity.participant.InteractivityParticipantApplet', archive: prefix + '/static/interactivity.jar', width: 640, height: 480}, [
+					this.showInteractivity(Builder.node('applet', {code: 'edu.uoregon.cs.p2presenter.interactivity.participant.InteractivityParticipantApplet', archive: prefix + 'static/interactivity.jar', width: 640, height: 480}, [
 						Builder.node('param', {name: 'host', value: 'localhost'}),
 						Builder.node('param', {name: 'interactivityDefinitionId', value: state.currentInteractivityDefinitionId})]));
 						}catch(e) {alert(e);}
@@ -78,7 +78,7 @@ SlideDisplay.prototype = {
 					if (state.currentWhiteboardInkCount > 0) {
 						this.showBase(DisplayType.WHITEBOARD);
 						
-						this.baseImage.src = prefix + '/ink/whiteboards/' + state.currentWhiteboardId + '/' + (state.currentWhiteboardInkCount - 1) + '.png';
+						this.baseImage.src = prefix + 'ink/whiteboards/' + state.currentWhiteboardId + '/' + (state.currentWhiteboardInkCount - 1) + '.png';
 					}
 					else {
 						// TODO show a blank whiteboard instead
@@ -86,10 +86,10 @@ SlideDisplay.prototype = {
 					}
 				}
 				else if (state.currentSlideSessionId) {
-					this.baseImage.src = prefix + '/slides/' + state.currentSlideId + '.png';
+					this.baseImage.src = prefix + 'slides/' + state.currentSlideId + '.png';
 					if (state.currentSlideSessionInkCount > 0) {
 						this.showOverlay(DisplayType.SLIDE);
-						this.overlayImage.src = prefix + '/ink/slides/' + state.currentSlideSessionId + '/' + (state.currentSlideSessionInkCount - 1) + '.png';
+						this.overlayImage.src = prefix + 'ink/slides/' + state.currentSlideSessionId + '/' + (state.currentSlideSessionInkCount - 1) + '.png';
 					}
 					else {
 						this.hideOverlay();

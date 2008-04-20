@@ -14,91 +14,7 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 	
-	<bean id="acegiFilter" class="org.acegisecurity.util.FilterChainProxy">
-		<property name="filterInvocationDefinitionSource"><value>
-			PATTERN_TYPE_APACHE_ANT
-			/**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterSecurityInterceptor
-		</value></property>
-	</bean>
-	
-	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
-	
-	</bean>
-	
-	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
-		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="authenticationFailureUrl" value="/enter?loginAttempted=true"/>
-		<property name="defaultTargetUrl" value="/dashboard"/>
-		<property name="filterProcessesUrl" value="/enter/process"/>
-	</bean>
-	
-	<bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<property name="loginFormUrl" value="/enter"/>
-	</bean>
-	
-	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-		<constructor-arg value="/"/>
-		<constructor-arg><bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/></constructor-arg>
-		<property name="filterProcessesUrl" value="/exit"/>
-	</bean>
-	
-	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
-		<property name="authenticationEntryPoint" ref="authenticationProcessingFilterEntryPoint"/>
-		<property name="accessDeniedHandler">
-			<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
-				<property name="errorPage" value="/WEB-INF/jsp/security/accessDenied.jsp"/>
-			</bean>
-		</property>
-	</bean>
-	
-	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
-		<property name="providers"><list>
-			<ref local="daoAuthenticationProvider"/>
-			<ref local="anonymousAuthenticationProvider"/>
-		</list></property>
-	</bean>
-	
-	<bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="daoUserDetailsService"/>
-	</bean>
-	
-	<bean id="daoUserDetailsService" class="edu.uoregon.cs.presenter.security.DaoUserDetailsService">
-		<property name="dao" ref="dao"/>
-	</bean>
-	
-	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-		<property name="key" value="anonymous"/>
-		<property name="userAttribute" value="anonymous,ROLE_ANONYMOUS"/>
-	</bean>
-
-	<bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
-		<property name="key" value="anonymous"/>
-	</bean>
-	
-	<bean id="accessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
-		<property name="decisionVoters"><list>
-			<bean class="org.acegisecurity.vote.AuthenticatedVoter"/>
-			<bean class="org.acegisecurity.vote.RoleVoter"/>
-		</list></property>
-	</bean>
-	
-	<bean id="filterSecurityInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
-		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="accessDecisionManager" ref="accessDecisionManager"/>
-		<property name="objectDefinitionSource"><value>
-			PATTERN_TYPE_APACHE_ANT
-			/=IS_AUTHENTICATED_ANONYMOUSLY
-			/public/**=IS_AUTHENTICATED_ANONYMOUSLY
-			/static/**=IS_AUTHENTICATED_ANONYMOUSLY
-			/enter**=IS_AUTHENTICATED_ANONYMOUSLY
-			/exit=IS_AUTHENTICATED_ANONYMOUSLY
-			/welcome**=IS_AUTHENTICATED_ANONYMOUSLY
-			/ubiquitous/**=IS_AUTHENTICATED_ANONYMOUSLY
-			/instructor/**=ROLE_INSTRUCTOR,ROLE_ADMIN
-			/admin/**=ROLE_ADMIN
-			/**=ROLE_STUDENT,ROLE_INSTRUCTOR,ROLE_ADMIN
-		</value></property>
-	</bean>
+	<import resource="classpath:spring/security.xml"/>
 	
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties"><props>
@@ -142,7 +58,7 @@ xsi:schemaLocation="
 		<tx:attributes>
 			<!-- <tx:method name="get*" read-only="true"/> -->
 			<!-- all other methods use the default transaction settings -->
-			<tx:method name="*"/>
+			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
 
@@ -165,6 +81,11 @@ xsi:schemaLocation="
 	
 	<bean id="fileManager" class="edu.uoregon.cs.presenter.controller.FileManager">
 	
+	</bean>
+	
+	<bean id="lectureManager" class="org.p2presenter.manager.LectureManager">
+		<property name="fileManager" ref="fileManager"/>
+		<property name="dao" ref="dao"/>
 	</bean>
 
 	<bean id="ubiquitousPresenterService" class="edu.uoregon.cs.presenter.up.UbiquitousPresenterServiceImpl">

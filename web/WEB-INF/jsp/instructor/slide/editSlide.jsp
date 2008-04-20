@@ -6,7 +6,7 @@
 <v:set name="pageTitle" value="Edit Slide"/>
 
 <form:form>
-<img src="<c:url value="/slides/${command.id}.png"/>" width="200" style="float: right"/>
+<img src="<r:url controller="slideImage" type="thumbnail" id="${command.id}"/>" style="float: right"/>
 <table>
 <tbody>
 <tr><th scope="col"><form:label path="title">Title: </form:label></th><td><form:input path="title"/></td></tr>

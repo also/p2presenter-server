@@ -14,7 +14,7 @@
 <h2>Sessions</h2>
 <ul>
 <c:forEach items="${lecture.lectureSessions}" var="lectureSession">
-<li><a href="<c:url value="/courses/${course.id}/lectures/${lecture.id}/watch/${lectureSession.id}"/>"><fmt:formatDate value="${lectureSession.timestamp}" type="both"/></a></li>
+<li><r:a controller="instructorLectureSession" id="${lectureSession.id}"><fmt:formatDate value="${lectureSession.timestamp}" type="both"/></r:a></li>
 </c:forEach>
 </ul>
 </c:if>
@@ -27,13 +27,4 @@
 <p>This lecture has no slides.</p>
 </c:if>
 
-<c:if test="${!empty lecture.slides}">
-<c:if test="${!param.showSlides}">
-<p><a href="?showSlides=true">Show slides</a></p>
-</c:if>
-<c:if test="${param.showSlides}">
-<c:forEach items="${lecture.slides}" var="slide">
-<div class="slide"><c:url value="/slides/${slide.id}.png" var="slideUrl"/><r:a controller="simpleEditSlide" id="${slide.id}"><img src="${slideUrl}" alt="Slide" width="200"/></r:a></div>
-</c:forEach>
-</c:if>
-</c:if>
+<p><r:a action="editSlides" id="${lecture.id}">Edit slides</r:a></p>

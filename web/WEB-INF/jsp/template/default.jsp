@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://acegisecurity.org/authz" prefix="authz" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="authz" %>
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
 <%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -7,9 +7,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <title>${view.pageTitle} (p2presenter)</title>
-<script type="text/javascript" src="<c:url value="/static/j/prototype-1.5.0_rc0.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/static/j/prototype-1.6.0.2.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/static/j/scriptaculous-1.6.5/scriptaculous.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/static/j/presenter.js"/>"></script>
+<script type="text/javascript" src="<r:url r:name="routes.js"/>">
+alert(Routes.url('slideImage', {id: '12'});
+</script>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/c/style.css"/>"/>
 ${view.head}
 </head>

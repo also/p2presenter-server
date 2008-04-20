@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.InteractivityDefinition;
 import org.p2presenter.server.model.Lecture;
 import org.p2presenter.server.model.SlideSession;
