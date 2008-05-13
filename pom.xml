@@ -8,7 +8,7 @@
 	<artifactId>p2presenter</artifactId>
 	<packaging>war</packaging>
 	<name>p2presenter</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
 		<resources>
@@ -36,6 +36,37 @@
 		</pluginManagement>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>bind-annotations</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>json</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>json-view</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>routes</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>spring-flash-map</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ryanberdeen</groupId>
+			<artifactId>veneer</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
@@ -88,6 +119,11 @@
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
