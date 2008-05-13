@@ -25,47 +25,49 @@
 			controller="dashboard"
 			action="index"/>
 		
-		<connect controller="newUser">/welcome</connect>
-		<connect controller="loginForm">/enter</connect>
+		<connect r:pattern="/welcome" controller="newUser"/>
+		<connect r:pattern="/enter" controller="loginForm"/>
 		<connect
 			r:pattern="/exit"
 			r:name="logOut"/>
 		
-		<connect r:name="editProfile" controller="profile">/profile</connect>
+		<connect r:pattern="/profile" r:name="editProfile" controller="profile"/>
 		
-		<connect controller="studentSubject" action="index">/student/subjects/</connect>
-		<connect controller="studentSubject" action="show">/student/subjects/:subject</connect>
-		<connect controller="studentCourse" action="index">/student/courses/:action</connect>
-		<connect controller="studentCourse" action="show">/student/courses/:id/:action</connect>
+		<connect r:pattern="/student/subjects/" controller="studentSubject" action="index"/>
+		<connect r:pattern="/student/subjects/:subject" controller="studentSubject" action="show"/>
+		<connect r:pattern="/student/courses/:action" controller="studentCourse" action="index"/>
+		<connect r:pattern="/student/courses/:id/:action" controller="studentCourse" action="show"/>
 		
-		<connect controller="lecture">/lectures/:lectureId</connect>
-		<connect controller="lectureSession">/lectures/:lectureId/watch</connect>
-		<connect controller="lectureSession">/watch/:lectureSessionId</connect>
-		<connect controller="acceptFreeformSubmission">/watch/:lectureSessionId/submit/freeform</connect>
+		<connect r:pattern="/lectures/:lectureId" controller="lecture"/>
+		<connect r:pattern="/lectures/:lectureId/watch" controller="lectureSession"/>
+		<connect r:pattern="/watch/:lectureSessionId" controller="lectureSession"/>
+		<connect r:pattern="/watch/:lectureSessionId/submit/freeform" controller="acceptFreeformSubmission"/>
 		<connect
+			r:pattern="/slides/:id.png"
 			r:name="slideImage"
-			controller="slideImage">/slides/:id.png</connect>
+			controller="slideImage"/>
 		<connect
+			r:pattern="/slides/previews/:id.png"
 			r:name="slideThumbnailImage" 
 			controller="slideImage"
-			type="thumbnail">/slides/previews/:id.png</connect>
-		<connect controller="inkImage">/ink/slides/:slideSessionId/:inkIndex.png</connect>
-		<connect controller="whiteboardImage">/ink/whiteboards/:whiteboardId/:inkIndex.png</connect>
-		<connect controller="createCourse">/instructor/courses/create</connect>
+			type="thumbnail"/>
+		<connect r:pattern="/ink/slides/:slideSessionId/:inkIndex.png" controller="inkImage"/>
+		<connect r:pattern="/ink/whiteboards/:whiteboardId/:inkIndex.png" controller="whiteboardImage"/>
+		<connect r:pattern="/instructor/courses/create" controller="createCourse"/>
 		
-		<connect controller="lectureCreate">/instructor/courses/:courseId/createLecture</connect>
-		<connect controller="instructorCourse" action="index">/instructor/courses/:action</connect>
-		<connect controller="instructorCourse" action="show">/instructor/courses/:id/:action</connect>
+		<connect r:pattern="/instructor/courses/:courseId/createLecture" controller="lectureCreate"/>
+		<connect r:pattern="/instructor/courses/:action" controller="instructorCourse" action="index"/>
+		<connect r:pattern="/instructor/courses/:id/:action" controller="instructorCourse" action="show"/>
 		
-		<connect controller="instructorLecture" action="show">/instructor/lectures/:id/:action</connect>
-		<connect controller="instructorLecture" action="show">/instructor/lectures/:id.:format</connect>
-		<connect controller="newSlide">/instructor/lectures/:lectureId/slides/create</connect>
-		<connect controller="simpleEditSlide">/instructor/slides/:id/edit</connect>
+		<connect r:pattern="/instructor/lectures/:id/:action" controller="instructorLecture" action="show"/>
+		<connect r:pattern="/instructor/lectures/:id.:format" controller="instructorLecture" action="show"/>
+		<connect r:pattern="/instructor/lectures/:lectureId/slides/create" controller="newSlide"/>
+		<connect r:pattern="/instructor/slides/:id/edit" controller="simpleEditSlide"/>
 		
-		<connect controller="instructorLectureSession" action="show">/instructor/lectureSession/:id/:action</connect>
+		<connect r:pattern="/instructor/lectureSession/:id/:action" controller="instructorLectureSession" action="show"/>
 		
-		<connect controller="adminDashboard">/admin/</connect>
-		<connect controller="simpleAddRole">/admin/addRole</connect>
-		<connect controller="simpleRemoveRole">/admin/removeRole</connect>
+		<connect r:pattern="/admin/" controller="adminDashboard"/>
+		<connect r:pattern="/admin/addRole" controller="simpleAddRole"/>
+		<connect r:pattern="/admin/removeRole" controller="simpleRemoveRole"/>
 	</util:list>
 </beans:beans>
