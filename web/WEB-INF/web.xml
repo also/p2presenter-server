@@ -23,7 +23,7 @@
 
 	<filter>
 		<filter-name>requestWrapperFilter</filter-name>
-		<filter-class>org.ry1.springframework.web.servlet.handler.ParameterizableRequestFilter</filter-class>
+		<filter-class>org.ry1.springframework.web.servlet.handler.MutableRequestFilter</filter-class>
 	</filter>
 	
 	<filter-mapping>
