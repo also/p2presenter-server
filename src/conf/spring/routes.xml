@@ -13,7 +13,7 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
 		http://ry1.org/schema/routes http://ry1.org/schema/routes-1.0.xsd">
 	
-	<util:list id="routes">
+	<routes id="routes">
 		<connect
 			r:pattern="/"
 			r:name="home"
@@ -25,18 +25,27 @@
 			controller="dashboard"
 			action="index"/>
 		
-		<connect r:pattern="/welcome" controller="newUser"/>
-		<connect r:pattern="/enter" controller="loginForm"/>
+		<connect
+			r:pattern="/welcome"
+			controller="newUser"/>
+			
+		<connect
+			r:pattern="/enter"
+			controller="loginForm"/>
+			
 		<connect
 			r:pattern="/exit"
 			r:name="logOut"/>
 		
 		<connect r:pattern="/profile" r:name="editProfile" controller="profile"/>
 		
-		<connect r:pattern="/student/subjects/" controller="studentSubject" action="index"/>
-		<connect r:pattern="/student/subjects/:subject" controller="studentSubject" action="show"/>
-		<connect r:pattern="/student/courses/:action" controller="studentCourse" action="index"/>
-		<connect r:pattern="/student/courses/:id/:action" controller="studentCourse" action="show"/>
+		<!-- student routes -->
+		<with r:patternPrefix="/student">
+			<connect r:pattern="/subjects/" controller="studentSubject" action="index"/>
+			<connect r:pattern="/subjects/:subject" controller="studentSubject" action="show"/>
+			<connect r:pattern="/courses/:action" controller="studentCourse" action="index"/>
+			<connect r:pattern="/courses/:id/:action" controller="studentCourse" action="show"/>
+		</with>
 		
 		<connect r:pattern="/lectures/:lectureId" controller="lecture"/>
 		<connect r:pattern="/lectures/:lectureId/watch" controller="lectureSession"/>
@@ -53,21 +62,32 @@
 			type="thumbnail"/>
 		<connect r:pattern="/ink/slides/:slideSessionId/:inkIndex.png" controller="inkImage"/>
 		<connect r:pattern="/ink/whiteboards/:whiteboardId/:inkIndex.png" controller="whiteboardImage"/>
-		<connect r:pattern="/instructor/courses/create" controller="createCourse"/>
 		
-		<connect r:pattern="/instructor/courses/:courseId/createLecture" controller="lectureCreate"/>
-		<connect r:pattern="/instructor/courses/:action" controller="instructorCourse" action="index"/>
-		<connect r:pattern="/instructor/courses/:id/:action" controller="instructorCourse" action="show"/>
+		<!-- instructor routes -->
+		<with r:patternPrefix="/instructor">
+			<connect r:pattern="/courses/create" controller="createCourse"/>
+			
+			<connect r:pattern="/courses/:courseId/createLecture" controller="lectureCreate"/>
+			
+			<resource r:pattern="/courses/" controller="instructorCourse">
+				<collection>
+					<apply action="my"/>
+				</collection>
+			</resource>
+			
+			<connect r:pattern="/lectures/:id/:action" controller="instructorLecture" action="show"/>
+			<connect r:pattern="/lectures/:id.:format" controller="instructorLecture" action="show"/>
+			<connect r:pattern="/lectures/:lectureId/slides/create" controller="newSlide"/>
+			<connect r:pattern="/slides/:id/edit" controller="simpleEditSlide"/>
+			
+			<connect r:pattern="/lectureSession/:id/:action" controller="instructorLectureSession" action="show"/>
+		</with>
 		
-		<connect r:pattern="/instructor/lectures/:id/:action" controller="instructorLecture" action="show"/>
-		<connect r:pattern="/instructor/lectures/:id.:format" controller="instructorLecture" action="show"/>
-		<connect r:pattern="/instructor/lectures/:lectureId/slides/create" controller="newSlide"/>
-		<connect r:pattern="/instructor/slides/:id/edit" controller="simpleEditSlide"/>
-		
-		<connect r:pattern="/instructor/lectureSession/:id/:action" controller="instructorLectureSession" action="show"/>
-		
-		<connect r:pattern="/admin/" controller="adminDashboard"/>
-		<connect r:pattern="/admin/addRole" controller="simpleAddRole"/>
-		<connect r:pattern="/admin/removeRole" controller="simpleRemoveRole"/>
-	</util:list>
+		<!-- administrator routes -->
+		<with r:patternPrefix="/admin">
+			<connect r:pattern="/" controller="adminDashboard"/>
+			<connect r:pattern="/addRole" controller="simpleAddRole"/>
+			<connect r:pattern="/removeRole" controller="simpleRemoveRole"/>
+		</with>
+	</routes>
 </beans:beans>
