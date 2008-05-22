@@ -62,7 +62,7 @@ var AbstractDisplayItem = Class.create({
 	
 	getElement: function() {
 		return this.elt;
-	},
+	}
 });
 
 var SimpleLectureSlideDisplay = Class.create({

@@ -21,7 +21,7 @@ var SplitLayout = Class.create({
 		this.elt = new Element('div', {
 			'class': 'splitLayout',
 			style:
-				'position:relative;width:100%;height:100%'
+				'position:absolute;width:100%;height:100%'
 		});
 		
 		this.centerWrapperElt = new Element('div', {
@@ -190,7 +190,6 @@ Object.extend(SplitLayout, {
 		return null;
 	}
 });
-
 
 SplitLayout.prototype.addTop = SplitLayout.prototype.addLeft;
 SplitLayout.prototype.addBottom = SplitLayout.prototype.addRight;
