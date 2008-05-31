@@ -2,20 +2,17 @@
 
 <!-- $Id$ -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.p2presenter</groupId>
 	<artifactId>p2presenter</artifactId>
 	<packaging>war</packaging>
 	<name>p2presenter</name>
 	<version>0.1-SNAPSHOT</version>
+
 	<build>
-		<sourceDirectory>src/java</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src/conf</directory>
-			</resource>
-		</resources>
 		<finalName>${pom.artifactId}</finalName>
 		<pluginManagement>
 			<plugins>
@@ -24,12 +21,6 @@
 					<configuration>
 						<source>1.5</source>
 						<target>1.5</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<configuration>
-						<warSourceDirectory>web</warSourceDirectory>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -63,8 +54,8 @@
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ryanberdeen</groupId>
-			<artifactId>veneer</artifactId>
+			<groupId>com.ryanberdeen.veneer</groupId>
+			<artifactId>veneer-spring</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
