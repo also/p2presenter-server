@@ -4,7 +4,6 @@
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
 <%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 
-<v:apply template="template/default">
 <v:set name="pageTitle" value="Dashboard"/>
 <v:set name="isDashboard" value="true"/>
 
@@ -52,4 +51,3 @@
 <p><a href="<c:url value="/instructor/courses/create"/>">Create</a> a new course.</p>
 </c:if>
 </authz:authorize>
-</v:apply>

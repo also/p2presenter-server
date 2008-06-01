@@ -38,10 +38,7 @@
 	
 	</div>
 </fieldset>
-<table>
-<tbody>
-</tbody>
-</table>
+
 <p class="actions"><input type="submit" value="Save"/><c:if test="${!param.initial}"> or <a href="<c:url value="/courses"/>">Cancel</a></c:if></p>
 </form:form>
 </div>
