@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
-<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
+<%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 <v:set name="pageTitle" value="Drop a Course"/>
 <form method="post">
 <p>Are you sure you want to drop <strong>${course}?</strong></p>

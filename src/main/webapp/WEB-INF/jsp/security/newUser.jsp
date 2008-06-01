@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
+<%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 <v:set name="pageTitle" value="Sign Up"/>
 <c:if test="${param.initial}"><p>Welcome to Presenter! Since this is your first time here, you'll need to enter your information below.</p></c:if>
 <div class="formContainer">

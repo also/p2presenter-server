@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
+<%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
 <v:set name="pageTitle" value="${course.title}"/>
 <div class="box floatRight">

@@ -2,6 +2,6 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="authz" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
-<%@ taglib uri="http://ry1.org/tags/veneer" prefix="v" %>
+<%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 <v:set name="pageTitle" value="Courses"/>
 
