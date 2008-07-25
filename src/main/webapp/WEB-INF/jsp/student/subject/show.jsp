@@ -10,6 +10,6 @@
 <p><a href="<c:url value="/subjects/"/>">Choose another subject</a> or <a href="<c:url value="/create-course?subject=${param.subject}"/>">create a course</a> in this subject.</p>
 </c:if>
 
-<v:render name="student/course/_courseList">
+<v:render partial="/student/course/list">
 	<v:set name="courses" value="${courses}"/>
 </v:render>

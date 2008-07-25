@@ -67,18 +67,20 @@
 		
 		<!-- instructor routes -->
 		<with r:patternPrefix="/instructor">
-			<connect r:pattern="/courses/create" controller="createCourse"/>
-			
 			<connect r:pattern="/courses/:courseId/createLecture" controller="lectureCreate"/>
 			
 			<resource r:pattern="/courses/" controller="instructorCourse">
 				<collection>
+					<apply action="create"/>
 					<apply action="my"/>
 				</collection>
+				<member>
+					<apply action="roster"/>
+				</member>
 			</resource>
 			
-			<connect r:pattern="/lectures/:id/:action" controller="instructorLecture" action="show"/>
 			<connect r:pattern="/lectures/:id.:format" controller="instructorLecture" action="show"/>
+			<connect r:pattern="/lectures/:id/:action" controller="instructorLecture" action="show"/>
 			<connect r:pattern="/lectures/:lectureId/slides/create" controller="newSlide"/>
 			<connect r:pattern="/slides/:id/edit" controller="simpleEditSlide"/>
 			

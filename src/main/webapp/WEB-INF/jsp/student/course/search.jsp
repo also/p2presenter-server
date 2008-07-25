@@ -3,8 +3,6 @@
 
 <v:set name="pageTitle" value="Search Results"/>
 
-<c:if test="${empty courses}">
-<p>No courses found.</p>
-</c:if>
-
-<v:render name="student/course/_courseList"/>
+<v:render partial="list">
+	<v:with name="default"><p>No courses found.</p></v:with>
+</v:render>

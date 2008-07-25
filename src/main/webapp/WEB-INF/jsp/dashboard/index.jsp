@@ -19,17 +19,13 @@
 </div>
 </c:if>
 <h2>Enrolled Courses</h2>
-<c:if test="${empty person.coursesAttended}">
-<p>You aren't enrolled in any courses. <a href="<c:url value="/subjects/"/>">Enroll</a> now.</p>
-</c:if>
-<c:if test="${!empty person.coursesAttended}">
 
-<v:render name="student/course/_courseList">
+<v:render partial="/student/course/list">
 	<v:set name="courses" value="${person.coursesAttended}"/>
+	<v:with name="default"><p>You aren't enrolled in any courses. <r:a controller="studentSubject">Enroll</r:a> now.</p></v:with>
+	<v:with name="after"><p><r:a controller="studentSubject">Enroll</r:a> in another course.</p></v:with>
 </v:render>
 
-<p><a href="<c:url value="/subjects/"/>">Enroll</a> in another course.</p>
-</c:if>
 </authz:authorize>
 
 <authz:authorize ifAllGranted="ROLE_INSTRUCTOR">
