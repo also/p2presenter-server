@@ -39,4 +39,4 @@
 </authz:authorize>
 <h2>Getting Help</h2>
 <h2>Reporting Problems</h2>
-<p>p2presenter is alpha software. You will probably encounter problems while using it. When you do, please let us know! Send an email to <a href="mailto:rberdeen@cs.uoregon.edu">rberdeen@cs.uoregon.edu</a> with a complete description of the problem.</p>
+<p>p2presenter is alpha software. You will probably encounter problems while using it. When you do, please let us know by entering a ticket at <a href="http://trac.p2presenter.org/">trac.p2presenter.org</a>.</p>
