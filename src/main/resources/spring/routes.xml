@@ -14,6 +14,8 @@
 		http://ry1.org/schema/routes http://ry1.org/schema/routes-1.0.xsd">
 	
 	<routes id="routes">
+		<parameter name="action" value="index" default="true"/>
+		
 		<connect
 			r:pattern="/"
 			r:name="home"
