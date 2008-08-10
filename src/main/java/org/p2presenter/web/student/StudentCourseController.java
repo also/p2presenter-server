@@ -14,9 +14,10 @@ import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Person;
 import org.p2presenter.web.common.AbstractEntityController;
 import org.p2presenter.web.common.EntityController;
-import org.ry1.springframework.web.routes.RouteRedirectView;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ryanberdeen.routes.RouteRedirectView;
 
 import edu.uoregon.cs.presenter.controller.ActiveLecture;
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;

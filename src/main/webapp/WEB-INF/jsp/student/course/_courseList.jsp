@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<%@ taglib uri="http://ryanberdeen.com/routes/tags" prefix="r" %>
 
 <c:if test="${!empty view.courses}"> 
 <table class="wide">

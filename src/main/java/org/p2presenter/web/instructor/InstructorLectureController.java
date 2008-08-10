@@ -7,9 +7,10 @@ import org.p2presenter.server.model.Lecture;
 import org.p2presenter.server.model.LectureSession;
 import org.p2presenter.web.common.AbstractEntityController;
 import org.p2presenter.web.common.EntityController;
-import org.ry1.springframework.web.routes.RouteRedirectView;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ryanberdeen.routes.RouteRedirectView;
 
 import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 

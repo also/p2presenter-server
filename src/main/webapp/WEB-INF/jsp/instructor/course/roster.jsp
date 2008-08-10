@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
-<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<%@ taglib uri="http://ryanberdeen.com/routes/tags" prefix="r" %>
 <v:set name="pageTitle" value="Roster"/>
 <v:set name="subtitle" value="${course.title}"/>
 <p>&larr; <r:a action="show" id="${course.id}">Back to course</r:a></p>

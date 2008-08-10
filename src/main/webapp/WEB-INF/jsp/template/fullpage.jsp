@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="authz" %>
-<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<%@ taglib uri="http://ryanberdeen.com/routes/tags" prefix="r" %>
 <%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">

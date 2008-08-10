@@ -14,7 +14,7 @@
 	
 	<import resource="classpath:spring/routes.xml"/>
 	
-	<bean id="handlerMapping" class="org.ry1.springframework.web.routes.RouteHandlerMapping">
+	<bean id="handlerMapping" class="com.ryanberdeen.routes.RouteHandlerMapping">
 		<property name="routes" ref="routes"/>
 		<!-- <property name="urlMap"><map>
 			<entry key="/participate" value="homeController"/>

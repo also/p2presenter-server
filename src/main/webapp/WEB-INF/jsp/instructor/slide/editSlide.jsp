@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
-<%@ taglib uri="http://ry1.org/tags/routes" prefix="r" %>
+<%@ taglib uri="http://ryanberdeen.com/routes/tags" prefix="r" %>
 
 <v:set name="pageTitle" value="Edit Slide"/>
 

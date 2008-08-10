@@ -6,10 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.p2presenter.server.model.InteractivityDefinition;
 import org.p2presenter.server.model.Slide;
-import org.ry1.springframework.web.routes.RouteRedirectView;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ryanberdeen.routes.RouteRedirectView;
 
 import edu.uoregon.cs.presenter.web.controller.AbstractPresenterSimpleFormController;
 
