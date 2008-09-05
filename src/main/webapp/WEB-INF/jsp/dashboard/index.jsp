@@ -18,6 +18,7 @@
 </ul>
 </div>
 </c:if>
+
 <h2>Enrolled Courses</h2>
 
 <v:render partial="/student/course/list">
@@ -30,20 +31,10 @@
 
 <authz:authorize ifAllGranted="ROLE_INSTRUCTOR">
 <h2>Courses Taught</h2>
-<c:if test="${empty person.coursesTaught}">
-<p>You aren't teaching any courses. <a href="<c:url value="/instructor/courses/create"/>">Create</a> a new course.</p>
-</c:if>
-<c:if test="${!empty person.coursesTaught}">
-<table class="wide">
-<thead><tr><th scope="col">CRN</th><th scope="col">Course</th><th scope="col">Title</th></tr></thead>
-<tbody>
-<c:forEach items="${person.coursesTaught}" var="course">
-<tr><td>${course.crn}</td>
-    <td>${course.subject} ${course.number}</td>
-    <td><r:a controller="instructorCourse" id="${course.id}">${course.title}</r:a></td></tr>
-</c:forEach>
-</tbody>
-</table>
-<p><a href="<c:url value="/instructor/courses/create"/>">Create</a> a new course.</p>
-</c:if>
+
+<v:render partial="/instructor/course/list">
+	<v:set name="courses" value="${person.coursesTaught}"/>
+	<v:with name="default"><p>You aren't teaching any courses. <a href="<c:url value="/instructor/courses/create"/>">Create</a> a new course.</p></v:with>
+	<v:with name="after"><p><a href="<c:url value="/instructor/courses/create"/>">Create</a> a new course.</p></v:with>
+</v:render>
 </authz:authorize>
