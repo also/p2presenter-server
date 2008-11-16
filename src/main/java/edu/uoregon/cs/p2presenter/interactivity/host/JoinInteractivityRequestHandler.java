@@ -2,13 +2,14 @@
 
 package edu.uoregon.cs.p2presenter.interactivity.host;
 
-import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.ConnectionLifecycleListener;
-import org.p2presenter.messaging.handler.RequestHandler;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
-import org.p2presenter.remoting.ProxyCache;
 import org.ry1.json.JsonObject;
+
+import com.ryanberdeen.djava.postal.PostalDJavaConnection;
+import com.ryanberdeen.postal.Connection;
+import com.ryanberdeen.postal.ConnectionLifecycleListener;
+import com.ryanberdeen.postal.handler.RequestHandler;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
 
@@ -25,12 +26,12 @@ public class JoinInteractivityRequestHandler implements RequestHandler {
 		Object model = interactivityController.onConnect();
 		request.getConnection().addConnectionLifecycleListener(new InteractivityConnectionListener(model));
 		
-		ProxyCache proxyCache = ProxyCache.getProxyCache(request.getConnection(), proxyCacheUri);
+		PostalDJavaConnection dJavaConnection = PostalDJavaConnection.getPostalDJavaConnection(request.getConnection(), proxyCacheUri, true);
 		
 		OutgoingResponseMessage response = new OutgoingResponseMessage(request);
 		
 		JsonObject responseObject = new JsonObject();
-		responseObject.set("participantModelProxyId", proxyCache.getObjectDescriptor(model).getId());
+		responseObject.set("participantModelProxyId", dJavaConnection.getObjectDescriptor(model).getId());
 		
 		response.setContent(responseObject.toString());
 		

@@ -4,18 +4,18 @@ package edu.uoregon.cs.p2presenter.interactivity;
 
 import java.awt.Container;
 
-import org.p2presenter.messaging.LocalConnection;
-import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
-import org.p2presenter.messaging.message.IncomingResponseMessage;
-import org.p2presenter.messaging.message.OutgoingRequestMessage;
-import org.p2presenter.remoting.InvocationRequestHandler;
-import org.p2presenter.remoting.RemoteInvocationConnection;
-import org.p2presenter.remoting.RemoteObjectReference;
 import org.ry1.json.JsonObject;
 
+import com.ryanberdeen.djava.RemoteObjectReference;
+import com.ryanberdeen.djava.postal.InvocationRequestHandler;
+import com.ryanberdeen.djava.postal.PostalDJavaConnection;
+import com.ryanberdeen.postal.LocalConnection;
+import com.ryanberdeen.postal.handler.UriPatternRequestMatcher;
+import com.ryanberdeen.postal.message.IncomingResponseMessage;
+import com.ryanberdeen.postal.message.OutgoingRequestMessage;
 
 public class InteractivityParticipantClient {
-	private RemoteInvocationConnection remoteInvocationConnection;
+	private PostalDJavaConnection dJavaConnection;
 	private Container view;
 	
 	private Object model;
@@ -45,11 +45,11 @@ public class InteractivityParticipantClient {
 		responseObject = JsonObject.valueOf(response.getContentAsString());
 	
 		int modelProxyId = ((Number) responseObject.get("participantModelProxyId")).intValue();
-		remoteInvocationConnection = new RemoteInvocationConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
+		dJavaConnection = new PostalDJavaConnection(connection, "/interactivity/" + interactivityId + "/controller", true);
 		InvocationRequestHandler invoker = new InvocationRequestHandler();
 		connection.getRequestHandlerMapping().mapHandler(new UriPatternRequestMatcher("/interactivity/(\\d+)/controller", "interactivityId"), invoker);
 		
-		model = remoteInvocationConnection.proxy(modelClass, new RemoteObjectReference(modelProxyId));
+		model = dJavaConnection.proxy(modelClass, modelProxyId);
 		
 		if (view instanceof InteractivityClientComponent) {
 			((InteractivityClientComponent) view).setModel(model);

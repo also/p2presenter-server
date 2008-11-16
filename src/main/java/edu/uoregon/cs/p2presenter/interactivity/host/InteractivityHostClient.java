@@ -2,12 +2,13 @@
 
 package edu.uoregon.cs.p2presenter.interactivity.host;
 
-import org.p2presenter.messaging.LocalConnection;
-import org.p2presenter.messaging.handler.UriPatternRequestMatcher;
-import org.p2presenter.messaging.message.IncomingResponseMessage;
-import org.p2presenter.messaging.message.OutgoingRequestMessage;
-import org.p2presenter.remoting.InvocationRequestHandler;
 import org.ry1.json.JsonObject;
+
+import com.ryanberdeen.djava.postal.InvocationRequestHandler;
+import com.ryanberdeen.postal.LocalConnection;
+import com.ryanberdeen.postal.handler.UriPatternRequestMatcher;
+import com.ryanberdeen.postal.message.IncomingResponseMessage;
+import com.ryanberdeen.postal.message.OutgoingRequestMessage;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityController;
 

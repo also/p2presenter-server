@@ -2,13 +2,14 @@
 
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
-import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.ConnectionLifecycleListener;
-import org.p2presenter.messaging.handler.RequestHandler;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
 import org.p2presenter.server.model.InteractivityDefinition;
 import org.ry1.json.JsonObject;
+
+import com.ryanberdeen.postal.Connection;
+import com.ryanberdeen.postal.ConnectionLifecycleListener;
+import com.ryanberdeen.postal.handler.RequestHandler;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 import edu.uoregon.cs.presenter.dao.Dao;

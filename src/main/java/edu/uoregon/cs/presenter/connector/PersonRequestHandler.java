@@ -1,14 +1,13 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.connector;
 
 import java.io.Serializable;
 
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
 import org.p2presenter.server.model.Person;
 import org.ry1.json.JsonObject;
 import org.ry1.json.PropertyList;
+
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 
@@ -20,13 +19,13 @@ public class PersonRequestHandler extends AbstractEntityMultiActionRequestHandle
 			.includeValue("username")
 			.includeListOfValues("roles")
 			.includeValues("firstName", "lastName");
-		
+
 		COURSES_TAUGHT_PROPERTIES = new PropertyList();
 		COURSES_TAUGHT_PROPERTIES
 			.forListOfBeans("coursesTaught")
 				.includeValues("id", "title", "crn", "subject", "number");
 	}
-	
+
 	public PersonRequestHandler() {
 		super(Person.class);
 	}
@@ -42,17 +41,17 @@ public class PersonRequestHandler extends AbstractEntityMultiActionRequestHandle
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected Serializable toId(String idString) {
 		// the id is a string
 		return idString;
 	}
-	
+
 	public OutgoingResponseMessage get(IncomingRequestMessage request, Person person) throws Exception {
 		return new OutgoingResponseMessage(request, new JsonObject(person, PERSON_PROPERTIES).toString());
 	}
-	
+
 	public OutgoingResponseMessage listCoursesTaught(IncomingRequestMessage request, Person person) throws Exception {
 		return new OutgoingResponseMessage(request, new JsonObject(person, COURSES_TAUGHT_PROPERTIES).toString());
 	}

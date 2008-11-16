@@ -2,7 +2,7 @@
 
 package edu.uoregon.cs.p2presenter.philosopher;
 
-import org.p2presenter.remoting.Asynchronous;
+import com.ryanberdeen.djava.Asynchronous;
 
 public interface PhilosopherStateListener {
 	@Asynchronous

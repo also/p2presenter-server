@@ -2,9 +2,9 @@
 
 package edu.uoregon.cs.p2presenter.server.authentication;
 
-import org.p2presenter.messaging.handler.RequestHandler;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import com.ryanberdeen.postal.handler.RequestHandler;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 /** Logs users out
  * .

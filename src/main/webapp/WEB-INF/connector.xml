@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
 xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
-	<bean id="irm" abstract="true" class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+	<bean id="irm" abstract="true" class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 		<property name="parameterNames" ><list><value>interactivityId</value><value>action</value></list></property>
 	</bean>
-	
-	<bean id="connectionManager" class="org.p2presenter.messaging.ConnectionManager">
+
+	<bean id="connectionManager" class="com.ryanberdeen.postal.ConnectionManager">
 		<property name="requestHandlerMapping.uriMappedHandlers"><map>
 			<entry key="/login"><bean class="edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler">
 				<property name="authenticationManager" ref="authenticationManager"/>
@@ -32,7 +30,7 @@ xsi:schemaLocation="
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
-			
+
 			<entry>
 				<key><bean parent="irm"><property name="pattern" value="/interactivity/(\d+)/admin/(.+)"/></bean></key>
 				<bean class="edu.uoregon.cs.p2presenter.server.interactivity.InteractivityHostRequestHandler">
@@ -40,18 +38,18 @@ xsi:schemaLocation="
 					<property name="activeInteractivityController" ref="activeInteractivityController"/>
 				</bean>
 			</entry>
-			
+
 			<!-- person request handler -->
-			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+			<entry><key><bean class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/person/([^/]+)/(.+)"/>
 				<property name="parameterNames" ><list><value>personId</value><value>action</value></list></property>
 			</bean></key>
 			<bean class="edu.uoregon.cs.presenter.connector.PersonRequestHandler">
 				<property name="dao" ref="dao"/>
 			</bean></entry>
-			
+
 			<!-- lecture request handler -->
-			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+			<entry><key><bean class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/lecture/(\d+)/(.+)"/>
 				<property name="parameterNames" ><list><value>lectureId</value><value>action</value></list></property>
 			</bean></key>
@@ -60,9 +58,9 @@ xsi:schemaLocation="
 				<property name="activeLectureController" ref="activeLectureController"/>
 				<property name="fileManager" ref="fileManager"/>
 			</bean></entry>
-			
+
 			<!-- slide request handler -->
-			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+			<entry><key><bean class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/slide/(\d+)/(.+)"/>
 				<property name="parameterNames" ><list><value>slideId</value><value>action</value></list></property>
 			</bean></key>
@@ -70,9 +68,9 @@ xsi:schemaLocation="
 				<property name="dao" ref="dao"/>
 				<property name="fileManager" ref="fileManager"/>
 			</bean></entry>
-			
+
 			<!-- lecture session request handler -->
-			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+			<entry><key><bean class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/activeLecture/(\d+)/(.+)"/>
 				<property name="parameterNames" ><list><value>lectureSessionId</value><value>action</value></list></property>
 			</bean></key>
@@ -80,9 +78,9 @@ xsi:schemaLocation="
 				<property name="dao" ref="dao"/>
 				<property name="activeLectureController" ref="activeLectureController"/>
 			</bean></entry>
-			
+
 			<!-- course request handler -->
-			<entry><key><bean class="org.p2presenter.messaging.handler.UriPatternRequestMatcher">
+			<entry><key><bean class="com.ryanberdeen.postal.handler.UriPatternRequestMatcher">
 				<property name="pattern" value="/entity/course/(\d+)/(.+)"/>
 				<property name="parameterNames" ><list><value>courseId</value><value>action</value></list></property>
 			</bean></key>
@@ -90,17 +88,17 @@ xsi:schemaLocation="
 				<property name="dao" ref="dao"/>
 			</bean></entry>
 		</map></property>
-		
+
 		<property name="requestHandlerMapping.uriMappedFilters"><map>
 			<entry key="/**"><bean class="edu.uoregon.cs.p2presenter.server.authentication.SecurityContextIntegrationFilter"/></entry>
 		</map></property>
 	</bean>
-	
+
 	<bean id="portListener" class="edu.uoregon.cs.p2presenter.server.P2PresenterServerPortListener" init-method="init" destroy-method="destroy">
 		<property name="portNumber" value="9000"/>
 		<property name="connectionManager" ref="connectionManager"/>
 	</bean>
-	
+
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.presenter.connector.AbstractEntityMultiActionRequestHandler.*(..))"/>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* edu.uoregon.cs.p2presenter.server.authentication.LoginRequestHandler.*(..))"/>

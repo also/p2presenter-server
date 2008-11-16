@@ -1,15 +1,13 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.interactivity.demo;
 
 import java.awt.Dimension;
 import java.net.ConnectException;
-import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.p2presenter.messaging.LocalConnection;
+import com.ryanberdeen.postal.LocalConnection;
+import com.ryanberdeen.postal.client.PostalClient;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityParticipantClient;
 
@@ -30,8 +28,8 @@ public class DemoClient {
 			System.exit(0);
 		}
 		try {
-			LocalConnection connection = new LocalConnection(new Socket(host, 9000));
-			connection.start();
+			PostalClient postalClient = new PostalClient();
+			LocalConnection connection = postalClient.connect(host, 9000);
 			
 			InteractivityParticipantClient client = new InteractivityParticipantClient(connection, new Integer(interactivityIdString));
 			

@@ -4,9 +4,10 @@ package edu.uoregon.cs.p2presenter.server.authentication;
 
 import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
-import org.p2presenter.messaging.Connection;
-import org.p2presenter.messaging.handler.Filter;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
+
+import com.ryanberdeen.postal.Connection;
+import com.ryanberdeen.postal.handler.Filter;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
 
 /** Synchronizes the security context of the {@link Connection} with the {@link SecurityContextHolder} for the scope of the request.
  * <p>At the beginning of the request, the security context holder is given the security context from the connection. After the request has been handled, if the the security context has been replaced, the connection is updated.</p> 

@@ -1,21 +1,20 @@
 package edu.uoregon.cs.p2presenter.server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 
-import org.p2presenter.messaging.ConnectionManager;
+import com.ryanberdeen.postal.ConnectionManager;
+import com.ryanberdeen.postal.server.PostalServer;
 
-public class P2PresenterServerPortListener implements Runnable {
+public class P2PresenterServerPortListener {
 	private int portNumber;
-	private ServerSocket serverSocket;
 	private ConnectionManager connectionManager;
+	private PostalServer postalServer;
 	
 	public P2PresenterServerPortListener() {}
 	
 	public P2PresenterServerPortListener(int portNumber, ConnectionManager connectionManager) throws IOException {
 		this.portNumber = portNumber;
 		this.connectionManager = connectionManager;
-		serverSocket = new ServerSocket(portNumber);
 	}
 	
 	public void setPortNumber(int portNumber) throws IOException {
@@ -26,29 +25,12 @@ public class P2PresenterServerPortListener implements Runnable {
 		this.connectionManager = connectionManager;
 	}
 	
-	public void run() {
-		
-		while(!serverSocket.isClosed()) {
-			try {
-				connectionManager.createConnection(serverSocket.accept()).start();
-			}
-			catch (IOException e) {
-				// FIXME do stuff
-			}
-		}
-	}
-	
 	public void init() throws Exception {
-		serverSocket = new ServerSocket(portNumber);
-		new Thread(this).start();
+		postalServer = new PostalServer(portNumber, connectionManager);
+		postalServer.start();
 	}
 	
 	public void destroy() {
-		try {
-			serverSocket.close();
-		}
-		catch (IOException ex) {
-			// TODO
-		}
+		postalServer.stop();
 	}
 }

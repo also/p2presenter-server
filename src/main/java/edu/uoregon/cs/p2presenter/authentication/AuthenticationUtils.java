@@ -4,8 +4,8 @@ package edu.uoregon.cs.p2presenter.authentication;
 
 import java.io.IOException;
 
-import org.p2presenter.messaging.LocalConnection;
-import org.p2presenter.messaging.message.OutgoingRequestMessage;
+import com.ryanberdeen.postal.LocalConnection;
+import com.ryanberdeen.postal.message.OutgoingRequestMessage;
 
 
 public class AuthenticationUtils {

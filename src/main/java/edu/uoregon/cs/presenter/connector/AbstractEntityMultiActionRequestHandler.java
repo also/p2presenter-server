@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.p2presenter.messaging.handler.RequestHandler;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
+import com.ryanberdeen.postal.handler.RequestHandler;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 import edu.uoregon.cs.presenter.dao.Dao;
 
@@ -23,7 +23,7 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 	private String idAttributeName;
 	private String actionAttributeName = "action";
 	private Class<?>[] parameterTypes;
-	
+
 	private Dao dao;
 
 	public AbstractEntityMultiActionRequestHandler(Class<T> entityClass) {
@@ -38,7 +38,7 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 		if (response != null) {
 			return response;
 		}
-		
+
 		Method method;
 		try {
 			method = this.getClass().getDeclaredMethod((String) request.getAttribute(actionAttributeName), parameterTypes);
@@ -49,47 +49,47 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 		if (!OutgoingResponseMessage.class.isAssignableFrom(method.getReturnType()) || !Modifier.isPublic(method.getModifiers())) {
 			return onInvalidAction(request);
 		}
-		
+
 		Serializable id = toId((String) request.getAttribute(idAttributeName));
 		T entity = dao.getEntity(entityClass, id);
-		
+
 		if (entity == null) {
 			return onEntityNotFound(request, id);
 		}
-		
+
 		response = afterEntityLoaded(request, entity);
 		if (response != null) {
 			return response;
 		}
-		
+
 		response = (OutgoingResponseMessage) method.invoke(this, new Object[] {request, entity});
-		
+
 		return response;
 	}
-	
+
 	public void setIdAttributeName(String idAttributeName) {
 		this.idAttributeName = idAttributeName;
 	}
-	
+
 	public void setActionAttributeName(String actionAttributeName) {
 		this.actionAttributeName = actionAttributeName;
 	}
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	public Dao getDao() {
 		return dao;
 	}
-	
+
 	/** Called before the entity has been loaded. Subclasses can override to perform initial authorization checks.
 	 * If the response is not <code>null</code>, no further action is taken by the request handler.
 	 */
 	protected OutgoingResponseMessage beforeEntityLoaded(IncomingRequestMessage request) {
 		return null;
 	}
-	
+
 	/** Convert the id String to the correct type for the entity class.
 	 * This implementation converts the String to an Integer; subclasses for entities with ids of another class should override this method.
 	 * @param idString the ID of the entity, as a String
@@ -98,20 +98,20 @@ public abstract class AbstractEntityMultiActionRequestHandler<T> implements Requ
 	protected Serializable toId(String idString) {
 		return new Integer(idString);
 	}
-	
+
 	/** Called after the entity has been loaded.
 	 * Subclasses can override this method to perform authorization checks based on the entity.
 	 */
 	protected OutgoingResponseMessage afterEntityLoaded(IncomingRequestMessage request, T entity) {
 		return null;
 	}
-	
+
 	/** Called to generate a response when the entity is not found.
 	 */
 	protected OutgoingResponseMessage onEntityNotFound(IncomingRequestMessage request, Serializable entityId) {
 		return new OutgoingResponseMessage(request, 404, "Entity not found");
 	}
-	
+
 	/** Called to generate a response when the action specified does not exist.
 	 */
 	protected OutgoingResponseMessage onInvalidAction(IncomingRequestMessage request) {

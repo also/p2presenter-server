@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.p2presenter.remoting.InvocationListener;
+import com.ryanberdeen.djava.InvocationListener;
 
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityModel;
 import edu.uoregon.cs.p2presenter.interactivity.InteractivityStateListener;

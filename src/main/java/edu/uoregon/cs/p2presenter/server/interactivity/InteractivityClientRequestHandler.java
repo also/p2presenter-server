@@ -2,12 +2,13 @@
 
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
-import org.p2presenter.messaging.LocalConnection;
-import org.p2presenter.messaging.handler.AbstractProxyRequestHandler;
-import org.p2presenter.messaging.handler.RequestHandler;
-import org.p2presenter.messaging.message.IncomingRequestMessage;
-import org.p2presenter.messaging.message.OutgoingResponseMessage;
 import org.ry1.json.JsonObject;
+
+import com.ryanberdeen.postal.LocalConnection;
+import com.ryanberdeen.postal.handler.AbstractProxyRequestHandler;
+import com.ryanberdeen.postal.handler.RequestHandler;
+import com.ryanberdeen.postal.message.IncomingRequestMessage;
+import com.ryanberdeen.postal.message.OutgoingResponseMessage;
 
 import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
 

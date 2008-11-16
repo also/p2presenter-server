@@ -4,7 +4,7 @@ package edu.uoregon.cs.p2presenter.philosopher.host;
 
 import java.io.Serializable;
 
-import org.p2presenter.remoting.Asynchronous;
+import com.ryanberdeen.djava.Asynchronous;
 
 import edu.uoregon.cs.p2presenter.interactivity.monitor.Hidden;
 import edu.uoregon.cs.p2presenter.philosopher.Chopstick;
