@@ -13,12 +13,13 @@
 <c:if test="${empty course.lectures}">
 <h2>This course doesn't have any content.</h2>
 </c:if>
+
 <c:if test="${!empty course.lectures}">
 <h2>Lectures</h2>
 
 <ul>
 <c:forEach items="${course.lectures}" var="lecture">
-<li><a href="<c:url value="/lectures/${lecture.id}"/>">${lecture.title}</a></li>
+<li><r:a controller="studentLecture" action="show" id="${lecture.id}">${lecture.title}</r:a></li>
 </c:forEach>
 </ul>
 </c:if>

@@ -34,7 +34,7 @@ ${view.head}
 </c:if>
 <ul id="nav">
 <authz:authorize ifAllGranted="ROLE_INSTRUCTOR">
-    <li><a href="">Courses</a></li>
+    <li><r:a controller="instructorCourse">Courses</r:a></li>
     <li><a href="<c:url value="/lectures/"/>">Lectures</a></li>
 </authz:authorize>
 <authz:authorize ifAllGranted="ROLE_STUDENT">
