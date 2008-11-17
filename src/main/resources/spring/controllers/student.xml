@@ -15,6 +15,10 @@
 	
 	</bean>
 	
+	<bean id="studentLectureController" class="org.p2presenter.web.student.StudentLectureController" parent="abstractController">
+
+	</bean>
+
 	<bean id="lectureSessionController" class="edu.uoregon.cs.presenter.web.controller.LectureSessionController" parent="abstractController">
 		<property name="viewName" value="lecture/active"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
