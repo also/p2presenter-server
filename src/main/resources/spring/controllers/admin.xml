@@ -11,11 +11,11 @@
 		<property name="viewName" value="admin/default"/>
 	</bean>
 	
-	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractPresenterController">
+	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractController">
 		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
 	
-	<bean id="simpleRemoveRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleRemoveRollController" parent="abstractPresenterController">
+	<bean id="simpleRemoveRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleRemoveRollController" parent="abstractController">
 		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
 	

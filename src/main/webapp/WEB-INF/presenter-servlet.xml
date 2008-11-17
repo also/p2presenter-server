@@ -53,6 +53,18 @@
 		<property name="flashMap" ref="flashMap"/>
 	</bean>
 	
+	<bean id="abstractController" abstract="true" parent="abstractPresenterController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+				<property name="logicalMappings">
+					<props>
+						<prop key="new">new_</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 	<!-- <bean id="upSoapServerController" class="org.codehaus.xfire.spring.remoting.XFireExporter">
 		<property name="serviceFactory" ref="xfire.serviceFactory"/>
 		<property name="xfire" ref="xfire"/>

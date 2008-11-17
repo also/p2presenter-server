@@ -16,7 +16,6 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver;
 
 import edu.uoregon.cs.presenter.dao.Dao;
 
@@ -25,12 +24,6 @@ public abstract class AbstractPresenterController extends MultiActionController 
 	private Dao dao;
 	private String viewName;
 	private FlashMap flashMap;
-	
-	private static final ParameterMethodNameResolver METHOD_NAME_RESOLVER = new ParameterMethodNameResolver();
-	
-	public AbstractPresenterController() {
-		setMethodNameResolver(METHOD_NAME_RESOLVER);
-	}
 	
 	public void setDao(Dao dao) {
 		this.dao = dao;

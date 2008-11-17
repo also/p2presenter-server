@@ -7,7 +7,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	
-	<bean id="instructorCourseController" class="org.p2presenter.web.instructor.InstructorCourseController" parent="abstractPresenterController">
+	<bean id="instructorCourseController" class="org.p2presenter.web.instructor.InstructorCourseController" parent="abstractController">
 	</bean>
 	
 	<bean id="createCourseController" class="edu.uoregon.cs.presenter.web.controller.instructor.CourseCreationController" parent="abstractPresenterController">
@@ -15,7 +15,7 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
-	<bean id="instructorLectureController" class="org.p2presenter.web.instructor.InstructorLectureController" parent="abstractPresenterController">
+	<bean id="instructorLectureController" class="org.p2presenter.web.instructor.InstructorLectureController" parent="abstractController">
 		<property name="viewName" value="instructor/lecture/details"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
@@ -35,7 +35,7 @@
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
 	
-	<bean id="instructorLectureSessionController" class="org.p2presenter.web.instructor.InstructorLectureSessionController" parent="abstractPresenterController">
+	<bean id="instructorLectureSessionController" class="org.p2presenter.web.instructor.InstructorLectureSessionController" parent="abstractController">
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
 </beans>
