@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans:beans 
 	xmlns="http://ryanberdeen.com/routes/schema"
 	xmlns:r="http://ryanberdeen.com/routes/schema"
@@ -11,7 +9,7 @@
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
-		http://ryanberdeen.com/routes/schema http://ryanberdeen.com/routes/schema/routes-1.0.xsd">
+		http://ryanberdeen.com/routes/schema http://schema.ryanberdeen.com/routes/routes-0.1.xsd">
 	
 	<routes id="routes">
 		<parameter name="action" value="index" default="true"/>
