@@ -12,57 +12,57 @@ import edu.uoregon.cs.presenter.dao.Dao;
 public class ActiveLecture {
 	private Dao dao;
 	private ActiveLectureInfo activeLectureInfo;
-	
+
 	private LectureSession lectureSession;
 	private Course course;
 	private Lecture lecture;
-	
+
 	ActiveLecture(Dao dao, ActiveLectureInfo activeLectureInfo) {
 		this.dao = dao;
 		this.activeLectureInfo = activeLectureInfo;
 	}
-	
+
 	ActiveLectureInfo getActiveLectureInfo() {
 		return activeLectureInfo;
 	}
-	
+
 	public LectureSession getLectureSession() {
 		if (lectureSession == null) {
 			lectureSession = dao.getEntity(LectureSession.class, activeLectureInfo.getLectureSessionId());
 		}
 		return lectureSession;
 	}
-	
+
 	public int getLectureSessionId() {
 		return activeLectureInfo.getLectureSessionId();
 	}
-	
+
 	public Course getCourse() {
 		if (course == null) {
 			course = dao.getEntity(Course.class, activeLectureInfo.getCourseId());
 		}
 		return course;
 	}
-	
+
 	public int getCourseId() {
 		return activeLectureInfo.getCourseId();
 	}
-	
+
 	public Lecture getLecture() {
 		if (lecture == null) {
 			lecture = dao.getEntity(Lecture.class, activeLectureInfo.getLectureId());
 		}
 		return lecture;
 	}
-	
+
 	public int getLectureId() {
 		return activeLectureInfo.getLectureId();
 	}
-	
+
 	public Integer getCurrentSlideId() {
 		return activeLectureInfo.getCurrentSlideId();
 	}
-	
+
 	/** Returns the current SlideSession.
 	 */
 	public SlideSession getCurrentSlideSession() {
@@ -73,29 +73,29 @@ public class ActiveLecture {
 			return null;
 		}
 	}
-	
+
 	public Integer getCurrentSlideSessionId() {
 		return activeLectureInfo.getCurrentSlideSessionId();
 	}
-	
+
 	/** Sets the current slide for an active lecture.
 	 * @param index the index of the slide (0-based)
 	 */
 	public void setCurrentSlideIndex(int index) {
 		Slide slide = getLectureSession().getLecture().getSlides().get(index);
-		
+
 		SlideSession currentSlideSession = lectureSession.getSlideSessions().get(slide);
-		
+
 		if (currentSlideSession == null) {
 			currentSlideSession = new SlideSession();
 			currentSlideSession.setLectureSession(lectureSession);
 			currentSlideSession.setSlide(slide);
 			dao.save(currentSlideSession);
 		}
-		
+
 		activeLectureInfo.setCurrentSlideSession(currentSlideSession);
 	}
-	
+
 	public Whiteboard getCurrentWhiteboard() {
 		if (activeLectureInfo.getCurrentWhiteboardId() != null) {
 			return dao.getEntity(Whiteboard.class, activeLectureInfo.getCurrentWhiteboardId());
@@ -104,11 +104,11 @@ public class ActiveLecture {
 			return null;
 		}
 	}
-	
+
 	public Integer getCurrentWhiteboardId() {
 		return activeLectureInfo.getCurrentWhiteboardId();
 	}
-	
+
 	public void setCurrentWhiteboardIndex(int index) {
 		Whiteboard whiteboard = null;
 
@@ -117,7 +117,7 @@ public class ActiveLecture {
 		}
 		else {
 			/* TODO we probably don't want to fill the lecture session with empty witeboards,
-			 * but they are needed if a UP presentation is synched and it has more whiteboards 
+			 * but they are needed if a UP presentation is synched and it has more whiteboards
 			 * than the session
 			 */
 			while (lectureSession.getWhiteboards().size() <= index) {
@@ -130,40 +130,40 @@ public class ActiveLecture {
 
 		activeLectureInfo.setCurrentWhiteboard(whiteboard);
 	}
-	
+
 	/** Returns the ink count of the current slide session.
 	 * @throws NullPointerException in there is no current slide session
 	 */
 	public Integer getCurrentSlideSessionInkCount() {
 		return activeLectureInfo.getCurrentSlideSessionInkCount();
 	}
-	
+
 	public int slideInkAdded() {
 		SlideSession slideSession = getCurrentSlideSession();
 		int result = slideSession.incrementInkCount();
-		
+
 		dao.flush();
 		activeLectureInfo.setCurrentSlideSessionInkCount(result);
 		return result;
 	}
-	
+
 	public Integer getCurrentWhiteboardInkCount() {
 		return activeLectureInfo.getCurrentWhiteboardInkCount();
 	}
-	
+
 	public int whiteboardInkAdded() {
 		Whiteboard whiteboard = getCurrentWhiteboard();
 		int result = whiteboard.incrementInkCount();
-		
+
 		dao.flush();
 		activeLectureInfo.setCurrentWhiteboardInkCount(result);
 		return result;
 	}
-	
+
 	public int getStateCount() {
 		return activeLectureInfo.getStateCount();
 	}
-	
+
 	/** Blocks until the lecture state changes changes.
 	 * @param currentSlideSessionId
 	 * @return
@@ -174,7 +174,7 @@ public class ActiveLecture {
 			if (activeLectureInfo.getStateCount() == previousStateCount) {
 				activeLectureInfo.wait();
 			}
-			
+
 			return activeLectureInfo.getStateCount();
 		}
 	}

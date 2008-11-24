@@ -22,14 +22,14 @@ ${view.head}
 <div id="siteTitle"><r:a r:name="home">p2Presenter</r:a></div>
 <c:if test="${!empty person}">
 	<div id="userNav">
-		${person}: 
+		${person}:
 		<r:a r:name="editProfile">Edit Profile</r:a>
 		<authz:authorize ifAllGranted="ROLE_ADMIN">
 			&bull; <r:a controller="adminDashboard"><strong>ADMIN</strong></r:a>
 		</authz:authorize> &bull;
 		<r:a r:name="logOut">Log Out</r:a>
 	</div>
-	
+
 	<div id="dashboardNav"><r:a r:name="dashboard" r:tagclass="${view.isDashboard ? 'current' : ''}">Dashboard</r:a></div>
 </c:if>
 <ul id="nav">

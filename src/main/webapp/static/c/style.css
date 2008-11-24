@@ -4,16 +4,16 @@
 
 body {
 	background-color: #eee;
-	
+
 	font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana,sans-serif;
     /* font size for internet explorer */
     font-size: x-small;
-    
+
     /* for better browsers */
     voice-family: "\"}\"";
     voice-family: inherit;
     font-size: small;
-    
+
     margin: 0;
     padding: 0;
 }
@@ -79,7 +79,7 @@ body.fullpage #belowToolbar {
 
 #siteTitle sup {
 	font-size: .5em;
-	color: #777;	
+	color: #777;
 }
 
 #dashboardNav, #userNav {
@@ -107,7 +107,6 @@ body.fullpage #belowToolbar {
 	-moz-border-radius-topright: .5em;
 	-webkit-border-top-right-radius: .5em;
 	color: #555555;
-	
 }
 
 #userNav {
@@ -168,7 +167,7 @@ h1 {
 
 h1 .subtitle {
 	font-size: .6em;
-	color: #1C7553;	
+	color: #1C7553;
 }
 
 #message, #messages {
@@ -183,12 +182,12 @@ h1 .subtitle {
 #body {
 	position: relative;
 	padding: 20px;
-	
+
     border: 1px solid #CED9D4;
     border-top: none;
 	border-bottom: none;
 	background-color: white;
-	
+
 	color: #333;
 }
 
@@ -305,17 +304,17 @@ div.formContainer form p.note { margin-left: 170px; font-size: 90%; color: #333;
 div.formContainer form fieldset { margin: 10px 0; padding: 10px; border: #DDD 1px solid; }
 div.formContainer form legend { font-weight: bold; color: #666; }
 div.formContainer form fieldset div { padding: 0.25em 0; }
-div.formContainer label, 
+div.formContainer label,
 div.formContainer span.label { margin-right: 10px; padding-right: 10px; width: 150px; display: block; float: left; text-align: right; position: relative; }
-div.formContainer label.error, 
+div.formContainer label.error,
 div.formContainer span.error { color: #C00; }
-div.formContainer label em, 
+div.formContainer label em,
 div.formContainer span.label em { position: absolute; right: 0; font-size: 120%; font-style: normal; color: #C00; }
 div.formContainer input.error { border-color: #C00; background-color: #FEF; }
 div.formContainer input:focus,
-div.formContainer input.error:focus, 
+div.formContainer input.error:focus,
 div.formContainer textarea:focus {	background-color: #FFC; border-color: #FC6; }
-div.formContainer div.controlset label, 
+div.formContainer div.controlset label,
 div.formContainer div.controlset input { display: inline; float: none; }
 div.formContainer div.controlset div { margin-left: 170px; }
 div.formContainer div.buttonRow { margin-left: 180px; }
@@ -327,7 +326,7 @@ div.formContainer div.buttonRow { margin-left: 180px; }
 	background-color: #E5E5E5;
 	border: 1px solid #80B5D0;
 	color: #224466;
-	
+
 	-webkit-border-radius: .5em;
 	-moz-border-radius: .5em;
 	padding: .2em .5em;
@@ -336,6 +335,6 @@ div.formContainer div.buttonRow { margin-left: 180px; }
 	line-height: 1.5em;
 	margin: .2em;
 	display: inline-block;
-	
+
 	cursor: pointer;
 }

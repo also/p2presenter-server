@@ -2,7 +2,7 @@
 <%@ taglib uri="http://ryanberdeen.com/routes/tags" prefix="r" %>
 <%@ taglib uri="http://ryanberdeen.com/veneer/tags" prefix="v" %>
 
-<c:if test="${!empty view.courses}"> 
+<c:if test="${!empty view.courses}">
 <v:value name="before" optional="true"/>
 <table class="wide">
 <thead>

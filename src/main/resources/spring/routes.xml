@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans:beans 
+<beans:beans
 	xmlns="http://ryanberdeen.com/routes/schema"
 	xmlns:r="http://ryanberdeen.com/routes/schema"
 	xmlns:beans="http://www.springframework.org/schema/beans"
@@ -10,35 +10,35 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
 		http://ryanberdeen.com/routes/schema http://schema.ryanberdeen.com/routes/routes-0.1.xsd">
-	
+
 	<routes id="routes">
 		<parameter name="action" value="index" default="true"/>
-		
+
 		<connect
 			r:pattern="/"
 			r:name="home"
 			controller="home"/>
-		
+
 		<connect
 			r:pattern="/dashboard"
 			r:name="dashboard"
 			controller="dashboard"
 			action="index"/>
-		
+
 		<connect
 			r:pattern="/welcome"
 			controller="newUser"/>
-			
+
 		<connect
 			r:pattern="/enter"
 			controller="loginForm"/>
-			
+
 		<connect
 			r:pattern="/exit"
 			r:name="logOut"/>
-		
+
 		<connect r:pattern="/profile" r:name="editProfile" controller="profile"/>
-		
+
 		<!-- student routes -->
 		<with r:patternPrefix="/student">
 			<connect r:pattern="/subjects/" controller="studentSubject" action="index"/>
@@ -48,7 +48,7 @@
 
 			<resource r:pattern="/lectures/" controller="studentLecture"/>
 		</with>
-		
+
 		<connect r:pattern="/lectures/:lectureId" controller="lecture"/>
 		<connect r:pattern="/lectures/:lectureId/watch" controller="lectureSession"/>
 		<connect r:pattern="/watch/:lectureSessionId" controller="lectureSession"/>
@@ -59,16 +59,16 @@
 			controller="slideImage"/>
 		<connect
 			r:pattern="/slides/previews/:id.png"
-			r:name="slideThumbnailImage" 
+			r:name="slideThumbnailImage"
 			controller="slideImage"
 			type="thumbnail"/>
 		<connect r:pattern="/ink/slides/:slideSessionId/:inkIndex.png" controller="inkImage"/>
 		<connect r:pattern="/ink/whiteboards/:whiteboardId/:inkIndex.png" controller="whiteboardImage"/>
-		
+
 		<!-- instructor routes -->
 		<with r:patternPrefix="/instructor">
 			<connect r:pattern="/courses/:courseId/createLecture" controller="lectureCreate"/>
-			
+
 			<resource r:pattern="/courses/" controller="instructorCourse">
 				<collection>
 					<apply action="create"/>
@@ -78,15 +78,15 @@
 					<apply action="roster"/>
 				</member>
 			</resource>
-			
+
 			<connect r:pattern="/lectures/:id.:format" controller="instructorLecture" action="show"/>
 			<connect r:pattern="/lectures/:id/:action" controller="instructorLecture" action="show"/>
 			<connect r:pattern="/lectures/:lectureId/slides/create" controller="newSlide"/>
 			<connect r:pattern="/slides/:id/edit" controller="simpleEditSlide"/>
-			
+
 			<connect r:pattern="/lectureSession/:id/:action" controller="instructorLectureSession" action="show"/>
 		</with>
-		
+
 		<!-- administrator routes -->
 		<with r:patternPrefix="/admin">
 			<connect r:pattern="/" controller="adminDashboard"/>

@@ -7,7 +7,7 @@
 <form:form>
 <fieldset>
 	<legend>What You Can't Change</legend>
-	
+
 	<div>
 		<span class="label">Username:</span>
 		${person.username}
@@ -20,7 +20,7 @@
 		<form:label path="firstName" cssErrorClass="error">First Name: <em>*</em></form:label>
 		<form:input path="firstName" cssErrorClass="error"/>
 	</div>
-	
+
 	<div>
 		<form:label path="lastName">Last Name: <em>*</em></form:label>
 		<form:input path="lastName"/>
@@ -35,7 +35,7 @@
 	</div>
 	<div>
 		<form:label path="password">Repeat Password: <em>*</em></form:label>
-	
+
 	</div>
 </fieldset>
 

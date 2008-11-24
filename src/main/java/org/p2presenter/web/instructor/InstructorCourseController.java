@@ -13,15 +13,15 @@ public class InstructorCourseController extends AbstractEntityController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("instructor/course/index");
 	}
-	
+
 	public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("instructor/course/show", "course", getEntity(request));
 	}
-	
+
 	public ModelAndView roster(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("instructor/course/roster", "course", getEntity(request));
 	}
-	
+
 	public ModelAndView my(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("instructor/course/my");
 	}
