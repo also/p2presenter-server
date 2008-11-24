@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller.instructor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +19,10 @@ public class SimpleEditSlideController extends AbstractPresenterSimpleFormContro
 		if (slide.getInteractivityDefinition() == null) {
 			slide.setInteractivityDefinition(new InteractivityDefinition());
 		}
-		
+
 		return slide;
 	}
-	
+
 	@Override
 	protected void doSubmitAction(Object command) throws Exception {
 		Slide slide = (Slide) command;
@@ -34,11 +32,11 @@ public class SimpleEditSlideController extends AbstractPresenterSimpleFormContro
 		else {
 			getDao().save(slide.getInteractivityDefinition());
 		}
-		
+
 		getDao().save(slide);
 		getDao().flush();
 	}
-	
+
 	@Override
 	protected ModelAndView onSubmit(Object command) throws Exception {
 		Slide slide = (Slide) command;

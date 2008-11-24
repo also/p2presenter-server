@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import org.p2presenter.server.model.InteractivityDefinition;
@@ -14,20 +12,20 @@ import com.ryanberdeen.postal.LocalConnection;
  */
 public class ActiveInteractivity {
 	private LocalConnection hostConnection;
-	
+
 	private InteractivityDefinition interactivityDefinition;
-	
+
 	public ActiveInteractivity(LocalConnection hostConnection, InteractivityDefinition interactivityDefinition) {
 		this.hostConnection = hostConnection;
 		this.interactivityDefinition = interactivityDefinition;
 	}
-	
-	/** Returns the Connection of the host. 
+
+	/** Returns the Connection of the host.
 	 */
 	public LocalConnection getHostConnection() {
 		return hostConnection;
 	}
-	
+
 	/** Returns the definition of the interactivity.
 	 */
 	public InteractivityDefinition getInteractivityDefinition() {

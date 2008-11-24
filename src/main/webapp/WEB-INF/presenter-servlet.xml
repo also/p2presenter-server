@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -11,18 +9,18 @@
 		http://ry1.org/schema/routes http://ry1.org/schema/routes-1.0.xsd">
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
-	
+
 	<import resource="classpath:spring/routes.xml"/>
-	
+
 	<bean id="handlerMapping" class="com.ryanberdeen.routes.RouteHandlerMapping">
 		<property name="routes" ref="routes"/>
 		<!-- <property name="urlMap"><map>
 			<entry key="/participate" value="homeController"/>
-			
+
 			<r:connect controller="upSoapServer">/ubiquitous/lib/soap_server.php</r:connect>
 			<r:connect controller="upHttpTransfers">/ubiquitous/lib/http_transfers.php</r:connect>
 		</map></property>-->
-		
+
 		<property name="interceptors"><list>
 			<bean class="org.ry1.springframework.web.context.request.FlashModelBindingInterceptor">
 				<property name="flashMap" ref="flashMap"/>
@@ -32,27 +30,27 @@
 			</bean>
 		</list></property>
 	</bean>
-	
+
 	<import resource="classpath:spring/controllers/shared.xml"/>
 	<import resource="classpath:spring/controllers/student.xml"/>
 	<import resource="classpath:spring/controllers/instructor.xml"/>
 	<import resource="classpath:spring/controllers/admin.xml"/>
 	<import resource="classpath:spring/views/json.xml"/>
-	
+
 	<!-- the static controller is mapped without the interceptors -->
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="urlMap"><map>
 			<entry key="/static/**" value-ref="staticController"/>
 		</map></property>
 	</bean>
-	
+
 	<bean id="flashMap" class="org.ry1.springframework.web.context.request.FlashMap"/>
-	
+
 	<bean id="abstractPresenterController" abstract="true">
 		<property name="dao" ref="dao"/>
 		<property name="flashMap" ref="flashMap"/>
 	</bean>
-	
+
 	<bean id="abstractController" abstract="true" parent="abstractPresenterController">
 		<property name="methodNameResolver">
 			<bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
@@ -72,19 +70,19 @@
 		<property name="serviceClass" value="edu.uoregon.cs.presenter.up.UbiquitousPresenterService"/>
 		<property name="namespace" value="urn:testing"/>
 		<property name="name" value="testing"/>
-		
+
 	</bean>
-	
+
 	<bean id="upHttpTransfersController" class="edu.uoregon.cs.presenter.up.HttpTransfers">
 		<property name="dao" ref="dao"/>
 		<property name="ubiquitousPresenterDao" ref="ubiquitousPresenterDao"/>
 		<property name="fileManager" ref="fileManager"/>
 	</bean> -->
-	
+
 	<bean id="staticController" class="org.springframework.web.servlet.mvc.ServletForwardingController">
 		<property name="servletName" value="default"/>
 	</bean>
-	
+
 	<bean id="jsonViewResolver" class="org.ry1.json.view.JsonViewResolver">
 		<property name="order" value="1"/>
 	</bean>

@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,15 +10,15 @@ import edu.uoregon.cs.presenter.dao.Dao;
 
 public class NewUserController extends SimpleFormController {
 	private Dao dao;
-	
+
 	public NewUserController() {
 		setCommandClass(Person.class);
 	}
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	@Override
 	protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
 		Person person = (Person) command;
@@ -29,7 +27,7 @@ public class NewUserController extends SimpleFormController {
 			errors.rejectValue("password", "password.confirm.different", "password and confirm password do not match");
 		}
 	}
-	
+
 	@Override
 	protected void doSubmitAction(Object command) throws Exception {
 		Person person = (Person) command;

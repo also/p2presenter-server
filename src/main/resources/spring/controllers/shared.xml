@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	
+
 	<bean id="homeController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
 		<property name="viewName" value="home"/>
 	</bean>
-	
+
 	<bean id="newUserController" class="edu.uoregon.cs.presenter.web.controller.NewUserController">
 		<property name="dao" ref="dao"/>
 		<property name="formView" value="security/newUser"/>
 		<property name="successView" value="redirect:/"/>
 	</bean>
-	
+
 	<bean id="loginFormController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
 		<property name="viewName" value="security/login"/>
 	</bean>
-	
+
 	<bean id="profileController" class="edu.uoregon.cs.presenter.web.controller.ProfileEditorController" parent="abstractPresenterController">
 		<property name="formView" value="profile/edit"/>
 		<property name="successView" value="redirect:/courses"/>
 	</bean>
-	
+
 	<bean id="dashboardController" class="org.p2presenter.web.DashboardController" parent="abstractController">
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
-	
+
 	<bean id="slideImageController" class="edu.uoregon.cs.presenter.web.controller.SlideImageController">
 		<property name="dao" ref="dao"/>
 		<property name="fileManager" ref="fileManager"/>
 	</bean>
-	
+
 	<bean id="inkImageController" class="edu.uoregon.cs.presenter.web.controller.InkImageController">
 		<property name="dao" ref="dao"/>
 		<property name="fileManager" ref="fileManager"/>
 	</bean>
-	
+
 	<bean id="whiteboardImageController" class="edu.uoregon.cs.presenter.web.controller.WhiteboardImageController">
 		<property name="dao" ref="dao"/>
 		<property name="fileManager" ref="fileManager"/>

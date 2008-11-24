@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.web.common;
 
 import java.lang.annotation.ElementType;

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd">
-	
+
 	<authentication-provider user-service-ref="daoUserDetailsService"/>
-	
+
 	<authentication-manager alias="authenticationManager"/>
-	
+
 	<beans:bean id="daoUserDetailsService" class="edu.uoregon.cs.presenter.security.DaoUserDetailsService">
 		<beans:property name="dao" ref="dao"/>
 	</beans:bean>
-	
+
 	<http access-denied-page="/enter?error=accessDenied" servlet-api-provision="false">
 		<intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -30,7 +28,7 @@
 		<intercept-url pattern="/instructor/**" access="ROLE_INSTRUCTOR"/>
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
 		<intercept-url pattern="/**" access="ROLE_STUDENT,ROLE_INSTRUCTOR,ROLE_ADMIN"/>
-		
+
 		<form-login
 			login-page="/enter"
 			login-processing-url="/enter/process"
@@ -38,7 +36,7 @@
 			default-target-url="/dashboard"
 			always-use-default-target="false"/>
 		<anonymous />
-		
+
 		<logout
 			logout-url="/exit"
 			logout-success-url="/"/>

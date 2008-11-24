@@ -1,5 +1,3 @@
-/* $Id:SubmissionDefinition.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import javax.persistence.Column;
@@ -14,9 +12,9 @@ public abstract class SubmissionDefinition<T extends Submission> extends Abstrac
 	private Slide slide;
 	private int index;
 	private String title;
-	
+
 	public SubmissionDefinition() {}
-	
+
 	public SubmissionDefinition(Slide slide) {
 		this.slide = slide;
 		this.index = slide.getSubmissionDefinitions().size();
@@ -31,20 +29,20 @@ public abstract class SubmissionDefinition<T extends Submission> extends Abstrac
 	public void setSlide(Slide slide) {
 		this.slide = slide;
 	}
-	
+
 	@Column(name = "idx")
 	public int getIndex() {
 		return index;
 	}
-	
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}

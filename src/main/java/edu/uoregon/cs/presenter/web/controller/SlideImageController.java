@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import java.io.File;

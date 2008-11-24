@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import org.p2presenter.server.model.InteractivityDefinition;
@@ -22,25 +20,25 @@ import edu.uoregon.cs.presenter.security.AuthorizationUtils;
 public class InteractivityHostRequestHandler implements RequestHandler, ConnectionLifecycleListener {
 	private Dao dao;
 	private ActiveInteractivityController activeInteractivityController;
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	public void setActiveInteractivityController(ActiveInteractivityController activeInteractivityController) {
 		this.activeInteractivityController = activeInteractivityController;
 	}
-	
+
 	public OutgoingResponseMessage handleRequest(IncomingRequestMessage request) throws Exception {
 		// AUTHORIZATION
 		// TODO more advanced check
 		if (!AuthorizationUtils.hasRoles("ROLE_INSTRUCTOR")) {
 			return new OutgoingResponseMessage(request, 400);
 		}
-		
+
 		String action = (String) request.getAttribute("action");
 		Integer id = new Integer(request.getAttribute("interactivityId").toString());
-		
+
 		InteractivityDefinition definition = dao.getEntity(InteractivityDefinition.class, id);
 
 		if (definition != null) {
@@ -55,7 +53,7 @@ public class InteractivityHostRequestHandler implements RequestHandler, Connecti
 				return new OutgoingResponseMessage(request);
 			}
 		}
-		
+
 		return new OutgoingResponseMessage(request, 404);
 	}
 

@@ -1,5 +1,3 @@
-/* $Id:LectureSession.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.ArrayList;
@@ -27,17 +25,17 @@ import org.hibernate.validator.NotNull;
 @Table
 public class LectureSession extends AbstractSimpleEntity {
 	private Lecture lecture;
-	
+
 	private Map<Slide, SlideSession> slideSessions = new HashMap<Slide, SlideSession>();
-	
+
 	private List<Whiteboard> whiteboards = new ArrayList<Whiteboard>();
-	
+
 	private Date timestamp;
-	
+
 	public LectureSession() {
 		timestamp = new Date();
 	}
-	
+
 	public LectureSession(Lecture lecture) {
 		this();
 		this.lecture = lecture;
@@ -54,13 +52,13 @@ public class LectureSession extends AbstractSimpleEntity {
 	public void setSlideSessions(Map<Slide, SlideSession> slideSessions) {
 		this.slideSessions = slideSessions;
 	}
-	
+
 	@OneToMany(mappedBy = "lectureSession")
 	@IndexColumn(name="idx")
 	public List<Whiteboard> getWhiteboards() {
 		return whiteboards;
 	}
-	
+
 	public void setWhiteboards(List<Whiteboard> whiteboards) {
 		this.whiteboards = whiteboards;
 	}
@@ -76,16 +74,16 @@ public class LectureSession extends AbstractSimpleEntity {
 	public void setLecture(Lecture lecture) {
 		this.lecture = lecture;
 	}
-	
+
 	/** Returns the timestamp of the beginning of the lecture.
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	
+
 }

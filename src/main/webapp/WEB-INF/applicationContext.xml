@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jee="http://www.springframework.org/schema/jee"
@@ -13,9 +11,9 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
-	
+
 	<import resource="classpath:spring/security.xml"/>
-	
+
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="hibernateProperties"><props>
 			<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
@@ -39,7 +37,7 @@ xsi:schemaLocation="
 			<value>org.p2presenter.server.model.Slide</value>
 			<value>org.p2presenter.server.model.SlideSession</value>
 			<value>org.p2presenter.server.model.Whiteboard</value>
-			
+
 	        <value>org.p2presenter.server.model.FreeformSubmission</value>
 	        <value>org.p2presenter.server.model.FreeformSubmissionDefinition</value>
 			<value>org.p2presenter.server.model.MultipleChoiceAnswer</value>
@@ -69,20 +67,20 @@ xsi:schemaLocation="
 	<bean id="activeLectureController" class="edu.uoregon.cs.presenter.controller.ActiveLectureController">
 		<property name="dao" ref="dao"/>
 	</bean>
-	
+
 	<bean id="activeInteractivityController" class="edu.uoregon.cs.presenter.controller.ActiveInteractivityController">
-	
+
 	</bean>
 	
 	<bean id="ubiquitousPresenterDao" class="edu.uoregon.cs.presenter.up.UbiquitousPresenterDao">
 		<property name="dao" ref="dao"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
-	
+
 	<bean id="fileManager" class="edu.uoregon.cs.presenter.controller.FileManager">
-	
+
 	</bean>
-	
+
 	<bean id="lectureManager" class="org.p2presenter.manager.LectureManager">
 		<property name="fileManager" ref="fileManager"/>
 		<property name="dao" ref="dao"/>
@@ -93,17 +91,17 @@ xsi:schemaLocation="
 		<property name="ubiquitousPresenterDao" ref="ubiquitousPresenterDao"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
-	
+
 	<bean id="dao" class="edu.uoregon.cs.presenter.dao.DaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	
+
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames"><list>
 			<value>edu.uoregon.cs.presenter.messages</value>
 		</list></property>
 	</bean>
-	
+
 	<import resource="connector.xml"/>
 
 </beans>

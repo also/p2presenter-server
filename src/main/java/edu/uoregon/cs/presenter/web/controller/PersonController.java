@@ -1,5 +1,3 @@
-/* $Id:PersonController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import java.util.HashMap;
@@ -18,11 +16,11 @@ import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 
 public class PersonController extends AbstractPresenterController {
 	private ActiveLectureController activeLectureController;
-	
+
 	public void setActiveLectureController(ActiveLectureController activeLectureController) {
 		this.activeLectureController = activeLectureController;
 	}
-	
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Person person = getPerson(request);

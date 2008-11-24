@@ -1,5 +1,3 @@
-/* $Id:AbstractPresenterController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import java.util.ArrayList;
@@ -24,39 +22,39 @@ public abstract class AbstractPresenterController extends MultiActionController 
 	private Dao dao;
 	private String viewName;
 	private FlashMap flashMap;
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	protected Dao getDao() {
 		return dao;
 	}
-	
+
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
 	}
-	
+
 	protected String getViewName() {
 		return viewName;
 	}
-	
+
 	public void setFlashMap(FlashMap flashMap) {
 		this.flashMap = flashMap;
 	}
-	
+
 	protected FlashMap getFlashMap() {
 		return flashMap;
 	}
-	
+
 	protected void flashMessage(String code, Object[] args, String defaultMessage) {
 		flashMessage(new String[] {code}, args, defaultMessage);
 	}
-	
+
 	protected void flashMessage(String[] codes, Object[] args, String defaultMessage) {
 		flashMessage(new DefaultMessageSourceResolvable(codes, args, defaultMessage));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected void flashMessage(MessageSourceResolvable message) {
 		List<MessageSourceResolvable> messages = (List<MessageSourceResolvable>) flashMap.get("messages");
@@ -66,11 +64,11 @@ public abstract class AbstractPresenterController extends MultiActionController 
 		}
 		messages.add(message);
 	}
-	
+
 	public static Person getPerson(HttpServletRequest request) {
 		return (Person) request.getAttribute("person");
 	}
-	
+
 	public BindingResult bind(HttpServletRequest request, Object target, String name, String context) {
 		AnnotatedServletRequestDataBinder binder = new AnnotatedServletRequestDataBinder(target, name, context);
 		binder.bind(request);

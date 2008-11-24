@@ -1,5 +1,3 @@
-/* $Id:Person.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.HashSet;
@@ -27,11 +25,11 @@ public class Person implements org.p2presenter.server.model.Entity {
 	private String password;
 	private String firstName;
 	private String lastName;
-	
+
 	private Set<Course> coursesTaught = new HashSet<Course>();
 	private Set<Course> coursesAttended = new HashSet<Course>();
 	private Set<String> roles = new HashSet<String>();
-	
+
 	/** Returns the username.
 	 */
 	@Id
@@ -39,16 +37,16 @@ public class Person implements org.p2presenter.server.model.Entity {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	@Length(min = 6)
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -60,11 +58,11 @@ public class Person implements org.p2presenter.server.model.Entity {
 	public Set<Course> getCoursesAttended() {
 		return coursesAttended;
 	}
-	
+
 	public void setCoursesAttended(Set<Course> coursesAttended) {
 		this.coursesAttended = coursesAttended;
 	}
-	
+
 	/** Returns the courses this person teaches.
 	 */
 	@OneToMany(mappedBy = "instructor")
@@ -72,45 +70,45 @@ public class Person implements org.p2presenter.server.model.Entity {
 	public Set<Course> getCoursesTaught() {
 		return coursesTaught;
 	}
-	
+
 	public void setCoursesTaught(Set<Course> courses) {
 		this.coursesTaught = courses;
 	}
-	
+
 	/** Returns the first name.
 	 */
 	@Length(max = 30)
 	public String getFirstName() {
 		return firstName;
 	}
-	
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	/** Returns the last name.
 	 */
 	@Length(max = 30)
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
 	@CollectionOfElements
 	public Set<String> getRoles() {
 		return roles;
 	}
-	
+
 	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
-	
+
 	@Override
 	public String toString() {
 		return firstName == null || lastName == null ? username : firstName + " " + lastName;
 	}
-	
+
 }

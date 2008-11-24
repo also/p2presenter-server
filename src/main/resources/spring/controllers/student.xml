@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	
+
 	<bean id="studentCourseController" class="org.p2presenter.web.student.StudentCourseController" parent="abstractController">
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
-	
+
 	<bean id="studentSubjectController" class="org.p2presenter.web.student.StudentSubjectController" parent="abstractController">
-	
+
 	</bean>
-	
+
 	<bean id="studentLectureController" class="org.p2presenter.web.student.StudentLectureController" parent="abstractController">
 
 	</bean>
@@ -23,8 +21,8 @@
 		<property name="viewName" value="lecture/active"/>
 		<property name="activeLectureController" ref="activeLectureController"/>
 	</bean>
-	
+
 	<bean id="acceptFreeformSubmissionController" class="edu.uoregon.cs.presenter.web.controller.submission.AcceptFreeformSubmissionController" parent="abstractController">
 	</bean>
-	
+
 </beans>

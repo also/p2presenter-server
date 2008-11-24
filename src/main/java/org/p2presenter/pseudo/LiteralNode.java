@@ -1,10 +1,8 @@
-/* $Id$ */
-
 package org.p2presenter.pseudo;
 
 public class LiteralNode<T extends Object> extends Node<T> {
 	private T value;
-	
+
 	LiteralNode(T value) {
 		this.value = value;
 	}

@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.server.util;
 
 import org.hibernate.Session;
@@ -26,9 +24,9 @@ public class GenerateSchema {
 		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/presenter");
 		SchemaExport schemaExport = new SchemaExport(configuration);
 		schemaExport.create(true, true);
-		
+
 		SessionFactory sessionFactory = configuration.buildSessionFactory();
-		
+
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		Person admin = new Person();

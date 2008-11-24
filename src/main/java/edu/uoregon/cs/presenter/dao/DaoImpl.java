@@ -1,5 +1,3 @@
-/* $Id:DaoImpl.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.dao;
 
 import java.io.Serializable;
@@ -24,7 +22,7 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 		.setProjection(
 			distinct(property("subject")))
 		.addOrder(asc("subject"));
-	
+
 	public DaoImpl() {}
 
 	@SuppressWarnings("unchecked")
@@ -36,15 +34,15 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 	public <T> T loadEntity(Class<T> entityClass, Serializable id) {
 		return (T) getHibernateTemplate().load(entityClass, id);
 	}
-	
+
 	public Serializable save(Object o) {
 		return (Serializable) getHibernateTemplate().save(o);
 	}
-	
+
 	public void makePersistent(Object entity) {
 		getHibernateTemplate().lock(entity, LockMode.NONE);
 	}
-	
+
 	public void flush() {
 		getHibernateTemplate().flush();
 	}
@@ -52,13 +50,13 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 	@SuppressWarnings("unchecked")
 	public List<Course> getCoursesInSubject(final String subject) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-		
+
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				return session.createCriteria(Course.class)
 					.add(eq("subject", subject))
 					.addOrder(asc("number")).list();
 			}
-		
+
 		});
 	}
 
@@ -66,10 +64,10 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 	public List<String> getSubjects() {
 		return getHibernateTemplate().findByCriteria(SUBJECTS_CRITERA);
 	}
-	
+
 	public Lecture getLectureByTitle(final Course course, final String title) {
 		return (Lecture) getHibernateTemplate().execute(new HibernateCallback() {
-		
+
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				return session.createQuery("from Lecture l where title=:title and course=:course)")
 						.setString("title", title)
@@ -79,14 +77,14 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 			}
 		});
 	}
-	
+
 	public Course getCourseByCrn(final Integer crn) {
 		return (Course) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Criteria criteria = session.createCriteria(Course.class);
 				criteria
 					.add(eq("crn", crn));
-				
+
 				return criteria.uniqueResult();
 			}
 		});

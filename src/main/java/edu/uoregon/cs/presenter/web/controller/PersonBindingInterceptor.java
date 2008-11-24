@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,7 @@ import edu.uoregon.cs.presenter.dao.Dao;
  */
 public class PersonBindingInterceptor implements HandlerInterceptor {
 	private Dao dao;
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
@@ -31,7 +29,7 @@ public class PersonBindingInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if (request.getAttribute("person") == null) {
 			Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			
+
 			if (principal instanceof UserDetails) {
 				String username = ((UserDetails) principal).getUsername();
 				request.setAttribute("person", dao.getEntity(Person.class, username));

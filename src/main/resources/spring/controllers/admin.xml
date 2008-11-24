@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	
+
 	<bean id="adminDashboardController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
 		<property name="viewName" value="admin/default"/>
 	</bean>
-	
+
 	<bean id="simpleAddRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleAddRoleController" parent="abstractController">
 		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
-	
+
 	<bean id="simpleRemoveRoleController" class="edu.uoregon.cs.presenter.web.controller.admin.SimpleRemoveRollController" parent="abstractController">
 		<property name="viewName" value="redirect:/admin/"/>
 	</bean>
-	
+
 </beans>

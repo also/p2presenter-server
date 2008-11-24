@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import java.io.File;
@@ -19,35 +17,35 @@ public abstract class AbstractImageController extends AbstractController {
 	private static final int BUFFER_SIZE = 1024;
 	private Dao dao;
 	private FileManager fileManager;
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	protected Dao getDao() {
 		return dao;
 	}
-	
+
 	public void setFileManager(FileManager fileManager) {
 		this.fileManager = fileManager;
 	}
-	
+
 	protected FileManager getFileManager() {
 		return fileManager;
 	}
-	
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		File file = getImageFile(request);
-		
+
 		response.setContentType("image/png");
 		response.setContentLength((int) file.length());
-		
+
 		FileInputStream in = new FileInputStream(file);
-		
+
 		try {
 			ServletOutputStream out = response.getOutputStream();
-			
+
 			byte[] buffer = new byte[BUFFER_SIZE];
 			while(in.read(buffer) > 0) {
 				out.write(buffer);
@@ -56,10 +54,10 @@ public abstract class AbstractImageController extends AbstractController {
 		finally {
 			in.close();
 		}
-		
+
 		return null;
 	}
-	
+
 	protected abstract File getImageFile(HttpServletRequest request) throws Exception;
 
 }

@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller.instructor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +12,15 @@ public class CourseCreationController extends AbstractPresenterSimpleFormControl
 	public CourseCreationController() {
 		setCommandClass(Course.class);
 	}
-	
+
 	@Override
 	protected void onBind(HttpServletRequest request, Object command) throws Exception {
 		Course course = (Course) command;
-		Person instructor = AbstractPresenterController.getPerson(request);  
+		Person instructor = AbstractPresenterController.getPerson(request);
 
 		course.setInstructor(instructor);
 	}
-	
+
 	@Override
 	protected void doSubmitAction(Object command) throws Exception {
 		Course course = (Course) command;

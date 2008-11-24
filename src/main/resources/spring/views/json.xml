@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <beans:beans
 	xmlns="http://ry1.org/schema/json-view"
 	xmlns:beans="http://www.springframework.org/schema/beans"
@@ -9,11 +7,11 @@
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 		http://ry1.org/schema/json-view http://ry1.org/schema/json-view-1.0.xsd">
-		
+
 	<list id="idOnly">
 		<property name="id"/>
 	</list>
-	
+
 	<list id="lectureAndSlides">
 		<property name="id"/>
 		<property name="title"/>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <!DOCTYPE hibernate-configuration PUBLIC
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
@@ -11,7 +9,7 @@
         <property name="hibernate.connection.username">presenter</property>
         <property name="hibernate.connection.password">presenter</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        
+
         <mapping class="org.p2presenter.server.model.Slide"/>
         <mapping class="org.p2presenter.server.model.InteractivityDefinition"/>
         <mapping class="org.p2presenter.server.model.Course"/>
@@ -20,7 +18,7 @@
         <mapping class="org.p2presenter.server.model.SlideSession"/>
         <mapping class="org.p2presenter.server.model.Person"/>
         <mapping class="org.p2presenter.server.model.Whiteboard"/>
-        
+
         <mapping class="org.p2presenter.server.model.FreeformSubmissionDefinition"/>
         <mapping class="org.p2presenter.server.model.FreeformSubmission"/>
         <mapping class="org.p2presenter.server.model.MultipleChoiceAnswer"/>

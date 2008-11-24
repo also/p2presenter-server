@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.server.interactivity;
 
 import com.ryanberdeen.postal.LocalConnection;
@@ -14,7 +12,7 @@ import edu.uoregon.cs.presenter.controller.ActiveInteractivityController;
  */
 public class ProxyInteractivityRequestHandler extends AbstractProxyRequestHandler {
 	private ActiveInteractivityController activeInteractivityController;
-	
+
 	public void setActiveInteractivityController(ActiveInteractivityController activeInteractivityController) {
 		this.activeInteractivityController = activeInteractivityController;
 	}

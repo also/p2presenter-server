@@ -1,5 +1,3 @@
-/* $Id:HttpTransfers.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.up;
 
 import java.io.File;
@@ -28,17 +26,17 @@ public class HttpTransfers extends AbstractController {
 	private Log logger = LogFactory.getLog(HttpTransfers.class);
 	private Dao dao;
 	private FileManager fileManager;
-	
+
 	private UbiquitousPresenterDao ubiquitousPresenterDao;
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	public void setUbiquitousPresenterDao(UbiquitousPresenterDao ubiquitousPresenterDao) {
 		this.ubiquitousPresenterDao = ubiquitousPresenterDao;
 	}
-	
+
 	public void setFileManager(FileManager fileManager) {
 		this.fileManager = fileManager;
 	}
@@ -50,13 +48,13 @@ public class HttpTransfers extends AbstractController {
 		String classroom = request.getHeader("X-Classroom");
 		String lectureString = request.getHeader("X-Lecture");
 		int slideIndex = Integer.parseInt(request.getHeader("X-Slideindex"));
-		
+
 		if (type.equals("base_slide")) {
 			Course course = ubiquitousPresenterDao.getCourse(classroom);
 			Lecture lecture = dao.getLectureByTitle(course, lectureString);
-		
+
 			List<Slide> slides = lecture.getSlides();
-			
+
 			if (slides.size() == slideIndex) {
 				Slide slide = new Slide();
 				slide.setIndex(slideIndex);
@@ -82,21 +80,21 @@ public class HttpTransfers extends AbstractController {
 						int inkCount = activeLecture.slideInkAdded();
 						File file = fileManager.getImageFile(slideSession, inkCount - 1);
 						saveFile(request, file);
-						
+
 						// TODO should be debug
 						logger.info("Saving ink file '" + file + "'");
 					}
 					else {
 						logger.warn("Recieved ink for slide " + slideIndex + " in inactive lecture '" + lectureString + "' in course '" + classroom);
 					}
-				
+
 				}
 				else if (slideType == SlideType.WHITEBOARD) {
 					Whiteboard whiteboard = activeLecture.getCurrentWhiteboard();
 					int inkCount = activeLecture.whiteboardInkAdded();
 					File file = fileManager.getImageFile(whiteboard, inkCount - 1);
 					saveFile(request, file);
-					
+
 					// TODO should be debug
 					logger.info("Saving ink file '" + file + "'");
 				}
@@ -113,7 +111,7 @@ public class HttpTransfers extends AbstractController {
 		}
 		return null;
 	}
-	
+
 	private void saveFile(HttpServletRequest request, File file) throws Exception {
 		ServletInputStream in = request.getInputStream();
 		FileOutputStream out = new FileOutputStream(file);

@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.server.model;
 
 import java.util.HashSet;
@@ -12,14 +10,14 @@ import org.hibernate.annotations.CollectionOfElements;
 @Entity
 public class MultipleChoiceAnswer extends Submission<MultipleChoiceQuestion> {
 	private Set<Integer> answers = new HashSet<Integer>();
-	
+
 	@CollectionOfElements
 	public Set<Integer> getAnswers() {
 		return answers;
 	}
-	
+
 	public void setAnswers(Set<Integer> answers) {
 		this.answers = answers;
 	}
-	
+
 }

@@ -1,5 +1,3 @@
-/* $Id:UbiquitousPresenterServiceImpl.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.up;
 
 import java.util.HashMap;
@@ -33,37 +31,37 @@ import edu.uoregon.cs.presenter.dao.Dao;
 public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterService {
 	private Log logger = LogFactory.getLog(UbiquitousPresenterServiceImpl.class);
 	private static final String CLIENT_VERSION = "3.2.0";
-	
+
 	private Dao dao;
-	
+
 	private UbiquitousPresenterDao ubiquitousPresenterDao;
-	
+
 	private ActiveLectureController activeLectureController;
-	
+
 	public UbiquitousPresenterServiceImpl() {
 	}
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	public void setUbiquitousPresenterDao(UbiquitousPresenterDao ubiquitousPresenterDao) {
 		this.ubiquitousPresenterDao = ubiquitousPresenterDao;
 	}
-	
+
 	public void setActiveLectureController(ActiveLectureController activeLectureController) {
 		this.activeLectureController = activeLectureController;
 	}
-	
+
 	public void allowSubmissions(String classroom, String lecture, int slideTypeIndex, int slideNum) {
 		SlideType slideType = SlideType.values()[slideTypeIndex];
 		if (slideType == SlideType.SLIDE) {
 			ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
-			
+
 			if (activeLecture != null) {
 				LectureSession lectureSession = activeLecture.getLectureSession();
 				SlideSession slideSession = lectureSession.getSlideSessions().get(lectureSession.getLecture().getSlides().get(slideNum));
-				
+
 				if (slideSession != null) {
 					allowSubmissions(slideSession);
 				}
@@ -75,7 +73,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		}
 
 	}
-	
+
 	private void allowSubmissions(SlideSession slideSession) {
 		FreeformSubmissionDefinition freeformSubmissionDefinition = null;
 		for (SubmissionDefinition<?> submissionDefinition : slideSession.getSlide().getSubmissionDefinitions()) {
@@ -88,7 +86,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 			freeformSubmissionDefinition = new FreeformSubmissionDefinition(slideSession.getSlide());
 			dao.save(freeformSubmissionDefinition);
 		}
-		
+
 		// TODO if a submission session is already active, use it
 		SubmissionSession<FreeformSubmission> submissionSession = new SubmissionSession<FreeformSubmission>(freeformSubmissionDefinition, slideSession);
 		dao.save(submissionSession);
@@ -97,7 +95,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 
 	public void allowSubmissionsOnAll(String classroom, String lecture) {
 		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
-		
+
 		if (activeLecture != null) {
 			for (SlideSession slideSession : activeLecture.getLectureSession().getSlideSessions().values()) {
 				allowSubmissions(slideSession);
@@ -122,9 +120,9 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 			// TODO should be debug
 			logger.info("changeSlide(" + classroom + ", " + lecture + ", " + slideTypeIndex + ", " + currentSlideNumber + ", " + presSlideNumber + ")");
 		}
-		
+
 		SlideType slideType = SlideType.values()[slideTypeIndex];
-		
+
 		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		if (activeLecture != null) {
 			if (slideType == SlideType.SLIDE) {
@@ -154,7 +152,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 
 	public void endLecture(String classroom, String lecture) {
 		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
-		
+
 		/* if the lecture session is actually active */
 		if (activeLecture != null) {
 			activeLectureController.endActiveLecture(activeLecture);
@@ -169,7 +167,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 
 	public boolean endSubmissions(String classroom, String lecture) {
 		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
-		
+
 		if (activeLecture != null) {
 			for (SlideSession slideSession : activeLecture.getLectureSession().getSlideSessions().values()) {
 				for (SubmissionSession submissionSession : slideSession.getSubmissionSessions()) {
@@ -186,7 +184,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 
 	public boolean finalizeLectureCreation(String classroom, String newLectureName) {
 		Course course = ubiquitousPresenterDao.getCourse(classroom);
-		
+
 		Lecture lecture = dao.getLectureByTitle(course, newLectureName);
 		return lecture != null;
 	}
@@ -202,7 +200,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		Course course = ubiquitousPresenterDao.getCourse(classroom);
 		if (course != null) {
 			Iterator<Lecture> iterator = course.getLectures().iterator();
-			
+
 			while (iterator.hasNext()) {
 				Lecture lecture = iterator.next();
 				resultBuilder.append(lecture.getTitle());
@@ -217,7 +215,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 
 	public String getSubmissionsKludge(String classroom, String lecture) {
 		StringBuilder result = new StringBuilder();
-		
+
 		ActiveLecture activeLecture = ubiquitousPresenterDao.getActiveLecture(lecture);
 		if (activeLecture != null) {
 			/* TODO make sure this is the right way to get the request. I couldn't
@@ -228,8 +226,8 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 			String urlPrefix = request.getScheme() + "://" + request.getServerName() + (port != 80 ? ":" + port : "") + request.getContextPath();
 
 			SlideSession slideSession = activeLecture.getCurrentSlideSession();
-			
-			if (slideSession != null) { 
+
+			if (slideSession != null) {
 				int index = 0;
 				for (Submission<?> submission : slideSession.getSubmissions()) {
 					if (index > 0) {
@@ -250,7 +248,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		logger.info(result);
 		return result.toString();
 	}
-	
+
 	private void appendKeyValueText(Map<String, Object> values, StringBuilder builder) {
 		boolean first = true;
 		for (Entry<String, Object> entry : values.entrySet()) {
@@ -277,27 +275,27 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		Person person = dao.getEntity(Person.class, username);
 		return person != null ? buildClassroomListString(person.getCoursesTaught()) : "";
 	}
-	
+
 	private String buildClassroomListString(Set<Course> courses) {
 		StringBuilder resultBuilder = new StringBuilder();
 		Iterator<Course> iterator = courses.iterator();
 		Course course;
-		
+
 		while (iterator.hasNext()) {
 			course = iterator.next();
 			resultBuilder.append(course.getTitle() + " (" + course.getId() + ")");
-			
+
 			if (iterator.hasNext()) {
 				resultBuilder.append('|');
 			}
 		}
-		
+
 		return resultBuilder.toString();
 	}
 
 	public void startLecture(String courseString, String lectureString) {
 		Lecture lecture = ubiquitousPresenterDao.getLecture(lectureString);
-		activeLectureController.newLectureSession(lecture);	
+		activeLectureController.newLectureSession(lecture);
 	}
 
 	public boolean startLectureCreation(String courseString, String newLectureName) {
@@ -312,7 +310,7 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 		lecture.setTitle(newLectureName);
 		lecture.setCourse(course);
 		course.getLectures().add(lecture);
-		
+
 		dao.save(lecture);
 		return true;
 	}

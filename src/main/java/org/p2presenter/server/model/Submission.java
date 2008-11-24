@@ -1,5 +1,3 @@
-/* $Id:Submission.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.Date;
@@ -20,19 +18,19 @@ public abstract class Submission<T extends SubmissionDefinition> extends Abstrac
 	private SlideSession slideSession;
 	private Person student;
 	private Date timestamp;
-	
+
 	public Submission() {
 		timestamp = new Date();
 	}
-	
-	/** Returns the student that submitted 
+
+	/** Returns the student that submitted
 	 */
 	@ManyToOne
 	@NotNull
 	public Person getStudent() {
 		return student;
 	}
-	
+
 	public void setStudent(Person student) {
 		this.student = student;
 	}
@@ -54,19 +52,19 @@ public abstract class Submission<T extends SubmissionDefinition> extends Abstrac
 	public SubmissionSession<?> getSubmissionSession() {
 		return submissionSession;
 	}
-	
+
 	public void setSubmissionSession(SubmissionSession<?> submissionSession) {
 		this.submissionSession = submissionSession;
 	}
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	public Date getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	
+
 }

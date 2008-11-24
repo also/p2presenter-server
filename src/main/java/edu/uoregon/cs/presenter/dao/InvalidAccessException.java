@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.dao;
 
 public class InvalidAccessException extends RuntimeException {
@@ -20,5 +18,5 @@ public class InvalidAccessException extends RuntimeException {
 	public InvalidAccessException(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

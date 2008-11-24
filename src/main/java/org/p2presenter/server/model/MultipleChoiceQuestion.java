@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.server.model;
 
 import java.util.ArrayList;
@@ -14,9 +12,9 @@ import org.hibernate.annotations.CollectionOfElements;
 @Entity
 public class MultipleChoiceQuestion extends SubmissionDefinition<MultipleChoiceAnswer> {
 	private String question;
-	
+
 	private List<String> possibleAnswers = new ArrayList<String>();
-	
+
 	private Set<Integer> correctAnswers = new HashSet<Integer>();
 
 	@CollectionOfElements
@@ -44,5 +42,5 @@ public class MultipleChoiceQuestion extends SubmissionDefinition<MultipleChoiceA
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-	
+
 }

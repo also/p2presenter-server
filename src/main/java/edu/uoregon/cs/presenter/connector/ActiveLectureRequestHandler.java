@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.connector;
 
 import org.p2presenter.server.model.LectureSession;

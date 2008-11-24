@@ -1,5 +1,3 @@
-/* $Id:Slide.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.ArrayList;
@@ -20,29 +18,29 @@ import org.hibernate.validator.NotNull;
 @Table
 public class Slide extends AbstractSimpleEntity {
 	private int index;
-	
+
 	private Lecture lecture;
-	
+
 	private List<SubmissionDefinition> submissionDefinitions = new ArrayList<SubmissionDefinition>();
-	
-	private InteractivityDefinition interactivityDefinition; 
-	
+
+	private InteractivityDefinition interactivityDefinition;
+
 	private Set<SlideSession> slideSessions = new HashSet<SlideSession>();
-	
+
 	private String title;
 	private String body;
 
 	public Slide() {}
-	
+
 	public Slide(int index) {
 		this.index = index;
 	}
-	
+
 	@Column(name = "idx")
 	public int getIndex() {
 		return index;
 	}
-	
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
@@ -70,7 +68,7 @@ public class Slide extends AbstractSimpleEntity {
 	public void setLecture(Lecture lecture) {
 		this.lecture = lecture;
 	}
-	
+
 	/** Returns the <code>SlideSession</code>s in which this slide was presented.
 	 * Cannot be <code>null</code>.
 	 */
@@ -78,7 +76,7 @@ public class Slide extends AbstractSimpleEntity {
 	public Set<SlideSession> getSlideSessions() {
 		return slideSessions;
 	}
-	
+
 	public void setSlideSessions(Set<SlideSession> slideSessions) {
 		this.slideSessions = slideSessions;
 	}
@@ -102,12 +100,12 @@ public class Slide extends AbstractSimpleEntity {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	@ManyToOne
 	public InteractivityDefinition getInteractivityDefinition() {
 		return interactivityDefinition;
 	}
-	
+
 	public void setInteractivityDefinition(InteractivityDefinition interactivityDefinition) {
 		this.interactivityDefinition = interactivityDefinition;
 	}

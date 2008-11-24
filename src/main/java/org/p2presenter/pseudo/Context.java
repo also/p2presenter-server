@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.pseudo;
 
 import java.util.Stack;

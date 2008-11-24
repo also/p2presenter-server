@@ -1,5 +1,3 @@
-/* $Id:SubmissionSession.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.Date;
@@ -21,14 +19,14 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	private Set<T> submissions;
 	private Date began;
 	private Date ended;
-	
+
 	public SubmissionSession() {}
-	
+
 	public SubmissionSession(SubmissionDefinition<T> submissionDefinition, SlideSession slideSession) {
 		this.submissionDefinition = submissionDefinition;
 		this.slideSession = slideSession;
 	}
-	
+
 	@Temporal(TemporalType.TIME)
 	public Date getBegan() {
 		return began;
@@ -36,7 +34,7 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	public void setBegan(Date began) {
 		this.began = began;
 	}
-	
+
 	@Temporal(TemporalType.TIME)
 	public Date getEnded() {
 		return ended;
@@ -44,7 +42,7 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	public void setEnded(Date ended) {
 		this.ended = ended;
 	}
-	
+
 	@ManyToOne
 	@NotNull
 	public SlideSession getSlideSession() {
@@ -53,7 +51,7 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	public void setSlideSession(SlideSession slideSession) {
 		this.slideSession = slideSession;
 	}
-	
+
 	@ManyToOne(targetEntity = SubmissionDefinition.class)
 	@NotNull
 	public SubmissionDefinition<T> getSubmissionDefinition() {
@@ -62,7 +60,7 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	public void setSubmissionDefinition(SubmissionDefinition<T> submissionDefinition) {
 		this.submissionDefinition = submissionDefinition;
 	}
-	
+
 	@OneToMany(targetEntity = Submission.class, mappedBy = "submissionSession")
 	@OrderBy("timestamp")
 	public Set<T> getSubmissions() {
@@ -71,6 +69,6 @@ public class SubmissionSession<T extends Submission> extends AbstractSimpleEntit
 	public void setSubmissions(Set<T> submissions) {
 		this.submissions = submissions;
 	}
-	
-	
+
+
 }

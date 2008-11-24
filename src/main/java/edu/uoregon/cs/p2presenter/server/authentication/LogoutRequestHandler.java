@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.server.authentication;
 
 import com.ryanberdeen.postal.handler.RequestHandler;

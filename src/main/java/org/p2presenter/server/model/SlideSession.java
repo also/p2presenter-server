@@ -1,5 +1,3 @@
-/* $Id:SlideSession.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.server.model;
 
 import java.util.LinkedHashSet;
@@ -20,23 +18,23 @@ import org.hibernate.validator.NotNull;
 @Table
 public class SlideSession extends AbstractSimpleEntity {
 	private LectureSession lectureSession;
-	
+
 	private Slide slide;
-	
+
 	private int inkCount;
-	
+
 	private Set<SubmissionSession<?>> submissionSessions = new LinkedHashSet<SubmissionSession<?>>();
-	
+
 	private Set<Submission<?>> submissions = new LinkedHashSet<Submission<?>>();
-	
+
 	public int getInkCount() {
 		return inkCount;
 	}
-	
+
 	public void setInkCount(int inkCount) {
 		this.inkCount = inkCount;
 	}
-	
+
 	public int incrementInkCount() {
 		return ++inkCount;
 	}
@@ -66,23 +64,23 @@ public class SlideSession extends AbstractSimpleEntity {
 	public void setSlide(Slide slide) {
 		this.slide = slide;
 	}
-	
+
 	@OneToMany(mappedBy = "slideSession")
 	@OrderBy("timestamp")
 	public Set<Submission<?>> getSubmissions() {
 		return submissions;
 	}
-	
+
 	public void setSubmissions(Set<Submission<?>> submissions) {
 		this.submissions = submissions;
 	}
-	
+
 	@OneToMany(mappedBy = "slideSession")
 	@OrderBy("began")
 	public Set<SubmissionSession<?>> getSubmissionSessions() {
 		return submissionSessions;
 	}
-	
+
 	public void setSubmissionSessions(
 			Set<SubmissionSession<?>> submissionSessions) {
 		this.submissionSessions = submissionSessions;

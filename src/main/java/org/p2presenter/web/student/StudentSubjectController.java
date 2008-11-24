@@ -15,12 +15,12 @@ public class StudentSubjectController extends AbstractPresenterController {
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
 		return new ModelAndView("student/subject/index", "subjects", getDao().getSubjects());
 	}
-	
+
 	public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String subject = ServletRequestUtils.getRequiredStringParameter(request, "subject");
-		
+
 		List<Course> courses = getDao().getCoursesInSubject(subject);
-		
+
 		return new ModelAndView("student/subject/show", "courses", courses);
 	}
 }

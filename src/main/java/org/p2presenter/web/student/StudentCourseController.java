@@ -1,5 +1,3 @@
-/* $Id:StudentCourseController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package org.p2presenter.web.student;
 
 import java.util.ArrayList;
@@ -28,14 +26,14 @@ public class StudentCourseController extends AbstractEntityController {
 			"controller", "studentCourse",
 			"action", "index"
 	);
-	
+
 
 	private ActiveLectureController activeLectureController;
-	
+
 	public void setActiveLectureController(ActiveLectureController activeLectureController) {
 		this.activeLectureController = activeLectureController;
 	}
-	
+
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Person person = getPerson(request);
 		HashSet<ActiveLecture> activeLectures = new HashSet<ActiveLecture>();
@@ -49,26 +47,26 @@ public class StudentCourseController extends AbstractEntityController {
 		model.put("activeLectures", activeLectures);
 		return new ModelAndView("student/course/index", model);
 	}
-	
+
 	public ModelAndView my(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("student/course/my");
 	}
 
 	public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Course course = getEntity(request);
-		
+
 		String viewName;
-		
+
 		if (getPerson(request).getCoursesAttended().contains(course)) {
 			viewName = "student/course/show";
 		}
 		else {
 			viewName = "student/course/notEnrolled";
 		}
-		
+
 		return new ModelAndView(viewName, "course", getEntity(request));
 	}
-	
+
 	public ModelAndView enroll(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String message = null;
 
@@ -97,16 +95,16 @@ public class StudentCourseController extends AbstractEntityController {
 		}
 		model.put("course", course);
 		model.put("message", message);
-		
+
 		return new ModelAndView("student/course/enroll", model);
 	}
 
 	public ModelAndView drop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Course course = getEntity(request);
-		
+
 		if ("post".equalsIgnoreCase(request.getMethod())) {
 			Person person = getPerson(request);
-			
+
 			course.getStudents().remove(person);
 			person.getCoursesAttended().remove(course);
 			getDao().flush();
@@ -117,11 +115,11 @@ public class StudentCourseController extends AbstractEntityController {
 			return new ModelAndView("student/course/drop", "course", course);
 		}
 	}
-	
+
 	public ModelAndView search(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Integer crn = ServletRequestUtils.getIntParameter(request, "crn");
 		Course course = getDao().getCourseByCrn(crn);
-		
+
 		ArrayList<Course> courses = new ArrayList<Course>();
 		if (course != null) {
 			courses.add(course);

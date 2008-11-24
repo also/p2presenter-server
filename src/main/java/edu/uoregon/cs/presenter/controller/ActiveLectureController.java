@@ -1,5 +1,3 @@
-/* $Id:ActiveLectureController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.controller;
 
 import java.util.Date;
@@ -17,51 +15,51 @@ import edu.uoregon.cs.presenter.dao.Dao;
 
 public class ActiveLectureController {
 	private Dao dao;
-	
+
 	private HashMap<Integer, ActiveLectureInfo> activeLecturesInfo = new HashMap<Integer, ActiveLectureInfo>();
-	
+
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	public ActiveLecture getActiveLectureForSessionId(int lectureSessionId) {
 		ActiveLectureInfo activeLectureInfo = activeLecturesInfo.get(lectureSessionId);
-		
+
 		return activeLectureInfo != null ? new ActiveLecture(dao, activeLectureInfo) : null;
 	}
-	
+
 	public ActiveLecture getActiveLecture(LectureSession lectureSession) {
 		return getActiveLectureForSessionId(lectureSession.getId());
 	}
-	
+
 	/** Returns the active ActiveLectures for all Lectures in a Course.
 	 */
 	public Set<ActiveLecture> getActiveLectures(Course course) {
 		LinkedHashSet<ActiveLecture> result = new LinkedHashSet<ActiveLecture>();
-		
+
 		for (ActiveLectureInfo activeLectureInfo : activeLecturesInfo.values()) {
 			if (activeLectureInfo.getCourseId() == course.getId()) {
 				result.add(new ActiveLecture(dao, activeLectureInfo));
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public ActiveLecture getActiveLecture(Lecture lecture) {
 		return getActiveLectureForSessionId(lecture.getId());
 	}
-	
+
 	public ActiveLecture getActiveLecture(int lectureId) {
 		for (ActiveLectureInfo activeLectureInfo : activeLecturesInfo.values()) {
 			if (activeLectureInfo.getLectureId() == lectureId) {
 				return new ActiveLecture(dao, activeLectureInfo);
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/** Creates and activates a LectureSession for a Lecture.
 	 * @param course the course in which the Lecture is being presented
 	 * @param lecture the lecture being presented
@@ -71,17 +69,17 @@ public class ActiveLectureController {
 		if (getActiveLecture(lecture) != null) {
 			throw new PresenterException("Lecture already active for course");
 		}
-		
+
 		LectureSession lectureSession = new LectureSession(lecture);
-		
+
 		dao.save(lectureSession);
 		lecture.getLectureSessions().add(lectureSession);
-		
+
 		reactivateLectureSession(lectureSession);
-		
+
 		return lectureSession;
 	}
-	
+
 	/** Begins tracking the LectureSession.
 	 * @param lectureSession
 	 */
@@ -90,7 +88,7 @@ public class ActiveLectureController {
 		ActiveLectureInfo activeLecture = new ActiveLectureInfo(lectureSession.getId(), lecture.getCourse().getId(), lecture.getId());
 		activeLecturesInfo.put(lectureSession.getId(), activeLecture);
 	}
-	
+
 	/**
 	 * @param lectureSession
 	 */
@@ -99,13 +97,13 @@ public class ActiveLectureController {
 		activeLecturesInfo.remove(activeLectureInfo.getLectureSessionId());
 		activeLectureInfo.stateChanged();
 	}
-	
+
 	public void beginSubmissionSession(SubmissionSession<?> submissionSession) {
 		// TODO track
 		submissionSession.setBegan(new Date());
 		dao.flush();
 	}
-	
+
 	public void endSubmissionSession(SubmissionSession<?> submissionSession) {
 		// TODO track
 		submissionSession.setEnded(new Date());

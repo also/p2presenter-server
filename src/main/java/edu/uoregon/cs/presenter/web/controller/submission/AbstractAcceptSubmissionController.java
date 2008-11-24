@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.presenter.web.controller.submission;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +21,7 @@ import edu.uoregon.cs.presenter.web.controller.AbstractPresenterController;
 public abstract class AbstractAcceptSubmissionController<T extends Submission<?>> extends AbstractPresenterController {
 	private boolean requireSubmissionSession = true;
 	private static final String[] POST = {"POST"};
-	
+
 	public AbstractAcceptSubmissionController() {
 		setSupportedMethods(POST);
 	}
@@ -31,7 +29,7 @@ public abstract class AbstractAcceptSubmissionController<T extends Submission<?>
 	protected void setRequireSubmissionSession(boolean requireSubmissionSession) {
 		this.requireSubmissionSession = requireSubmissionSession;
 	}
-	
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		SlideSession slideSession = null;
@@ -55,9 +53,9 @@ public abstract class AbstractAcceptSubmissionController<T extends Submission<?>
 				submissionSession = null;
 			}
 		}
-		
+
 		Person student = getPerson(request);
-		
+
 		T submission = getSubmission(request, submissionSession != null ? submissionSession.getSubmissionDefinition() : null);
 		if (submission != null) {
 			submission.setSubmissionSession(submissionSession);
@@ -71,7 +69,7 @@ public abstract class AbstractAcceptSubmissionController<T extends Submission<?>
 		// TODO
 		return null;
 	}
-	
+
 	protected abstract T getSubmission(HttpServletRequest request, SubmissionDefinition<T> definition);
 
 }

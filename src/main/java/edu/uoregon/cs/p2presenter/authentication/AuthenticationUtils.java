@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package edu.uoregon.cs.p2presenter.authentication;
 
 import java.io.IOException;
@@ -17,9 +15,9 @@ public class AuthenticationUtils {
 			connection.sendRequestAndAwaitResponse(request);
 		}
 		catch (InterruptedException ex) {}
-		
+
 	}
-	
+
 	public void logout(LocalConnection connection) throws IOException {
 		OutgoingRequestMessage request = new OutgoingRequestMessage(connection, "/logout");
 		try {

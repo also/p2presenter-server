@@ -1,5 +1,3 @@
-/* $Id$ */
-
 package org.p2presenter.server.model;
 
 import javax.persistence.Entity;
@@ -11,9 +9,9 @@ public class InteractivityDefinition extends AbstractSimpleEntity {
 	private String hostControllerClassName;
 	private String participantViewClassName;
 	private String participantModelInterfaceClassName;
-	
+
 	public InteractivityDefinition() {}
-	
+
 	public InteractivityDefinition(String hostControllerClassName, String participantViewClassName, String participantModelInterfaceClassName) {
 		this.hostControllerClassName = hostControllerClassName;
 		this.participantViewClassName = participantViewClassName;
