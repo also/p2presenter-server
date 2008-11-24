@@ -71,6 +71,7 @@
 
 			<resource r:pattern="/courses/" controller="instructorCourse">
 				<collection>
+					<apply action="new"/>
 					<apply action="create"/>
 					<apply action="my"/>
 				</collection>

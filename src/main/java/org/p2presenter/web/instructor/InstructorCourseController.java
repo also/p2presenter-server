@@ -10,6 +10,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 @EntityController(entityClass = Course.class)
 public class InstructorCourseController extends AbstractEntityController {
+	public ModelAndView new_(HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("instructor/course/create", "course", new Course());
+	}
+
+	public ModelAndView create(HttpServletRequest request, HttpServletResponse response) {
+		return null;
+	}
+
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("instructor/course/index");
 	}
