@@ -1,5 +1,3 @@
-/* $Id:LectureSessionController.java 62 2007-01-08 04:14:12Z rberdeen@cs.uoregon.edu $ */
-
 package edu.uoregon.cs.presenter.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +21,11 @@ import edu.uoregon.cs.presenter.controller.ActiveLectureController;
 public class LectureSessionController extends AbstractPresenterController {
 	private Log logger = LogFactory.getLog(LectureSessionController.class);
 	private ActiveLectureController activeLectureController;
-	
+
 	public void setActiveLectureController(ActiveLectureController activeLectureController) {
 		this.activeLectureController = activeLectureController;
 	}
-	
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Integer lectureId = ServletRequestUtils.getIntParameter(request, "lectureId");
@@ -36,7 +34,7 @@ public class LectureSessionController extends AbstractPresenterController {
 			Lecture lecture = getDao().loadEntity(Lecture.class, lectureId);
 			activeLecture = activeLectureController.getActiveLecture(lectureId);
 			if (activeLecture == null) {
-				flashMessage("lecture.session.inactive", new Object[] {lecture}, "lecture {0} is not active in course");
+				flashMessage("lecture.session.inactive", new Object[] {lecture.getTitle()}, "lecture {0} is not active");
 				return new ModelAndView(new RouteRedirectView("controller", "studentLecture", "id", lecture.getId()));
 			}
 		}
@@ -46,33 +44,33 @@ public class LectureSessionController extends AbstractPresenterController {
 		}
 		SlideSession slideSession;
 		Whiteboard whiteboard;
-		
+
 		if (ServletRequestUtils.getBooleanParameter(request, "update", false)) {
 			int previousStateCount = ServletRequestUtils.getRequiredIntParameter(request, "stateCount");
 			logger.info("Waiting for updates on LectureSession '" + activeLecture.getLectureSessionId() + ", stateCount '" + previousStateCount + "'");
 			int newStateCount = activeLecture.waitForStateChange(previousStateCount);
 			slideSession = activeLecture.getCurrentSlideSession();
 			whiteboard = activeLecture.getCurrentWhiteboard();
-			
+
 			// FIXME
 			InteractivityDefinition interactivityDefinition = activeLecture.getCurrentSlideSession().getSlide().getInteractivityDefinition();
 			JsonObject json = getJson(activeLecture);
 			if (interactivityDefinition != null) {
 				json.set("currentInteractivityDefinitionId", interactivityDefinition.getId());
 			}
-			
+
 			response.setHeader("X-JSON", json.toString());
-			
+
 			logger.info("Updated to state " + newStateCount);
-			
+
 			// safari is not so clever
 			response.getWriter().write(" ");
 			return null;
 		}
-		
+
 		slideSession = activeLecture.getCurrentSlideSession();
 		whiteboard = activeLecture.getCurrentWhiteboard();
-		
+
 		ModelAndView result = new ModelAndView(getViewName());
 		// FIXME use actual state count
 		result.addObject("json", getJson(activeLecture));
@@ -80,13 +78,13 @@ public class LectureSessionController extends AbstractPresenterController {
 		result.addObject("currentSlideSession", slideSession);
 		result.addObject("currentWhiteboard", whiteboard);
 		result.addObject("currentStateCount", activeLecture.getStateCount());
-		
+
 		return result;
 	}
-	
+
 	private JsonObject getJson(ActiveLecture activeLecture) {
 		JsonObject json = new JsonObject(activeLecture, "stateCount", "currentWhiteboardId", "currentWhiteboardInkCount", "currentSlideSessionId", "currentSlideId", "currentSlideSessionInkCount");
-		
+
 		return json;
 	}
 
