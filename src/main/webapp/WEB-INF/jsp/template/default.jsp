@@ -60,7 +60,7 @@ ${body}
 <v:value/>
 <div style="clear: both"></div>
 </div>
-<div id="footer"><a href="http://p2presenter.org/">p2presenter Project</a> &bull; <a href="http://www.cs.uoregon.edu/">Department of Computer and Information Science</a> &bull; <a href="http://www.uoregon.edu/">University of Oregon</a></div>
+<div id="footer"><a href="http://p2presenter.org/">p2presenter Project</a></div>
 </div>
 </body>
 </html>
