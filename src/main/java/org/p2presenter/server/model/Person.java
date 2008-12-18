@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -20,7 +19,7 @@ import org.hibernate.validator.Length;
  */
 @Entity
 @Table
-public class Person implements org.p2presenter.server.model.Entity {
+public class Person extends AbstractSimpleEntity {
 	private String username;
 	private String password;
 	private String firstName;
@@ -32,7 +31,6 @@ public class Person implements org.p2presenter.server.model.Entity {
 
 	/** Returns the username.
 	 */
-	@Id
 	@Length(min = 3, max = 20)
 	public String getUsername() {
 		return username;

@@ -267,12 +267,12 @@ public class UbiquitousPresenterServiceImpl implements UbiquitousPresenterServic
 	}
 
 	public String listClassroomsForStudent(String username) {
-		Person person = dao.getEntity(Person.class, username);
+		Person person = dao.getPersonByUsername(username);
 		return person != null ? buildClassroomListString(person.getCoursesAttended()) : "";
 	}
 
 	public String listClassroomsForUser(String username) {
-		Person person = dao.getEntity(Person.class, username);
+		Person person = dao.getPersonByUsername(username);
 		return person != null ? buildClassroomListString(person.getCoursesTaught()) : "";
 	}
 

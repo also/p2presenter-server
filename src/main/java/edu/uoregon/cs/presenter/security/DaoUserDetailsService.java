@@ -19,7 +19,7 @@ public class DaoUserDetailsService implements UserDetailsService {
 	}
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-		Person person = dao.getEntity(Person.class, username);
+		Person person = dao.getPersonByUsername(username);
 
 		if (person != null) {
 			GrantedAuthority[] authorities = new GrantedAuthority[person.getRoles().size()];

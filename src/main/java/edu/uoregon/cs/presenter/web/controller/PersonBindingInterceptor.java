@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
-import org.p2presenter.server.model.Person;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +31,7 @@ public class PersonBindingInterceptor implements HandlerInterceptor {
 
 			if (principal instanceof UserDetails) {
 				String username = ((UserDetails) principal).getUsername();
-				request.setAttribute("person", dao.getEntity(Person.class, username));
+				request.setAttribute("person", dao.getPersonByUsername(username));
 			}
 		}
 		return true;

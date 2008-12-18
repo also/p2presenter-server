@@ -30,7 +30,7 @@ public class AuthorizationUtils {
 		String username = getCurrentUsername();
 
 		if (username != null) {
-			return dao.getEntity(Person.class, username);
+			return dao.getPersonByUsername(username);
 		}
 		else {
 			return null;

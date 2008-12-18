@@ -14,6 +14,7 @@ import static org.hibernate.criterion.Projections.*;
 import static org.hibernate.criterion.Restrictions.*;
 import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.Person;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -86,6 +87,14 @@ public class DaoImpl extends HibernateDaoSupport implements Dao {
 					.add(eq("crn", crn));
 
 				return criteria.uniqueResult();
+			}
+		});
+	}
+
+	public Person getPersonByUsername(final String username) {
+		return (Person) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.createCriteria(Person.class).add(eq("username", username)).uniqueResult();
 			}
 		});
 	}

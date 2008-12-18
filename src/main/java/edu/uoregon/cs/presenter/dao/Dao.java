@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.p2presenter.server.model.Course;
 import org.p2presenter.server.model.Lecture;
+import org.p2presenter.server.model.Person;
 
 
 public interface Dao {
@@ -40,4 +41,5 @@ public interface Dao {
 
 	public Course getCourseByCrn(Integer crn);
 
+	public Person getPersonByUsername(String username);
 }
