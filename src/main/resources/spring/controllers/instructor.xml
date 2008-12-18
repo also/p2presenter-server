@@ -8,11 +8,6 @@
 	<bean id="instructorCourseController" class="org.p2presenter.web.instructor.InstructorCourseController" parent="abstractController">
 	</bean>
 
-	<bean id="createCourseController" class="edu.uoregon.cs.presenter.web.controller.instructor.CourseCreationController" parent="abstractPresenterController">
-		<property name="formView" value="instructor/course/create"/>
-		<property name="successView" value="redirect:/courses"/>
-	</bean>
-
 	<bean id="instructorLectureController" class="org.p2presenter.web.instructor.InstructorLectureController" parent="abstractController">
 		<property name="viewName" value="instructor/lecture/details"/>
 		<property name="activeLectureController" ref="activeLectureController"/>

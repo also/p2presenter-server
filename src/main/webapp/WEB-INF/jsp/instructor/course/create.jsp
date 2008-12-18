@@ -7,6 +7,8 @@
 
 <div class="formContainer">
 <form:form commandName="course">
+<jsp:attribute name="action"><r:url action="create"/></jsp:attribute>
+<jsp:body>
 <fieldset>
 <legend>Course Details</legend>
 <div><form:label path="title">Title<em>*</em></form:label>
@@ -22,5 +24,6 @@
      </form:label><form:input path="number"/></div>
 </fieldset>
 <div class="buttonRow"><input type="submit" value="Create"/> or <r:a controller="instructorCourse">Cancel</r:a></div>
+</jsp:body>
 </form:form>
 </div>

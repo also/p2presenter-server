@@ -35,6 +35,6 @@
 <v:render partial="/instructor/course/list">
 	<v:set name="courses" value="${person.coursesTaught}"/>
 	<v:with name="default"><p>You aren't teaching any courses. <r:a controller="instructorCourse" action="create">Create</r:a> a new course.</p></v:with>
-	<v:with name="after"><p><r:a controller="instructorCourse" action="create">Create</r:a> a new course.</p></v:with>
+	<v:with name="after"><p><r:a controller="instructorCourse" action="new">Create</r:a> a new course.</p></v:with>
 </v:render>
 </authz:authorize>
